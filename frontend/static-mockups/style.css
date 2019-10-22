@@ -1,0 +1,65 @@
+:root {
+  --input-padding-x: 1.5rem;
+  --input-padding-y: .75rem;
+}
+
+body {
+  background: #7fffd4;
+  background: linear-gradient(to right, #204237, #7fffd4);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font: 14px "Century Gothic", Futura, sans-serif;
+  margin: 2em;
+}
+
+.btn {
+    background-color: #5ceab3 !important;
+    border-color: #5ceab3 !important;
+}
+.btn:hover {
+    background-color: #53d3a0!important;
+    border-color: #53d3a0!important;
+}
+
+.caption{
+    color: darkslategray;
+}
+
+.card-signin {
+  border: 0;
+  border-radius: 1rem;
+  /* box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1); */
+  box-shadow: 10px 10px 10px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+
+.card-signin .card-img-left {
+  width: 45%;
+  /* Link to your background image using in the property below! */
+  background: scroll center url('img/1.jpg');
+  background-size: cover;
+}
+
+.card-signin .card-body {
+  padding: 2rem;
+}
+
+.form-signin {
+  width: 100%;
+}
+
+.form-signin .btn {
+  font-size: 80%;
+  border-radius: 5rem;
+  letter-spacing: .1rem;
+  font-weight: bold;
+  padding: 1rem;
+  color: darkslategray;
+  transition: all 0.2s;
+}
+
+.form-label-group {
+  position: relative;
+  margin-bottom: 1rem;
+}
