@@ -13,6 +13,38 @@ body {
   margin: 2em;
 }
 
+
+body.dashboard{
+  background: url('img/3.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  margin: 0;
+}
+
+.pfp{
+  max-height: 50px;
+}
+
+.side-menu{
+  background: #ffffff;
+  height: 100vh;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  overflow-x: hidden;
+}
+
+.side-menu a:hover{
+  color: black;
+}
+
+.aquamarine{
+  color: #7fffd4;
+}
+
 .btn {
     background-color: #5ceab3 !important;
     border-color: #5ceab3 !important;
@@ -20,6 +52,13 @@ body {
 .btn:hover {
     background-color: #53d3a0!important;
     border-color: #53d3a0!important;
+}
+
+.nav-link{
+  background-color: lightgray;
+  border-radius: 10px;
+  color: darkslategrey;
+  width: 100%;
 }
 
 .caption{
