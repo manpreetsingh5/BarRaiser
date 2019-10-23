@@ -68,3 +68,7 @@ body {
   position: relative;
   margin-bottom: 1rem;
 }
+
+.form-check{
+  display: inline-block;
+}

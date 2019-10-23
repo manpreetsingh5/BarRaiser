@@ -34,16 +34,43 @@
             <h1 class="text-center">BarRaiser</h1>
             <p class="text-center mb-5 caption">raising the bar of bartending, one click at a time</p>
             <form class="form-signin">
+              <label for="inputFirstName" class="mt-2">First Name</label>
               <div class="form-label-group">
-                <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required>
+                <input type="text" id="inputFirstName" class="form-control" placeholder="Enter first name" required>
               </div>
 
+              <label for="inputLastName" class="mt-2">Last Name</label>
+              <div class="form-label-group">
+                <input type="text" id="inputLastName" class="form-control" placeholder="Enter last name" required>
+              </div>
+
+              <label for="inputEmail" class="mt-2">Email Address</label>
+              <div class="form-label-group">
+                <input type="email" id="inputEmail" class="form-control" placeholder="Email email" required>
+              </div>
+
+              <label for="inputPassword" class="mt-2">Password</label>
               <div class="mb-4 form-label-group">
-                <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+                <input type="password" id="inputPassword" class="form-control" placeholder="Enter password" required>
+              </div>
+
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1"
+                  checked>
+                <label class="form-check-label" for="exampleRadios1">
+                  Student
+                </label>
+              </div>
+
+              <div class="ml-2 form-check">
+                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2">
+                <label class="form-check-label" for="exampleRadios2">
+                  Professional
+                </label>
               </div>
 
               <button class="mt-5 btn btn-lg btn-primary btn-block text-uppercase" type="submit">Register</button>
-              <a class="d-block text-center mt-2 small caption mb-5" href="#">Register</a>
+              <a class="d-block text-center mt-2 small caption mb-5" href="#">Return to Login</a>
             </form>
           </div>
         </div>
