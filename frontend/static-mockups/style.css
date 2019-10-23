@@ -34,10 +34,15 @@ body {
   overflow: hidden;
 }
 
-.card-signin .card-img-left {
-  width: 45%;
-  /* Link to your background image using in the property below! */
+.login-card .card-img-left {
   background: scroll center url('img/1.jpg');
+  width: 45%;
+  background-size: cover;
+}
+
+.register-card .card-img-left {
+  background: scroll center url('img/2.jpg');
+  width: 45%;
   background-size: cover;
 }
 
