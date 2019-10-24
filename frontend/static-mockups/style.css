@@ -60,10 +60,10 @@ hr{
   color: #ffffff;
   background: rgba(0,0,0,0.7);
   border-radius: 5px;
-  padding: 5px;
+  padding: 8px;
 }
 
-.side-link:hover{
+.side-link:hover, .active{
   color: #ffffff;
   background: gray;
   transition: all 0.5s;
