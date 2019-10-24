@@ -3,6 +3,10 @@
   --input-padding-y: .75rem;
 }
 
+.bg-aquamarine{
+  background: rgba(127, 255, 212, 1);
+}
+
 body {
   background: #7fffd4;
   background: linear-gradient(to right, #204237, #7fffd4);
@@ -15,8 +19,14 @@ body {
 
 
 body.dashboard{
-  background: #ffffff;
+  background: #f5f5f5;
   margin: 0;
+}
+
+.header-main{
+  background: #ffffff;
+  box-shadow: 0px 5px 5px rgba(0,0,0,0.1);
+  padding: 10px;
 }
 
 .side-menu{
@@ -35,7 +45,7 @@ body.dashboard{
 }
 
 hr{
-  border: 1px solid rgba(255,255,255,0.7);
+  border-top: 1px solid rgba(127, 255, 212, 0.8);
 }
 
 .user{
@@ -49,8 +59,8 @@ hr{
 .side-link{
   color: #ffffff;
   background: rgba(0,0,0,0.7);
-  border-radius: 10px;
-  padding: 10px;
+  border-radius: 5px;
+  padding: 5px;
 }
 
 .side-link:hover{
@@ -61,6 +71,7 @@ hr{
 
 .main-content{
   color: darkslategray;
+  padding: 0;
 }
 
 .aquamarine{
@@ -132,4 +143,31 @@ hr{
 
 .form-check{
   display: inline-block;
+}
+
+.card{
+  box-shadow: 2px 2px 7px rgba(0,0,0,0.7);
+}
+
+.card-img-overlay{
+  background: rgba(0,0,0,0.5);
+  color: #ffffff;
+}
+
+.card-img-overlay:hover{
+  background: rgba(255,255,255,0.0);
+  transition: all 1s;
+}
+
+.drink-details{
+  background: rgba(0,0,0,0.5);
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 1.25rem;
+}
+
+.progress{
+  background: slategray;
 }
