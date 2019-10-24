@@ -15,43 +15,52 @@ body {
 
 
 body.dashboard{
-  background: url('img/3.jpg');
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-position: center;
+  background: #ffffff;
   margin: 0;
 }
 
 .side-menu{
-  background: #ffffff;
+  background: rgba(0,0,0,0.1) url('img/3.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
   height: 100vh;
   overflow-x: hidden;
+  color: #ffffff;
 }
 
 .side-menu a{
   text-decoration:none;
 }
 
-.side-link{
-  color: darkslategray;
-  background:lightgray;
-  border-radius: 10px;
-  padding: 10px;
-  box-shadow: 0px 2px 5px rgba(0,0,0,0.5);
+hr{
+  border: 1px solid rgba(255,255,255,0.7);
 }
 
-.side-menu a:hover{
-  color: black;
+.user{
+  color: #ffffff;
+}
+
+.user:hover{
+  color: #ffffff;
+}
+
+.side-link{
+  color: #ffffff;
+  background: rgba(0,0,0,0.7);
+  border-radius: 10px;
+  padding: 10px;
 }
 
 .side-link:hover{
+  color: #ffffff;
   background: gray;
   transition: all 0.5s;
 }
 
 .main-content{
-  color: #ffffff;
+  color: darkslategray;
 }
 
 .aquamarine{
