@@ -27,7 +27,7 @@
 <body class="dashboard">
   <div class="container-fluid">
     <div class="row">
-      <div class="col-sm-3 side-menu">
+      <div class="col-sm-3 side-menu position-fixed">
         <div class="container">
           <div class="row side-title">
             <div class="col-sm-10 mx-auto mt-2">
@@ -87,7 +87,7 @@
           </a>
         </div>
       </div>
-      <div class="col-sm-9 main-content">
+      <div class="col-sm-9 offset-sm-3 main-content">
         <div class="header-main">
           <h2 class="text-center">Welcome back, Gordon!</h2>
           <p class="text-center">Wednesday, Oct. 23</p>
@@ -177,7 +177,10 @@
                             <p class="mb-1"><strong>Cohort</strong>: BarRaiser Classic</p>
                             <p class="mb-1"><strong>Author</strong>: BarRaiser Staff</p>
                             <p class="mb-1"><strong>Created</strong>: Oct. 1, 2019</p>
-                            <p><strong>Description</strong>: Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ipsam laboriosam ad accusamus, officiis perferendis ratione quam eius adipisci quidem assumenda omnis expedita est dolorem consequatur! Error deserunt nesciunt reprehenderit tempora.</p>
+                            <p><strong>Description</strong>: Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                              Ipsam laboriosam ad accusamus, officiis perferendis ratione quam eius adipisci quidem
+                              assumenda omnis expedita est dolorem consequatur! Error deserunt nesciunt reprehenderit
+                              tempora.</p>
                           </div>
                         </div>
                       </div>
@@ -226,7 +229,10 @@
                             <p class="mb-1"><strong>Cohort</strong>: The Bench</p>
                             <p class="mb-1"><strong>Author</strong>: John Smith</p>
                             <p class="mb-1"><strong>Created</strong>: Oct. 1, 2019</p>
-                            <p><strong>Description</strong>: Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ipsam laboriosam ad accusamus, officiis perferendis ratione quam eius adipisci quidem assumenda omnis expedita est dolorem consequatur! Error deserunt nesciunt reprehenderit tempora.</p>
+                            <p><strong>Description</strong>: Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                              Ipsam laboriosam ad accusamus, officiis perferendis ratione quam eius adipisci quidem
+                              assumenda omnis expedita est dolorem consequatur! Error deserunt nesciunt reprehenderit
+                              tempora.</p>
                           </div>
                         </div>
                       </div>
@@ -275,7 +281,10 @@
                             <p class="mb-1"><strong>Cohort</strong>: Chili's</p>
                             <p class="mb-1"><strong>Author</strong>: Richard McKenna</p>
                             <p class="mb-1"><strong>Created</strong>: Oct. 2, 2019</p>
-                            <p><strong>Description</strong>: Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ipsam laboriosam ad accusamus, officiis perferendis ratione quam eius adipisci quidem assumenda omnis expedita est dolorem consequatur! Error deserunt nesciunt reprehenderit tempora.</p>
+                            <p><strong>Description</strong>: Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                              Ipsam laboriosam ad accusamus, officiis perferendis ratione quam eius adipisci quidem
+                              assumenda omnis expedita est dolorem consequatur! Error deserunt nesciunt reprehenderit
+                              tempora.</p>
                           </div>
                         </div>
                       </div>
@@ -288,12 +297,73 @@
               </div>
             </div>
           </div>
+
+          <div class="row">
+            <div class="col-sm-3 my-2">
+              <h4>Assigned Drinks</h4>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-3">
+              <button type="button" class="btn-drink" data-toggle="modal" data-target="#bloodymary">
+                <div class="card my-2">
+                  <img src="img/bloodymary.jpg" class="img-fluid card-img-top" alt="...">
+                  <div class="card-img-overlay">
+                    <div class="drink-details">
+                      <h5 class="card-title">Bloody Mary</h5>
+                      <p class="card-text">Chili's</p>
+                      <div class="progress">
+                        <div class="progress-bar bg-aquamarine" role="progressbar" style="width: 40%" aria-valuenow="40"
+                          aria-valuemin="0" aria-valuemax="100"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </button>
+              <!-- Modal -->
+              <div class="modal fade" id="bloodymary">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Bloody Mary</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="container-fluid">
+                        <div class="row mb-2">
+                          <div class="col-sm-6">
+                            <img src="img/bloodymary.jpg" class="img-fluid">
+                          </div>
+                          <div class="col-sm-6">
+                            <p class="mb-1"><strong>Cohort</strong>: Chili's</p>
+                            <p class="mb-1"><strong>Author</strong>: Richard McKenna</p>
+                            <p class="mb-1"><strong>Created</strong>: Oct. 2, 2019</p>
+                            <p><strong>Description</strong>: Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                              Ipsam laboriosam ad accusamus, officiis perferendis ratione quam eius adipisci quidem
+                              assumenda omnis expedita est dolorem consequatur! Error deserunt nesciunt reprehenderit
+                              tempora.</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn">Continue</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
   </div>
   </div>
-   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
     integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
     crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
@@ -305,4 +375,5 @@
   <script src="https://kit.fontawesome.com/efb32a7724.js" crossorigin="anonymous"></script>
   <script src="script.js"></script>
 </body>
+
 </html>
