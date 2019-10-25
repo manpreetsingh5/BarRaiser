@@ -38,6 +38,7 @@ body.dashboard{
   height: 100vh;
   overflow-x: hidden;
   color: #ffffff;
+  z-index: 1;
 }
 
 .side-menu a{
@@ -147,10 +148,11 @@ hr{
 
 .card{
   box-shadow: 2px 2px 7px rgba(0,0,0,0.7);
+  background-size: cover;
 }
 
 .card-img-overlay{
-  background: rgba(0,0,0,0.5);
+  background: rgba(0,0,0,0.8);
   color: #ffffff;
 }
 
@@ -170,4 +172,8 @@ hr{
 
 .progress{
   background: slategray;
+}
+
+.drink-search, .btn-search{
+  box-shadow: 1px 1px 3px rgba(0,0,0,0.7);
 }
