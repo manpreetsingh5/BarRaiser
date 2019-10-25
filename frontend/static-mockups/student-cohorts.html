@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
+  <!--
+      Notice the use of %PUBLIC_URL% in the tag above.
+      It will be replaced with the URL of the `public` folder during the build.
+      Only files inside the `public` folder can be referenced from the HTML.
+
+      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
+      work correctly both with client-side routing and a non-root public URL.
+      Learn how to configure a non-root public URL by running `npm run build`.
+    -->
+
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+    integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+  <link href="style.css" rel="stylesheet">
+
+  <title>BarRaiser</title>
+</head>
+
+<body class="dashboard">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-3 position-fixed side-menu">
+        <div class="container">
+          <div class="row side-title">
+            <div class="col-sm-10 mx-auto mt-2">
+              <h1 class="text-center mb-0">BarRaiser</h1>
+            </div>
+          </div>
+          <hr>
+          <a class="row user" href="#">
+            <div class="col-sm-4 mx-auto text-center">
+              <img class="img-fluid rounded-circle pfp" src="img/gordon.jpg">
+            </div>
+            <div class="col-sm-8 my-auto mx-auto">
+              <h5>Gordon Ramsay</h5>
+              <p>Student Bartender</p>
+            </div>
+          </a>
+          <hr>
+          <a class="row side-link my-2" href="student-dashboard.html">
+            <div class="col-sm-2 mx-auto text-center">
+              <i class="fas fa-clipboard fa-2x"></i>
+            </div>
+            <div class="col-sm-10 my-auto">
+              <h6 class="text-uppercase">Dashboard</h6>
+            </div>
+          </a>
+          <a class="row side-link my-2" href="student-drinks.html">
+            <div class="col-sm-2 mx-auto text-center">
+              <i class="fas fa-cocktail fa-2x"></i>
+            </div>
+            <div class="col-sm-10 my-auto">
+              <h6 class="text-uppercase">Drinks</h6>
+            </div>
+          </a>
+          <a class="row side-link my-2 active" href="student-cohorts.html">
+            <div class="col-sm-2 mx-auto text-center">
+              <i class="fas fa-users fa-2x"></i>
+            </div>
+            <div class="col-sm-10 my-auto">
+              <h6 class="text-uppercase">Cohorts</h6>
+            </div>
+          </a>
+          <a class="row side-link my-2" href="#">
+            <div class="col-sm-2 mx-auto text-center">
+              <i class="fas fa-question-circle fa-2x"></i>
+            </div>
+            <div class="col-sm-10 my-auto">
+              <h6 class="text-uppercase">Help</h6>
+            </div>
+          </a>
+          <a class="row side-link my-2" href="#">
+            <div class="col-sm-2 mx-auto text-center">
+              <i class="fas fa-sign-out-alt fa-2x"></i>
+            </div>
+            <div class="col-sm-10 my-auto">
+              <h6 class="text-uppercase">Log Out</h6>
+            </div>
+          </a>
+        </div>
+      </div>
+      <div class="col-sm-9 offset-sm-3 main-content">
+        <div class="header-main">
+          <h2 class="text-center">Teamwork makes the dream work, Gordon!</h2>
+          <p class="text-center">Wednesday, Oct. 23</p>
+        </div>
+        <div class="container mt-3">
+          <div class="row">
+            <div class="col-sm-3 my-2">
+              <h4>Your Cohorts</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</body>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+  integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script src="https://kit.fontawesome.com/efb32a7724.js" crossorigin="anonymous"></script>
+
+</html>
