@@ -177,3 +177,11 @@ hr{
 .drink-search, .btn-search{
   box-shadow: 1px 1px 3px rgba(0,0,0,0.7);
 }
+
+.btn-drink{
+  border: none;
+  background: none;
+}
+.btn-drink:focus{
+  outline: none;
+}
