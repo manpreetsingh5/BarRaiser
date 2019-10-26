@@ -186,3 +186,7 @@ hr{
 .btn-drink:focus{
   outline: none;
 }
+
+.professionals img{
+  max-height: 50px;
+}
