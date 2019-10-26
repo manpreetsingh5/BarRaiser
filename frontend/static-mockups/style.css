@@ -190,3 +190,13 @@ hr{
 .professionals img{
   max-height: 50px;
 }
+
+.glass{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateY(-50%, -50%);
+  width: 150px;
+  height: 180px;
+  border: 6pc solid #ffff;
+}
