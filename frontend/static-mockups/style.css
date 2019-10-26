@@ -261,3 +261,10 @@ hr{
   /* 50% {background-position: 3000px 0px;} */
   /* 100% {background-position: 6000px 350px;} */
 /* } */
+
+.professional-update{
+  border: 1px solid #204237;
+  border-radius: 5px;
+  padding: 5px;
+  background-color: #7fffd4;  
+}
