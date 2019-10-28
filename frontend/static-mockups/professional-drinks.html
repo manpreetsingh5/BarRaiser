@@ -95,69 +95,105 @@
         <div class="container mt-2">
           <div class="row">
             <div class="col-sm-3 my-2">
-              <h4>Updates</h4>
+              <h4>Your Drinks</h4>
             </div>
           </div>
           <div class="row">
-            <div class="col-sm-6">
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title text-center">The Bench</h5>
-                  <div class="row professional-update my-1">
-                    <div class="col-sm-2"><img src="img/pfp.png" class="img-fluid rounded-circle pfp" alt=""></div>
-                    <div class="col-sm-5 my-auto">Richard McKenna</div>
-                    <div class="col-sm-5 my-auto">
-                      <p>Completed: Bloody Mary</p>
-                      <p>Oct. 19, 2019 - 4:39 PM</p>
-                      <p>Have user view all of the drinks they made here with an edit button on each of them to edit</p>
-                      <p>add a button to add a drink</p>
+            <div class="col-sm-3">
+              <button type="button" class="btn-drink" data-toggle="modal" data-target="#cosmopolitan">
+                <div class="card my-2">
+                  <img src="img/cosmopolitan.jpg" class="img-fluid card-img-top" alt="...">
+                  <div class="card-img-overlay">
+                    <div class="drink-details">
+                      <h5 class="card-title">Cosmopolitan</h5>
+                      <p class="card-text">BarRaiser Classic</p>
                     </div>
                   </div>
-                  <div class="row professional-update my-1">
-                    <div class="col-sm-2"><img src="img/pfp.png" class="img-fluid rounded-circle pfp" alt=""></div>
-                    <div class="col-sm-5 my-auto">Richard McKenna</div>
-                    <div class="col-sm-5 my-auto">
-                      <p>Started: Bloody Mary</p>
-                      <p>Oct. 19, 2019 - 2:39 PM</p>
+                </div>
+              </button>
+               <!-- Modal -->
+              <div class="modal fade" id="cosmopolitan">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title">Cosmopolitan</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <div class="container-fluid">
+                        <div class="row mb-2">
+                          <div class="col-sm-6">
+                            <img src="img/cosmopolitan.jpg" class="img-fluid">
+                          </div>
+                          <div class="col-sm-6">
+                            <p class="mb-1"><strong>Cohort</strong>: BarRaiser Classic</p>
+                            <p class="mb-1"><strong>Author</strong>: BarRaiser Staff</p>
+                            <p class="mb-1"><strong>Created</strong>: Oct. 1, 2019</p>
+                            <p><strong>Description</strong>: Lorem, ipsum dolor sit amet consectetur adipisicing elit. Ipsam laboriosam ad accusamus, officiis perferendis ratione quam eius adipisci quidem assumenda omnis expedita est dolorem consequatur! Error deserunt nesciunt reprehenderit tempora.</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button href="student-make-drink.html" type="button" class="font-weight-bold btn"><i class="fas fa-pencil-alt"></i> Edit</button>
+                      <button href="student-make-drink.html" type="button" class="font-weight-bold btn btn-delete"><i class="fas fa-trash-alt"></i> Delete</button>
                     </div>
                   </div>
-                  <div class="row professional-update my-1">
-                    <div class="col-sm-2"><img src="img/pfp.png" class="img-fluid rounded-circle pfp" alt=""></div>
-                    <div class="col-sm-5 my-auto">Bob Ross</div>
-                    <div class="col-sm-5 my-auto">
-                      <p>Started: Margarita</p>
-                      <p>Oct. 19, 2019 - 1:39 PM</p>
-                    </div>
-                  </div>
-                  <div class="row professional-update my-1">
-                    <div class="col-sm-2"><img src="img/pfp.png" class="img-fluid rounded-circle pfp" alt=""></div>
-                    <div class="col-sm-5 my-auto">Bob Ross</div>
-                    <div class="col-sm-5 my-auto">
-                      <p>Started: Margarita</p>
-                      <p>Oct. 19, 2019 - 11:39 AM</p>
-                    </div>
-                  </div>
-                  <hr>
-                  <p class="card-text caption"><i class="fas fa-sync mr-2"></i>Updated Now</p>
                 </div>
               </div>
             </div>
-            <div class="col-sm-6">
-              <div class="card">
-                <div class="card-body">
-                  <h5 class="card-title text-center">Chili's</h5>
-                  <div class="row professional-update my-1">
-                    <div class="col-sm-2"><img src="img/pfp.png" class="img-fluid rounded-circle pfp" alt=""></div>
-                    <div class="col-sm-5 my-auto">Samuel L. Stanley</div>
-                    <div class="col-sm-5 my-auto">
-                      <p>Started: Coronita</p>
-                      <p>Aug. 19, 2019 - 2:39 PM</p>
+            <div class="col-sm-3">
+              <button type="button" class="btn-drink" data-toggle="modal" data-target="#cosmopolitan">
+                <div class="card my-2">
+                  <img src="img/negroni.jpg" class="img-fluid card-img-top" alt="...">
+                  <div class="card-img-overlay">
+                    <div class="drink-details">
+                      <h5 class="card-title">Negroni</h5>
+                      <p class="card-text">BarRaiser Classic</p>
                     </div>
                   </div>
-                  <hr>
-                  <p class="card-text caption"><i class="fas fa-sync mr-2"></i>Updated Now</p>
                 </div>
-              </div>
+              </button>
+            </div>
+            <div class="col-sm-3">
+              <button type="button" class="btn-drink" data-toggle="modal" data-target="#cosmopolitan">
+                <div class="card my-2">
+                  <img src="img/moscowmule.jpg" class="img-fluid card-img-top" alt="...">
+                  <div class="card-img-overlay">
+                    <div class="drink-details">
+                      <h5 class="card-title">Moscow Mule</h5>
+                      <p class="card-text">BarRaiser Classic</p>
+                    </div>
+                  </div>
+                </div>
+              </button>
+            </div>
+            <div class="col-sm-3">
+              <button type="button" class="btn-drink" data-toggle="modal" data-target="#cosmopolitan">
+                <div class="card my-2">
+                  <img src="img/mojito.jpg" class="img-fluid card-img-top" alt="...">
+                  <div class="card-img-overlay">
+                    <div class="drink-details">
+                      <h5 class="card-title">Mojito</h5>
+                      <p class="card-text">BarRaiser Classic</p>
+                    </div>
+                  </div>
+                </div>
+              </button>
+            </div>
+            <div class="col-sm-3">
+              <button type="button" class="btn-drink" data-toggle="modal" data-target="#cosmopolitan">
+                <div class="card my-2">
+                  <img src="img/test.jpg" class="img-fluid card-img-top" alt="...">
+                  <div class="card-img-overlay">
+                    <div class="drink-details">
+                      <h5 class="aquamarine card-title"><i class="fas fa-plus-circle"></i> Add New</h5>
+                    </div>
+                  </div>
+                </div>
+              </button>
             </div>
           </div>
         </div>

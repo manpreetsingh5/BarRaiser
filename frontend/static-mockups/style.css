@@ -89,6 +89,16 @@ hr{
     border-color: #53d3a0!important;
 }
 
+.btn-delete{
+  background-color: #dc3545 !important;
+  border-color: red;
+}
+
+.btn-delete:hover{
+  background-color: #b82b3a !important;
+  border-color: red !important;
+}
+
 .nav-link{
   background-color: lightgray;
   border-radius: 10px;
