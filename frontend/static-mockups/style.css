@@ -197,6 +197,17 @@ hr{
   outline: none;
 }
 
+.btn-extra{
+  border: none;
+  background: none;
+  /* text-align: center; */
+  /* vertical-align: middle; */
+}
+
+.btn-extra:focus{
+  outline: none;
+}
+
 .professionals img{
   max-height: 50px;
 }
@@ -277,4 +288,12 @@ hr{
   border-radius: 5px;
   padding: 5px;
   background-color: #7fffd4;  
+}
+
+.btn-info{
+  border: 1px solid orange;
+}
+
+.steps .card{
+  box-shadow: none;
 }

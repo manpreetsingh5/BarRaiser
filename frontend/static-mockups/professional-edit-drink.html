@@ -96,26 +96,150 @@
           <div class="row">
             <div class="col-sm-10 mx-auto">
               <div class="card login-card card-signin flex-row my-5">
-                <div class="card-img-left d-none d-md-flex">
-                </div>
                 <div class="card-body">
-                  <h1 class="text-center">BarRaiser</h1>
-                  <p class="text-center mb-5 caption">raising the bar of bartending, one click at a time</p>
-                  <form class="form-signin">
-                    <label for="inputEmail" class="mt-2">Email Address</label>
-                    <div class="form-label-group">
-                      <input type="email" id="inputEmail" class="form-control" placeholder="Email email" required>
-                    </div>
+                  <div class="row">
+                    <div class="col-sm-8 mx-auto">
+                      <form class="form-signin">
+                        <label for="inputEmail" class="mt-2">Drink Name</label>
+                        <div class="form-label-group">
+                          <input type="email" id="inputEmail" class="form-control" required>
+                        </div>
 
-                    <label for="inputPassword" class="mt-2">Password</label>
-                    <div class="mb-4 form-label-group">
-                      <input type="password" id="inputPassword" class="form-control" placeholder="Enter password"
-                        required>
-                    </div>
+                        <div class="form-group">
+                          <label for="exampleFormControlTextarea1">Drink Description</label>
+                          <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                        </div>
 
-                    <button class="mt-5 btn btn-lg btn-primary btn-block text-uppercase" type="submit">Sign In</button>
-                    <a class="d-block text-center mt-2 small caption mb-5" href="register.html">Register</a>
-                  </form>
+                        <div class="form-group">
+                          <label for="exampleFormControlFile1">Drink Display Image</label>
+                          <input type="file" class="form-control-file" id="exampleFormControlFile1">
+                        </div>
+
+                        <hr>
+
+                        <div class="form-group">
+                          <label for="exampleFormControlSelect1">Cohort</label>
+                          <select class="form-control" id="exampleFormControlSelect1">
+                            <option>The Bench</option>
+                            <option>Chili's</option>
+                          </select>
+                        </div>
+
+                        <hr>
+
+                        <p>Select ingredients - will be a button where all of ingredients chosen</p>
+
+                        <label for="steps">Drink Steps</label>
+                        <div class="steps container">
+
+                          <div class="row my-1">
+                            <div class="col-sm-12 px-0">
+                              <div class="card">
+                                <div class="card-body py-1">
+                                  <div class="row">
+                                    <div class="col-sm-10 my-auto">
+                                      <h6>Put ingredients in cup</h6>
+                                    </div>
+                                    <div class="col-sm-1 px-0 my-auto">
+                                      <button type="button" class="btn-extra" data-toggle="modal" data-target="#">
+                                        <i class="fas fa-edit fa-lg"></i>
+                                      </button>
+                                    </div>
+                                    <div class="col-sm-1 px-0 my-auto">
+                                      <button type="button" class="btn-extra" data-toggle="modal" data-target="#">
+                                        <i class="fas fa-trash-alt fa-lg"></i>
+                                      </button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="row my-1">
+                            <div class="col-sm-12 px-0">
+                              <div class="card">
+                                <div class="card-body py-1">
+                                  <div class="row">
+                                    <div class="col-sm-10 my-auto">
+                                      <h6>Put ingredients on plate</h6>
+                                    </div>
+                                    <div class="col-sm-1 px-0 my-auto">
+                                      <button type="button" class="btn-extra" data-toggle="modal" data-target="#">
+                                        <i class="fas fa-edit fa-lg"></i>
+                                      </button>
+                                    </div>
+                                    <div class="col-sm-1 px-0 my-auto">
+                                      <button type="button" class="btn-extra" data-toggle="modal" data-target="#">
+                                        <i class="fas fa-trash-alt fa-lg"></i>
+                                      </button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="row my-1">
+                            <div class="col-sm-12 px-0">
+                              <div class="card">
+                                <div class="card-body py-1">
+                                  <div class="row">
+                                    <div class="col-sm-10 my-auto">
+                                      <h6>asdfjak ingredients</h6>
+                                    </div>
+                                    <div class="col-sm-1 px-0 my-auto">
+                                      <button type="button" class="btn-extra" data-toggle="modal" data-target="#">
+                                        <i class="fas fa-edit fa-lg"></i>
+                                      </button>
+                                    </div>
+                                    <div class="col-sm-1 px-0 my-auto">
+                                      <button type="button" class="btn-extra" data-toggle="modal" data-target="#">
+                                        <i class="fas fa-trash-alt fa-lg"></i>
+                                      </button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="row my-1">
+                            <div class="col-sm-12 px-0">
+                              <div class="card">
+                                <div class="card-body py-1">
+                                  <div class="row">
+                                    <div class="col-sm-10 my-auto">
+                                      <h6>Yeet ingredients</h6>
+                                    </div>
+                                    <div class="col-sm-1 px-0 my-auto">
+                                      <button type="button" class="btn-extra" data-toggle="modal" data-target="#">
+                                        <i class="fas fa-edit fa-lg"></i>
+                                      </button>
+                                    </div>
+                                    <div class="col-sm-1 px-0 my-auto">
+                                      <button type="button" class="btn-extra" data-toggle="modal" data-target="#">
+                                        <i class="fas fa-trash-alt fa-lg"></i>
+                                      </button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                        </div>
+
+                        <!-- all of the steps are modals  
+                          will have an input and output and color selector for output
+                          will have select ingredients, or will have an upload ingredient thing
+                        -->
+
+                        <button class="mt-5 btn btn-lg btn-primary btn-block text-uppercase" type="submit">Save</button>
+                      </form>
+                    </div>
+                  </div>
+
                 </div>
               </div>
             </div>
