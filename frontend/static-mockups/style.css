@@ -294,6 +294,12 @@ hr{
   border: 1px solid orange;
 }
 
-.steps .card{
+.steps .card, .ingredients .card{
   box-shadow: none;
+}
+
+.btn-add-step{
+  background-color: #7fffd4;
+  border-radius: 5px;
+  padding: 7px;
 }

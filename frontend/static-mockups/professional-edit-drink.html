@@ -127,7 +127,56 @@
 
                         <hr>
 
-                        <p>Select ingredients - will be a button where all of ingredients chosen</p>
+                        <label for="ingredients">Drink Ingredients</label>
+                        <div class="ingredients container">
+                          <div class="row my-1">
+                            <div class="col-sm-12 px-0">
+                              <div class="card">
+                                <div class="card-body py-1">
+                                  <div class="row">
+                                    <div class="col-sm-11 my-auto">
+                                      <h6>Some Alcohol</h6>
+                                    </div>
+                                    <div class="col-sm-1 px-0 my-auto">
+                                      <button type="button" class="btn-extra" data-toggle="modal" data-target="#">
+                                        <i class="fas fa-times fa-lg"></i>
+                                      </button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="row my-1">
+                            <div class="col-sm-12 px-0">
+                              <div class="card">
+                                <div class="card-body py-1">
+                                  <div class="row">
+                                    <div class="col-sm-11 my-auto">
+                                      <h6>Salt</h6>
+                                    </div>
+                                    <div class="col-sm-1 px-0 my-auto">
+                                      <button type="button" class="btn-extra" data-toggle="modal" data-target="#">
+                                        <i class="fas fa-times fa-lg"></i>
+                                      </button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="row my-1">
+                            <div class="col-sm-12 px-0">
+                              <button class="btn-extra btn-add-step btn-block text-uppercase" type="button"
+                                data-toggle="modal" data-target="#"><i class="fas fa-plus-circle"></i> Add Ingredient</button>
+                            </div>
+                          </div>
+
+                        </div>
+
+                        <hr>
 
                         <label for="steps">Drink Steps</label>
                         <div class="steps container">
@@ -147,7 +196,7 @@
                                     </div>
                                     <div class="col-sm-1 px-0 my-auto">
                                       <button type="button" class="btn-extra" data-toggle="modal" data-target="#">
-                                        <i class="fas fa-trash-alt fa-lg"></i>
+                                        <i class="fas fa-times fa-lg"></i>
                                       </button>
                                     </div>
                                   </div>
@@ -171,7 +220,7 @@
                                     </div>
                                     <div class="col-sm-1 px-0 my-auto">
                                       <button type="button" class="btn-extra" data-toggle="modal" data-target="#">
-                                        <i class="fas fa-trash-alt fa-lg"></i>
+                                        <i class="fas fa-times fa-lg"></i>
                                       </button>
                                     </div>
                                   </div>
@@ -195,7 +244,7 @@
                                     </div>
                                     <div class="col-sm-1 px-0 my-auto">
                                       <button type="button" class="btn-extra" data-toggle="modal" data-target="#">
-                                        <i class="fas fa-trash-alt fa-lg"></i>
+                                        <i class="fas fa-times fa-lg"></i>
                                       </button>
                                     </div>
                                   </div>
@@ -219,7 +268,7 @@
                                     </div>
                                     <div class="col-sm-1 px-0 my-auto">
                                       <button type="button" class="btn-extra" data-toggle="modal" data-target="#">
-                                        <i class="fas fa-trash-alt fa-lg"></i>
+                                        <i class="fas fa-times fa-lg"></i>
                                       </button>
                                     </div>
                                   </div>
@@ -228,28 +277,32 @@
                             </div>
                           </div>
 
-                          <p>Add step button here</p>
+                          <div class="row my-1">
+                            <div class="col-sm-12 px-0">
+                              <button class="btn-extra btn-add-step btn-block text-uppercase" type="button"
+                                data-toggle="modal" data-target="#"><i class="fas fa-plus-circle"></i> Add Step</button>
+                            </div>
+                          </div>
 
                         </div>
+                    </div>
+                  </div>
 
-                        <!-- all of the steps are modals  
+                  <!-- all of the steps are modals  
                           will have an input and output and color selector for output
                           will have select ingredients, or will have an upload ingredient thing
                         -->
 
-                        <button class="mt-5 btn btn-lg btn-primary btn-block text-uppercase" type="submit">Save</button>
-                      </form>
-                    </div>
-                  </div>
-
+                  <button class="mt-5 btn btn-lg btn-primary btn-block text-uppercase" type="submit">Save</button>
+                  </form>
                 </div>
               </div>
+
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
   </div>
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
     integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
