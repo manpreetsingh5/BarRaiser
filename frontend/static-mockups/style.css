@@ -91,6 +91,7 @@ hr{
 
 .btn-gray{
   background-color: lightgray !important;
+  border-color: darkslategray !important;
 }
 
 .btn-delete:hover{
@@ -314,7 +315,14 @@ hr{
   border: 1px solid orange;
 }
 
-.steps .card, .ingredients .card{
+.completed-drinks .card, .assigned-drinks .card{
+  border: 1px solid #204237;
+  border-radius: 5px;
+  padding: 5px;
+  background-color: lightgray;
+}
+
+.steps .card, .ingredients .card, .completed-drinks .card, .assigned-drinks .card{
   box-shadow: none;
 }
 
@@ -322,4 +330,11 @@ hr{
   background-color: #7fffd4;
   border-radius: 5px;
   padding: 7px;
+}
+
+.log{
+  border: 1px solid gray;
+  border-radius: 5px;
+  padding: 7px;
+  background-color: #7fffd4;
 }
