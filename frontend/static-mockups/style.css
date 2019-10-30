@@ -207,8 +207,29 @@ hr{
   outline: none;
 }
 
-.professionals img{
+.professionals img, .students img{
   max-height: 50px;
+}
+
+.student {
+  color: black;
+  text-decoration: none;
+}
+
+.student:hover{
+  text-decoration: none;
+  color: black;
+}
+
+.student .row{
+  padding: 5px;
+  margin-top: 5px;
+  border: 1px solid gray;
+}
+
+.student .row:hover{
+  background-color: #7fffd4;
+  transition: all 0.75s;
 }
 
 .glass{

@@ -118,9 +118,11 @@
                   </div>
                   <div class="row my-2">
                     <div class="col-sm-8">
-                      <button type="button" class="btn btn-gray"><i class="fas fa-search"></i> View Students</button>
+                      <button type="button" class="btn btn-gray" data-toggle="modal" data-target="#studentmodal"><i
+                          class="fas fa-search"></i> View Students</button>
                       <button type="button" class="btn btn-gray"><i class="fas fa-pencil-alt"></i> Edit</button>
-                      <button type="button" class="btn btn-delete btn-gray"><i class="fas fa-trash-alt"></i> Delete</button>
+                      <button type="button" class="btn btn-delete btn-gray"><i class="fas fa-trash-alt"></i>
+                        Delete</button>
                     </div>
                   </div>
                 </div>
@@ -147,9 +149,11 @@
                   </div>
                   <div class="row my-2">
                     <div class="col-sm-8">
-                      <button type="button" class="btn btn-gray"><i class="fas fa-search"></i> View Students</button>
+                      <button type="button" class="btn btn-gray" data-toggle="modal" data-target="#studentmodal"><i
+                          class="fas fa-search"></i> View Students</button>
                       <button type="button" class="btn btn-gray"><i class="fas fa-pencil-alt"></i> Edit</button>
-                      <button type="button" class="btn btn-delete btn-gray"><i class="fas fa-trash-alt"></i> Delete</button>
+                      <button type="button" class="btn btn-delete btn-gray"><i class="fas fa-trash-alt"></i>
+                        Delete</button>
                     </div>
                   </div>
                 </div>
@@ -161,6 +165,41 @@
     </div>
   </div>
   </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="studentmodal">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Chili's Students</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="container-fluid">
+            <div class="row mb-2">
+              <div class="col-sm-12 students">
+                <a href="john-smith.html" class="student">
+                  <div class="row">
+                    <div class="col-sm-2"><img src="img/pfp.png" class="img-fluid rounded-circle pfp" alt=""></div>
+                    <div class="col-sm-9 my-auto">John Smith</div>
+                  </div>
+                </a>
+                <a href="john-smith.html" class="student">
+                  <div class="row">
+                    <div class="col-sm-2"><img src="img/pfp.png" class="img-fluid rounded-circle pfp" alt=""></div>
+                    <div class="col-sm-9 my-auto">John Smith II</div>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
     integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
     crossorigin="anonymous"></script>
