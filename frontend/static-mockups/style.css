@@ -89,13 +89,12 @@ hr{
     border-color: #53d3a0!important;
 }
 
-.btn-delete{
-  background-color: #dc3545 !important;
-  border-color: red;
+.btn-gray{
+  background-color: lightgray !important;
 }
 
 .btn-delete:hover{
-  background-color: #b82b3a !important;
+  background-color: #dc3545 !important;
   border-color: red !important;
 }
 
