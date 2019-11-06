@@ -81,12 +81,13 @@ hr{
 }
 
 .btn {
-    background-color: #5ceab3 !important;
+    background-color: #7fffd4 !important;
     border-color: #5ceab3 !important;
 }
 .btn:hover {
-    background-color: #53d3a0!important;
+    background-color: #5ceab3!important;
     border-color: #53d3a0!important;
+    transition: all 0.5s;
 }
 
 .btn-gray{
@@ -314,7 +315,6 @@ hr{
 .btn-info{
   border: 1px solid orange;
 }
-
 .completed-drinks .card, .assigned-drinks .card{
   border: 1px solid #204237;
   border-radius: 5px;
@@ -337,4 +337,8 @@ hr{
   border-radius: 5px;
   padding: 7px;
   background-color: #7fffd4;
+}
+
+.custom{
+  /* background-color: #f5f5f5; */
 }

@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
+  <!--
+      Notice the use of %PUBLIC_URL% in the tag above.
+      It will be replaced with the URL of the `public` folder during the build.
+      Only files inside the `public` folder can be referenced from the HTML.
+
+      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
+      work correctly both with client-side routing and a non-root public URL.
+      Learn how to configure a non-root public URL by running `npm run build`.
+    -->
+
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"
+    integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+  <link href="style.css" rel="stylesheet">
+
+  <title>BarRaiser</title>
+</head>
+
+<body class="dashboard">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-3 side-menu position-fixed">
+        <div class="container">
+          <div class="row side-title">
+            <div class="col-sm-10 mx-auto mt-2">
+              <h1 class="text-center mb-0">BarRaiser</h1>
+            </div>
+          </div>
+          <hr>
+          <a class="row user" href="#">
+            <div class="col-sm-4 mx-auto text-center">
+              <img class="img-fluid rounded-circle pfp" src="img/gordon.jpg">
+            </div>
+            <div class="col-sm-8 my-auto mx-auto">
+              <h5>Gordon Ramsay</h5>
+              <p>Professional Bartender</p>
+            </div>
+          </a>
+          <hr>
+          <a class="row side-link my-2" href="professional-dashboard.html">
+            <div class="col-sm-2 mx-auto text-center">
+              <i class="fas fa-clipboard fa-2x"></i>
+            </div>
+            <div class="col-sm-10 my-auto">
+              <h6 class="text-uppercase">Dashboard</h6>
+            </div>
+          </a>
+          <a class="row side-link my-2" href="professional-drinks.html">
+            <div class="col-sm-2 mx-auto text-center">
+              <i class="fas fa-cocktail fa-2x"></i>
+            </div>
+            <div class="col-sm-10 my-auto">
+              <h6 class="text-uppercase">Drinks</h6>
+            </div>
+          </a>
+          <a class="row side-link my-2" href="professional-cohorts.html">
+            <div class="col-sm-2 mx-auto text-center">
+              <i class="fas fa-users fa-2x"></i>
+            </div>
+            <div class="col-sm-10 my-auto">
+              <h6 class="text-uppercase">Cohorts</h6>
+            </div>
+          </a>
+          <a class="row side-link my-2" href="professional-help.html">
+            <div class="col-sm-2 mx-auto text-center">
+              <i class="fas fa-question-circle fa-2x"></i>
+            </div>
+            <div class="col-sm-10 my-auto">
+              <h6 class="text-uppercase">Help</h6>
+            </div>
+          </a>
+          <a class="row side-link my-2" href="login.html">
+            <div class="col-sm-2 mx-auto text-center">
+              <i class="fas fa-sign-out-alt fa-2x"></i>
+            </div>
+            <div class="col-sm-10 my-auto">
+              <h6 class="text-uppercase">Log Out</h6>
+            </div>
+          </a>
+        </div>
+      </div>
+      <div class="col-sm-9 offset-sm-3 main-content">
+        <div class="header-main">
+          <h2 class="text-center">Edit Drink</h2>
+          <p class="text-center">Wednesday, Oct. 23</p>
+        </div>
+        <div class="container mt-2">
+          <div class="row">
+            <div class="col-sm-10 mx-auto">
+              <div class="card login-card card-signin flex-row my-5">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-sm-8 mx-auto">
+                      <form class="form-signin">
+                        <div class="form-group">
+                          <label for="exampleFormControlSelect1">Cohort</label>
+                          <select class="form-control" id="exampleFormControlSelect1">
+                            <option>The Bench</option>
+                            <option>Chili's</option>
+                          </select>
+                        </div>
+
+                        <hr>
+
+                        <label for="steps">Drink Steps</label>
+                        <div class="steps container">
+
+                          <div class="row my-2">
+                            <div class="col-sm-12 px-0">
+                              <div class="card">
+                                <div class="card-body py-1">
+                                  <div class="row">
+                                    <div class="col-sm-11 my-auto">
+                                      <h6 class="font-weight-bold">Crush</h6>
+                                    </div>
+                                    <div class="col-sm-1 px-0 my-auto">
+                                      <button type="button" class="btn-extra" data-toggle="modal" data-target="#">
+                                        <i class="fas fa-times fa-lg"></i>
+                                      </button>
+                                    </div>
+                                  </div>
+                                  <hr>
+                                  <div class="row">
+                                    <div class="col-sm-6 my-auto">
+                                      <h6>Ingredient</h6>
+                                      <div class="card custom">
+                                        <div class="card-body">
+                                          <div class="row">
+                                            <div class="col-sm-4">
+                                              <img src="img/apple.svg" class="img-fluid">
+                                            </div>
+                                            <div class="col-sm-8 my-auto">
+                                              <p>Apple</p>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <hr>
+
+                                  <div class="row">
+                                    <img src="img/drinkscreenshot.PNG" class="img-fluid">
+                                  </div>
+                                  <div class="row">
+
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="row my-4">
+                            <div class="col-sm-12 px-0">
+                              <div class="card">
+                                <div class="card-body py-1">
+                                  <div class="row">
+                                    <div class="col-sm-11 my-auto">
+                                      <h6 class="font-weight-bold">Pour</h6>
+                                    </div>
+                                    <div class="col-sm-1 px-0 my-auto">
+                                      <button type="button" class="btn-extra" data-toggle="modal" data-target="#">
+                                        <i class="fas fa-times fa-lg"></i>
+                                      </button>
+                                    </div>
+                                  </div>
+                                  <hr>
+                                  <div class="row">
+                                    <div class="col-sm-6 mx-auto my-auto">
+                                      <h6>Ingredient</h6>
+                                      <div class="card custom">
+                                        <div class="card-body">
+                                          <div class="row">
+                                            <div class="col-sm-4">
+                                              <img src="img/vodka.svg" class="img-fluid">
+                                            </div>
+                                            <div class="col-sm-8 my-auto">
+                                              <p>Vodka</p>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-sm-6 mx-auto my-auto">
+                                      <h6>Equipment</h6>
+                                      <div class="card custom">
+                                        <div class="card-body">
+                                          <div class="row">
+                                            <div class="col-sm-4">
+                                              <img src="img/wine.svg" class="img-fluid">
+                                            </div>
+                                            <div class="col-sm-8 my-auto">
+                                              <p>Wine Glass</p>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <hr>
+                                  <div class="row">
+                                    <img src="img/drinkscreenshot.PNG" class="img-fluid">
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div class="row my-1">
+                            <div class="col-sm-12 px-0">
+                              <button class="btn-extra btn-add-step btn-block text-uppercase" type="button"
+                                data-toggle="modal" data-target="#"><i class="fas fa-plus-circle"></i> Add Step</button>
+                            </div>
+                          </div>
+
+                        </div>
+                        <div class="row">
+                          <div class="col-sm-3">
+                            <button class="mt-5 btn btn-lg btn-block text-uppercase" type="submit">Prev</button>
+                          </div>
+                          <div class="offset-sm-6 col-sm-3">
+                            <button class="mt-5 btn btn-lg btn-block text-uppercase" type="submit">Next</button>
+                          </div>
+                        </div>
+
+                    </div>
+                  </div>
+                  </form>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+  <script src="https://kit.fontawesome.com/efb32a7724.js" crossorigin="anonymous"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>
