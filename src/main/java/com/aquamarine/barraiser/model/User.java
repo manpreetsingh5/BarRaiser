@@ -1,5 +1,8 @@
 package com.aquamarine.barraiser.model;
 
+import lombok.*;
+import javax.persistence.*;
+import java.util.Date;
 import com.aquamarine.barraiser.enums.UserEnum;
 import lombok.*;
 import javax.persistence.*;
@@ -11,9 +14,8 @@ import javax.persistence.*;
 @Builder
 @Entity // This tells Hibernate to make a table out of this class
 public class User {
-
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
     @Column(nullable = false)
@@ -30,5 +32,4 @@ public class User {
 
     @Column(nullable = false)
     private UserEnum status;
-
 }
