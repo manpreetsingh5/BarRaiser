@@ -1,0 +1,32 @@
+.cardWrapper {
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin-top: 10vh;
+}
+
+.card {
+    border: 0 !important;
+    width: 60em;
+    border-radius: 25px !important;
+}
+
+.cardBody {
+    padding: 0 !important;
+}
+
+.imgWrapper {
+    background: scroll center url('../img/1.jpg');
+    width: 60%;
+    background-size: cover;
+    border-radius: 25px 0 0 25px;
+}
+
+.wrapper {
+    display: flex;
+}
+
+.loginWrapper {
+    width: 50em;
+    padding: 2em;
+}
