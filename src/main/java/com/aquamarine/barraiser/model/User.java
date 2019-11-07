@@ -3,6 +3,9 @@ package com.aquamarine.barraiser.model;
 import lombok.*;
 import javax.persistence.*;
 import java.util.Date;
+import com.aquamarine.barraiser.enums.UserEnum;
+import lombok.*;
+import javax.persistence.*;
 
 @Getter
 @Setter
@@ -11,9 +14,8 @@ import java.util.Date;
 @Builder
 @Entity // This tells Hibernate to make a table out of this class
 public class User {
-
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
     @Column(nullable = false)
@@ -22,17 +24,12 @@ public class User {
     @Column(nullable = false)
     private String last_name;
 
+    @Column(name = "password", nullable = false)
+    private String hash_pass;
+
     @Column(nullable = false, unique = true)
     private String email;
 
     @Column(nullable = false)
-    private String role;
-
-    @Column(name = "password", nullable = false)
-    private String hash_pass;
-
-    @Column(nullable = false)
-    private Date created;
-
-
+    private UserEnum status;
 }
