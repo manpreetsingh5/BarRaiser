@@ -14,3 +14,12 @@ body{
     background-size: 100% 0;
   }
 }
+
+.marker{
+  height: 15px;
+  width: 10px;
+  background-color: crimson;
+  top: 0;
+  right: 28%;
+  position: absolute;
+}
