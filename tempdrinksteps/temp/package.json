@@ -10,6 +10,7 @@
     "react-bootstrap": "^1.0.0-beta.14",
     "react-click-n-hold": "^1.0.7",
     "react-dom": "^16.11.0",
+    "react-pose": "^4.0.9",
     "react-repeatable": "^2.0.1",
     "react-scripts": "3.2.0"
   },

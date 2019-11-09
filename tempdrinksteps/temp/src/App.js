@@ -1,10 +1,31 @@
 import Repeatable from 'react-repeatable';
-import cx from 'classnames';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 import React from 'react';
 import './App.css';
 import { Button, Container, Row, ProgressBar, Col } from 'react-bootstrap';
+import bottle_src from './img/vodka.svg';
+import glass_src from './img/wine.svg';
+import posed from 'react-pose';
+
+
+const Bottle = posed.img({
+  visible: {opacity: 1},
+  hidden: {opacity: 0},
+  standing: {rotate: '0deg'},
+  pouring: {
+    rotate: '-165deg',
+    transition: {duration: 400}
+  }
+});
+
+const Pour = posed.div({
+  standing: {height: '0'},
+  pouring: {
+    height: '150px',
+    delay: 200,
+  }
+});
 
 class DrinkGame extends React.Component {
 
@@ -37,8 +58,8 @@ class DrinkGame extends React.Component {
           <Col>
             <ProgressBar animated now={this.state.progress}>
             </ProgressBar>
-              <div className="marker" style={{right: (100 - this.state.target) + '%'}}>
-              </div>
+            <div className="marker" style={{ right: (100 - this.state.target) + '%' }}>
+            </div>
           </Col>
         </Row>
         <Row>
@@ -53,13 +74,12 @@ class DrinkGame extends React.Component {
           <Col>
             <Repeatable
               tag={Button}
-              btnStyle={cx({
-                'default': !this.state.pressed,
-                'info': this.state.pressed,
-              })}
               repeatDelay={0}
               repeatInterval={150}
               onPress={() => {
+                this.setState({
+                  pressed: true,
+                })
               }}
               onHoldStart={() => {
               }}
@@ -72,31 +92,49 @@ class DrinkGame extends React.Component {
               onHoldEnd={() => {
               }}
               onRelease={() => {
+                this.setState({
+                  pressed: false,
+                })
               }}
             >
               Pour Drink
           </Repeatable>
           </Col>
           <Col>
-              <Button variant="success" 
-                onClick={() => {
+            <Button variant="success"
+              onClick={() => {
+                this.setState({
+                  completed: true,
+                });
+                if (this.state.progress === this.state.target) {
+                  alert('Congratulations')
+                } else {
                   this.setState({
-                    completed: true,
-                  });
-                  if(this.state.progress === this.state.target){
-                    alert('Congratulations')
-                  }else{
-                    this.setState({
-                      drink_result: 'FAILED',
-                      progress: 0,
-                    })
-                  }
-                }}
-              >Complete</Button>
+                    drink_result: 'FAILED',
+                    progress: 0,
+                  })
+                }
+              }}
+            >Complete</Button>
           </Col>
         </Row>
         <Row>
           <h5>{this.state.drink_result}</h5>
+        </Row>
+        <Row className="mt-5">
+          <Col sm={2} className="mx-auto">
+            <Bottle className="front img-fluid" src={bottle_src} alt={'bottle'} pose={this.state.pressed ? 'pouring' : 'standing'}/>
+          </Col>
+        </Row>
+        <Row className="pour-row">
+          <Col sm={2} className="mx-auto">
+            <Pour id="pour" className="mx-auto" pose={this.state.pressed ? 'pouring' : 'standing'} />
+          </Col>
+        </Row>
+        <Row>
+          <Col sm={2} className="mx-auto">
+            <img className="img-fluid" src={glass_src} alt={'glass'}/>
+          </Col>
         </Row>
       </Container>
     );
