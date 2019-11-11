@@ -1,0 +1,59 @@
+body{
+  margin: 20px !important;
+}
+
+.cnh_holding .bg-card{
+  background: linear-gradient(white, white) rgb(255, 215, 235) no-repeat 0 0;
+  mix-blend-mode: multiply;
+  background-size: 100% 100%;
+  animation: fill 2s forwards;
+}
+
+@keyframes fill{
+  to {
+    background-size: 100% 0;
+  }
+}
+
+.marker{
+  height: 15px;
+  width: 10px;
+  background-color: crimson;
+  top: 0;
+  right: 28%;
+  position: absolute;
+}
+
+.front{
+  z-index: 3;
+}
+
+.pour-row{
+  height: 150px;
+}
+
+#pour{
+  width:16px;
+  height:0px;
+  z-index: 1;
+  /* background:rgba(229,197,57,1); */
+  background: repeating-linear-gradient(
+    -55deg,
+    #f8e9db 1px,
+    #fff5ed 2px,
+    #fff5ed 11px,
+    #f8e9db 12px,
+    #f8e9db 20px
+	);
+  transition:0s;
+  animation: progress-bar-stripes-v 0.5s linear infinite;
+}
+
+@keyframes progress-bar-stripes-v {
+  from {
+    background-position: 0px 40px;
+  }
+  to {
+    background-position: 0 0;
+  }
+}
