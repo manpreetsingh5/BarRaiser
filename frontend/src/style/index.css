@@ -1,5 +1,5 @@
 body {
     background: #7fffd4;
     background: linear-gradient(to right, #204237, #7fffd4);
-    font: "Century Gothic", Futura, sans-serif;
+    font-family: 'Futura', sans-serif !important;
 }

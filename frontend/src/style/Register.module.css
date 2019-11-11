@@ -1,0 +1,58 @@
+.cardWrapper {
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin-top: 10vh;
+}
+
+.subtitle {
+    font-size: 13px;
+}
+
+.card {
+    border: 0 !important;
+    width: 60em;
+    border-radius: 25px !important;
+    box-shadow: 2px 2px 7px rgba(0,0,0,0.7);
+}
+
+.cardBody {
+    padding: 0 !important;
+}
+
+.imgWrapper {
+    background: scroll center url('../img/2.jpg');
+    width: 60%;
+    background-size: cover;
+    border-radius: 25px 0 0 25px;
+}
+
+.wrapper {
+    display: flex;
+}
+
+.loginWrapper {
+    width: 50em;
+    padding: 2em;
+}
+
+.titleDiv {
+    text-align: center;
+}
+
+.titleDiv p {
+    color: darkslategray;
+}
+
+.register {
+    font-size: 12px;
+}
+
+.buttonsDiv {
+    text-align: center;
+}
+
+.login {
+    border-radius: 25px !important;
+    width: 25em;
+}
