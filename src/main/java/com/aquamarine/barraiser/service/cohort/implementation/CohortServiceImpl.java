@@ -33,6 +33,7 @@ public class CohortServiceImpl implements CohortService {
                 .setInstructor(userRepository.findById(cohortdto.getInstructor()).get())
                 .setUser(cohortdto.getStudents());
 
+        cohortRepository.save(cohort);
         return cohort.getId();
     }
 
@@ -70,7 +71,7 @@ public class CohortServiceImpl implements CohortService {
 
             cohort.setUser(users);
 
-            return userDTOMapper.toUserDTO(user);
+            return UserDTOMapper.toUserDTO(user);
         }
         else {
             return null;

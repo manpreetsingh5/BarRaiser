@@ -36,9 +36,6 @@ public class User {
     @Column(nullable = false)
     private UserEnum status;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "cohort_to_users",
-            joinColumns = @JoinColumn(name = "cohort_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private Set<Cohort> cohort = new HashSet<>();
 }

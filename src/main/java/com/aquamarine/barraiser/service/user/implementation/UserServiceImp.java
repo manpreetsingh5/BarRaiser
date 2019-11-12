@@ -46,10 +46,10 @@ public class UserServiceImp implements UserService {
     @Override
     public User findUserById(int id){
 
-//        User user = userRepository.findById(id).get();
-//        UserDTO userDTO = userDtOMapper.toGameDTO(user);
+        User user = userRepository.findById(id).get();
+        UserDTO userDTO = userDtOMapper.toUserDTO(user);
 
-        return null;
+        return user;
     }
 
     @Override

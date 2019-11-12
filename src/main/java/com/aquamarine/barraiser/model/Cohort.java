@@ -26,9 +26,9 @@ public class Cohort {
     @JoinColumn(name = "instructor_id", referencedColumnName = "id")
     private User instructor;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.DETACH)
     @JoinTable(name = "cohort_to_users",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "cohort_id", referencedColumnName = "id"))
-    private Set<User> user = new HashSet<User>();
+            joinColumns = @JoinColumn(name = "cohort_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
+    private Set<User> user = new HashSet<>();
 }

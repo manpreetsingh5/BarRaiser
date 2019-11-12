@@ -3,6 +3,7 @@ package com.aquamarine.barraiser.controller;
 
 import com.aquamarine.barraiser.ApiController;
 import com.aquamarine.barraiser.dto.mapper.CohortDTOMapper;
+import com.aquamarine.barraiser.dto.mapper.UserDTOMapper;
 import com.aquamarine.barraiser.dto.model.CohortDTO;
 import com.aquamarine.barraiser.dto.model.UserDTO;
 import com.aquamarine.barraiser.model.Cohort;
@@ -15,12 +16,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 @RestController
-@RequestMapping(path="/cohort")
-public class CohortController extends ApiController {
+@RequestMapping(path="/api/cohort")
+public class CohortController {
 
     @Autowired
     private CohortService cohortService;
@@ -28,21 +30,28 @@ public class CohortController extends ApiController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(path="/addCohort}", method= RequestMethod.GET, headers = "Accept=application/json")
+    @RequestMapping(path="/addCohort", method= RequestMethod.GET)
     public void addCohort() {
         Map<String, Object> payload =  new HashMap<String, Object>();
+        Set<User> set = new HashSet<>();
+        set.add(userService.findUserById(2));
+        set.add(userService.findUserById(3));
         payload.put("instructor", 1);
         payload.put("description", "Test Cohort");
-        payload.put("user", new int[]{2, 3});
+        payload.put("user", set);
 
 
         Cohort cohort = Cohort.builder()
                 .description((String) payload.get("description"))
-                .instructor(userService.findUserById((Integer) payload.get("instructor")))
-                .user((Set<User>) payload.get("user"))
+                .instructor(userService.findUserById(1))
+                .user(set)
                 .build();
 
-        cohortService.createCohort(CohortDTOMapper.toCohortDTO(cohort));
+
+        CohortDTO cohortDTO = CohortDTOMapper.toCohortDTO(cohort);
+//        cohortService.createCohort(cohortDTO);
+
+        cohortService.deleteStudentFromCohort(cohortDTO, UserDTOMapper.toUserDTO(userService.findUserById(3)));
 
     }
 
