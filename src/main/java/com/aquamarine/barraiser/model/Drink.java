@@ -24,6 +24,9 @@ public class Drink {
     @Column(unique = true, nullable = false)
     private String image_path;
 
+    @Column(nullable = false)
+    private boolean isPublic;
+
     @OneToOne
     @JoinColumn(name = "added_by", referencedColumnName = "id")
     private User added_by;
