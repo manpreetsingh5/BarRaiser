@@ -14,8 +14,8 @@ public class DrinkController {
     private DrinkService drinkService;
 
     @RequestMapping(value = "/addDrink", method = RequestMethod.POST)
-    public @ResponseBody String addNewDrink (@RequestBody DrinkController.Drink drink) {
-        DrinkDTO drinkDTO = DrinkDTO.builder().name(drink.name).added_by(drink.added_by).edited_by(drink.edited_by).image_path(drink.image_path).isPublic(drink.isPublic)
+    public @ResponseBody String addNewDrink (@RequestBody Drink drink) {
+        DrinkDTO drinkDTO = DrinkDTO.builder().name(drink.name).image_path(drink.image_path).added_by(drink.added_by).edited_by(drink.edited_by).isPublic(drink.isPublic)
                 .build();
 
         drinkService.addDrink(drinkDTO);

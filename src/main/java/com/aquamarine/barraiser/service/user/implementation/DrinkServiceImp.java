@@ -7,11 +7,13 @@ import com.aquamarine.barraiser.repository.DrinkRepository;
 import com.aquamarine.barraiser.repository.UserRepository;
 import com.aquamarine.barraiser.service.user.interfaces.DrinkService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class DrinkServiceImp implements DrinkService {
 
     @Autowired
@@ -70,7 +72,7 @@ public class DrinkServiceImp implements DrinkService {
         List<DrinkDTO> drinksById = new ArrayList<>();
 
         for (Drink drink: drinks){
-            if (drink.getId() == id){
+            if (drink.getAdded_by().getId() == id){
                 DrinkDTO drinkDTO = drinkDTOMapper.toDrinkDTO(drink);
                 drinksById.add(drinkDTO);
             }
