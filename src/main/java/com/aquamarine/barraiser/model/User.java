@@ -25,7 +25,7 @@ public class User {
     private String last_name;
 
     @Column(name = "password", nullable = false)
-    private String hash_pass;
+    private String password;
 
     @Column(nullable = false, unique = true)
     private String email;
