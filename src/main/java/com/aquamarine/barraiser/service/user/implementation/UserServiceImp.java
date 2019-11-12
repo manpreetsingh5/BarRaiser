@@ -8,7 +8,6 @@ import com.aquamarine.barraiser.service.user.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -45,7 +44,7 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public UserDTO findUserById(int id){
+    public User findUserById(int id){
 
 //        User user = userRepository.findById(id).get();
 //        UserDTO userDTO = userDtOMapper.toGameDTO(user);
