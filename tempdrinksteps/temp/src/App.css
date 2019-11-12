@@ -32,7 +32,16 @@ body{
   height: 150px;
 }
 
-#pour{
+#pour_solid{
+  width: 16px;
+  height: 0px;
+  z-index: 1;
+  background: repeating-linear-gradient(#ffffff, #ffffff 20px, #000000 20px, #000000 25px);
+  animation: progress-bar-stripes-v 0.5s linear infinite;
+  transition: 0s;
+}
+
+#pour_liquid{
   width:16px;
   height:0px;
   z-index: 1;
