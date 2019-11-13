@@ -23,7 +23,5 @@ public class DrinkDTO {
 
     private int added_by;
 
-    private int edited_by;
-
     private boolean isPublic;
 }

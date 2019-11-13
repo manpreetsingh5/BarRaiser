@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImp implements UserService {
@@ -16,78 +17,66 @@ public class UserServiceImp implements UserService {
     @Autowired
     private UserRepository userRepository;
 
-
     UserDTOMapper userDtOMapper = new UserDTOMapper();
 
     @Override
     public void signUp(UserDTO userdto) {
 
-//        final String hashed = Hashing.sha256()
-//                .hashString(userdto.getPassword(), StandardCharsets.UTF_8)
-//                .toString();
+        User user = User.builder().email(userdto.getEmail()).first_name(userdto.getFirst_name())
+                .last_name(userdto.getLast_name())
+                .password(userdto.getPassword()).build();
 
-//        User user = User.builder().email(userdto.getEmail()).first_name(userdto.getFirst_name())
-//                .last_name(userdto.getLast_name())
-//                .hash_pass(hashed).build();
-//
-//        userRepository.save(user);
-
+        userRepository.save(user);
     }
 
 
     @Override
     public UserDTO findUserByEmail(String email) {
-//        User user = userRepository.findByEmail(email);
-//        UserDTO userDTO = userDtOMapper.toGameDTO(user);
+        User user = userRepository.findByEmail(email);
+        return userDtOMapper.toUserDTO(user);
 
-        return null;
     }
 
     @Override
     public User findUserById(int id){
 
         User user = userRepository.findById(id).get();
+<<<<<<< HEAD
+        return userDtOMapper.toUserDTO(user);
+
+=======
         UserDTO userDTO = userDtOMapper.toUserDTO(user);
 
         return user;
+>>>>>>> fed80b136fa796f6f939e9b4433330dfee93ad18
     }
 
     @Override
     public List<UserDTO> findAll(){
-//        List<User> arrayList = userRepository.findAll();
-//        List<UserDTO> dtoList = new ArrayList<>();
-//
-//        for (User u: arrayList){
-//            UserDTO userDTO = userDtOMapper.toGameDTO(u);
-//            dtoList.add(userDTO);
-//        }
+        List<User> arrayList = userRepository.findAll();
+        List<UserDTO> dtoList = new ArrayList<>();
 
-        return null;
+        for (User u: arrayList){
+            UserDTO userDTO = userDtOMapper.toUserDTO(u);
+            dtoList.add(userDTO);
+        }
+
+        return dtoList;
 
     }
 
     @Override
     public int verify(String email, String password) {
 
-//        final String service_password = Hashing.sha256()
-//                .hashString(password, StandardCharsets.UTF_8)
-//                .toString();
-//
-//        int areCredentialsValid = -1;
-//
-//        User u = userRepository.findByEmail(email);
-//        System.out.println(service_password);
-//        System.out.println(u.getHash_pass());
-//        System.out.println(service_password.equals(u.getHash_pass()));
-//
-//        if (u != null && (service_password.equals(u.getHash_pass()))){
-//            System.out.println(u.getId());
-//            return u.getId();
-//
-//        }
-//        System.out.println("test");
-        return 0;
+        int areCredentialsValid = -1;
 
+        User u = userRepository.findByEmail(email);
+
+        if (u != null && (password.equals(u.getPassword()))){
+            return u.getId();
+
+        }
+        return areCredentialsValid;
     }
 
 }

@@ -3,6 +3,7 @@ package com.aquamarine.barraiser.service.drink.implementation;
 import com.aquamarine.barraiser.dto.mapper.DrinkDTOMapper;
 import com.aquamarine.barraiser.dto.model.DrinkDTO;
 import com.aquamarine.barraiser.model.Drink;
+import com.aquamarine.barraiser.model.User;
 import com.aquamarine.barraiser.repository.DrinkRepository;
 import com.aquamarine.barraiser.repository.UserRepository;
 import com.aquamarine.barraiser.service.drink.interfaces.DrinkService;
@@ -26,15 +27,18 @@ public class DrinkServiceImp implements DrinkService {
 
     @Override
     public void addDrink(DrinkDTO drinkDTO) {
-        Drink drink = Drink.builder().added_by(userRepository.findById(drinkDTO.getAdded_by()).get())
-                .edited_by(userRepository.findById(drinkDTO.getEdited_by()).get())
-                .id(drinkDTO.getId())
-                .image_path(drinkDTO.getImage_path())
-                .name(drinkDTO.getName())
-                .isPublic(drinkDTO.isPublic())
-                .build();
+        Optional <User> user = userRepository.findById(drinkDTO.getAdded_by());
 
-        drinkRepository.save(drink);
+        if (user.isPresent()){
+            Drink drink = Drink.builder().added_by(user.get())
+                    .id(drinkDTO.getId())
+                    .image_path(drinkDTO.getImage_path())
+                    .name(drinkDTO.getName())
+                    .isPublic(drinkDTO.isPublic())
+                    .build();
+
+            drinkRepository.save(drink);
+        }
     }
 
     @Override
@@ -81,5 +85,17 @@ public class DrinkServiceImp implements DrinkService {
         return drinksById;
     }
 
+    @Override
+    public void editDrink(DrinkDTO drink) {
+        Drink drink1 = drinkRepository.findById(drink.getId()).get();
+
+        if (drink.getAdded_by() == drink1.getAdded_by().getId()){
+            drink1.setName(drink.getName());
+            drink1.setImage_path(drink.getImage_path());
+            drink1.setPublic(drink.isPublic());
+        }
+
+        drinkRepository.save(drink1);
+    }
 
 }

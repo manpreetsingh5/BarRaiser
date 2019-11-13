@@ -9,7 +9,6 @@ public class DrinkDTOMapper {
         return new DrinkDTO()
                 .setId(drink.getId())
                 .setAdded_by(drink.getAdded_by().getId())
-                .setEdited_by(drink.getEdited_by().getId())
                 .setImage_path(drink.getImage_path())
                 .setName(drink.getName())
                 .setPublic(drink.isPublic());

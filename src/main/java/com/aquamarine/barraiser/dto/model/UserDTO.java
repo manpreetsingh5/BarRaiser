@@ -1,6 +1,5 @@
 package com.aquamarine.barraiser.dto.model;
 
-import com.aquamarine.barraiser.enums.UserEnum;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
