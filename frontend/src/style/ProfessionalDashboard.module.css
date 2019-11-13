@@ -10,11 +10,11 @@
     z-index: 1;
 }
 
-.contentCol {
+/* .contentCol {
     background: #ea7fff;
     background: linear-gradient(to right, #204237, #ea7fff);
     height: 100vh;
-}
+} */
 
 .sidebarDiv {
     text-align: center;
@@ -36,4 +36,29 @@
 
 .barraiser {
     margin-top: 10px;
+}
+
+.icon {
+    display: inline-block;
+    margin-right: 3em;
+}
+
+.linkTitle {
+    display: inline-block;
+}
+
+.linkDiv {
+    list-style-type: none;
+}
+
+.buttonsDiv {
+    margin-left: 2em;
+}
+
+.btngrp {
+    width: 90%;
+}
+
+.btn {
+    text-align: left !important;
 }
