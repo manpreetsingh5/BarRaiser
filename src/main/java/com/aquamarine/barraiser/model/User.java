@@ -3,7 +3,6 @@ package com.aquamarine.barraiser.model;
 import lombok.*;
 import javax.persistence.*;
 import java.util.Date;
-import com.aquamarine.barraiser.enums.UserEnum;
 import lombok.*;
 import javax.persistence.*;
 
@@ -31,5 +30,5 @@ public class User {
     private String email;
 
     @Column(nullable = false)
-    private UserEnum status;
+    private boolean status;
 }

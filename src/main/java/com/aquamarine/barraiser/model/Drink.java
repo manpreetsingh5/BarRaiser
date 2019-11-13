@@ -31,7 +31,4 @@ public class Drink {
     @JoinColumn(name = "added_by", referencedColumnName = "id")
     private User added_by;
 
-    @OneToOne
-    @JoinColumn(name = "edited_by", referencedColumnName = "id")
-    private User edited_by;
 }

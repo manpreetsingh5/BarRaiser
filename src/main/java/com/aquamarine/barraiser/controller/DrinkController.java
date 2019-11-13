@@ -14,24 +14,12 @@ public class DrinkController {
     private DrinkService drinkService;
 
     @RequestMapping(value = "/addDrink", method = RequestMethod.POST)
-    public @ResponseBody String addNewDrink (@RequestBody Drink drink) {
-        DrinkDTO drinkDTO = DrinkDTO.builder().name(drink.name).image_path(drink.image_path).added_by(drink.added_by).edited_by(drink.edited_by).isPublic(drink.isPublic)
-                .build();
-
-        drinkService.addDrink(drinkDTO);
+    public @ResponseBody String addNewDrink (@RequestBody DrinkDTO drink) {
+        drinkService.addDrink(drink);
 
         return "Success\n";
     }
 
-    @AllArgsConstructor
-    static class Drink {
-        private String name;
-        private String image_path;
-        private int added_by;
-        private int edited_by;
-        private boolean isPublic;
-
-    }
 
     @RequestMapping(value = "/deleteDrink/{id}", method = RequestMethod.DELETE)
     public @ResponseBody String deleteDrink(@PathVariable int id){
@@ -53,5 +41,13 @@ public class DrinkController {
     public @ResponseBody Iterable<DrinkDTO> viewDrinksByBartender(@PathVariable int id){
         return drinkService.viewDrinksByUser(id);
     }
+
+    @RequestMapping(value = "/editDrink", method = RequestMethod.POST)
+    public @ResponseBody String editDrink (@RequestBody DrinkDTO drink) {
+        drinkService.editDrink(drink);
+
+        return "Success\n";
+    }
+
 
 }

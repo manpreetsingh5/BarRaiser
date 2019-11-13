@@ -15,4 +15,6 @@ public interface DrinkService {
     Iterable<DrinkDTO> viewAllDrinks();
 
     Iterable<DrinkDTO> viewDrinksByUser(int id);
+
+    void editDrink(DrinkDTO drink);
 }

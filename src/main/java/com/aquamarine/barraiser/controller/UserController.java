@@ -1,7 +1,6 @@
 package com.aquamarine.barraiser.controller;
 
 import com.aquamarine.barraiser.dto.model.UserDTO;
-import com.aquamarine.barraiser.enums.UserEnum;
 import com.aquamarine.barraiser.service.user.interfaces.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,26 +16,14 @@ public class UserController {
     private UserService userService;
 
 
-    @RequestMapping(value = "/addUser", method = RequestMethod.POST)
-    public @ResponseBody String addNewUser (@RequestBody Person person) {
+    @RequestMapping(value = "/addUser", method = RequestMethod.POST, consumes = { "application/JSON", "application/XML" })
+    public @ResponseBody String addNewUser (@RequestBody UserDTO user) {
 
-        UserDTO userDTO = UserDTO.builder().first_name(person.first_name).last_name(person.last_name)
-                .email(person.email).password(person.password).status(person.status).build();
-
-        userService.signUp(userDTO);
+        userService.signUp(user);
 
         return "Success\n";
     }
 
-    @AllArgsConstructor
-    static class Person {
-        private String first_name;
-        private String last_name;
-        private String email;
-        private String password;
-        private UserEnum status;
-
-    }
 
     @RequestMapping(path="/getUser/{player_id}", method= RequestMethod.GET, headers = "Accept=application/json")
     public @ResponseBody UserDTO getUser(@PathVariable int player_id) {
@@ -50,9 +37,8 @@ public class UserController {
     }
 
     @RequestMapping(path="/login", method = RequestMethod.POST)
-    public @ResponseBody ResponseEntity<Object> verifyUserCredentials(@RequestBody Login login){
-        System.out.println(1);
-        int id = userService.verify(login.email, login.password);
+    public @ResponseBody ResponseEntity<Object> verifyUserCredentials(@RequestBody UserDTO user){
+        int id = userService.verify(user.getEmail(), user.getPassword());
 
         if (id == -1){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(-1);
@@ -62,9 +48,4 @@ public class UserController {
         }
     }
 
-    @AllArgsConstructor
-    static class Login {
-        private String email;
-        private String password;
-    }
 }
