@@ -46,8 +46,6 @@ class Register extends Component {
                                                     required
                                                     type="firstName" 
                                                     placeholder="Enter first name" 
-                                                    // value={this.state.email}
-                                                    onChange={this.handleChange}
                                                 />
                                             </Form.Group>
                                             <Form.Group controlId="lastName">
@@ -57,8 +55,6 @@ class Register extends Component {
                                                     required
                                                     type="lastName" 
                                                     placeholder="Enter last name" 
-                                                    // value={this.state.email}
-                                                    onChange={this.handleChange}
                                                 />
 
                                             </Form.Group>
@@ -69,8 +65,6 @@ class Register extends Component {
                                                     required
                                                     type="email" 
                                                     placeholder="Enter email" 
-                                                    // value={this.state.email}
-                                                    onChange={this.handleChange}
                                                 />
 
                                             </Form.Group>
@@ -81,8 +75,6 @@ class Register extends Component {
                                                     required
                                                     type="password" 
                                                     placeholder="Enter password" 
-                                                    // value={this.state.password}
-                                                    onChange={this.handleChange}
                                                 />
                                             </Form.Group>
 
