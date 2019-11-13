@@ -14,28 +14,16 @@ public class DrinkController {
     private DrinkService drinkService;
 
     @RequestMapping(value = "/addDrink", method = RequestMethod.POST)
-    public @ResponseBody String addNewDrink (@RequestBody Drink drink) {
-        DrinkDTO drinkDTO = DrinkDTO.builder().name(drink.name).image_path(drink.image_path).added_by(drink.added_by).edited_by(drink.edited_by).isPublic(drink.isPublic)
-                .build();
-
-        drinkService.addDrink(drinkDTO);
+    public @ResponseBody String addNewDrink (@RequestBody DrinkDTO drink) {
+        drinkService.addDrink(drink);
 
         return "Success\n";
     }
 
-    @AllArgsConstructor
-    static class Drink {
-        private String name;
-        private String image_path;
-        private int added_by;
-        private int edited_by;
-        private boolean isPublic;
 
-    }
-
-    @RequestMapping(value = "/deleteDrink/{id}", method = RequestMethod.DELETE)
-    public @ResponseBody String deleteDrink(@PathVariable int id){
-        if (drinkService.deleteDrink(id)){
+    @RequestMapping(value = "/deleteDrink", method = RequestMethod.DELETE)
+    public @ResponseBody String deleteDrink(@RequestBody DrinkDTO drinkDTO){
+        if (drinkService.deleteDrink(drinkDTO.getId())){
             return "Success\n";
         }
         else{
@@ -49,9 +37,18 @@ public class DrinkController {
         return drinkService.viewAllDrinks();
     }
 
-    @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
-    public @ResponseBody Iterable<DrinkDTO> viewDrinksByBartender(@PathVariable int id){
-        return drinkService.viewDrinksByUser(id);
+    @RequestMapping(value = "/view", method = RequestMethod.GET)
+    public @ResponseBody Iterable<DrinkDTO> viewDrinksByBartender(@RequestBody DrinkDTO drinkDTO){
+        return drinkService.viewDrinksByUser(drinkDTO.getAdded_by());
+
     }
+
+    @RequestMapping(value = "/editDrink", method = RequestMethod.POST)
+    public @ResponseBody String editDrink (@RequestBody DrinkDTO drink) {
+        drinkService.editDrink(drink);
+
+        return "Success\n";
+    }
+
 
 }

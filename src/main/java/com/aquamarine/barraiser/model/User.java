@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.aquamarine.barraiser.enums.UserEnum;
 import lombok.*;
 import javax.persistence.*;
 
@@ -38,6 +37,7 @@ public class User {
 
     @ManyToMany(cascade = CascadeType.DETACH, mappedBy = "user")
     private Set<Cohort> cohort = new HashSet<>();
+<<<<<<< HEAD
 
     public User(String email, String first_name, String last_name, String status) {
         this.email = email;
@@ -46,3 +46,6 @@ public class User {
         this.status = status;
     }
 }
+=======
+}
+>>>>>>> c2a73ca065623d0433e95104463d35a46c059379
