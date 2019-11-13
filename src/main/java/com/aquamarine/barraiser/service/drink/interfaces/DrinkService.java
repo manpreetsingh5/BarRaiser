@@ -1,4 +1,4 @@
-package com.aquamarine.barraiser.service.user.interfaces;
+package com.aquamarine.barraiser.service.drink.interfaces;
 
 import com.aquamarine.barraiser.controller.DrinkController;
 import com.aquamarine.barraiser.dto.model.DrinkDTO;

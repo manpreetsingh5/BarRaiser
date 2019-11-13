@@ -1,14 +1,14 @@
 package com.aquamarine.barraiser.service.user.interfaces;
 
 import com.aquamarine.barraiser.dto.model.UserDTO;
-import org.springframework.stereotype.Service;
+import com.aquamarine.barraiser.model.User;
 
 import java.util.List;
 
 public interface UserService {
     void signUp(UserDTO userdto);
     UserDTO findUserByEmail(String email);
-    UserDTO findUserById(int id);
+    User findUserById(int id);
     List<UserDTO> findAll();
     int verify(String email, String password);
 }
