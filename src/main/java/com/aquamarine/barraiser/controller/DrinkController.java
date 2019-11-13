@@ -21,9 +21,9 @@ public class DrinkController {
     }
 
 
-    @RequestMapping(value = "/deleteDrink/{id}", method = RequestMethod.DELETE)
-    public @ResponseBody String deleteDrink(@PathVariable int id){
-        if (drinkService.deleteDrink(id)){
+    @RequestMapping(value = "/deleteDrink", method = RequestMethod.DELETE)
+    public @ResponseBody String deleteDrink(@RequestBody DrinkDTO drinkDTO){
+        if (drinkService.deleteDrink(drinkDTO.getId())){
             return "Success\n";
         }
         else{
@@ -37,9 +37,10 @@ public class DrinkController {
         return drinkService.viewAllDrinks();
     }
 
-    @RequestMapping(value = "/view/{id}", method = RequestMethod.GET)
-    public @ResponseBody Iterable<DrinkDTO> viewDrinksByBartender(@PathVariable int id){
-        return drinkService.viewDrinksByUser(id);
+    @RequestMapping(value = "/view", method = RequestMethod.GET)
+    public @ResponseBody Iterable<DrinkDTO> viewDrinksByBartender(@RequestBody DrinkDTO drinkDTO){
+        return drinkService.viewDrinksByUser(drinkDTO.getAdded_by());
+
     }
 
     @RequestMapping(value = "/editDrink", method = RequestMethod.POST)
