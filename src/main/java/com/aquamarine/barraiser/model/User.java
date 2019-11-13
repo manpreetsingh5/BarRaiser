@@ -34,8 +34,8 @@ public class User {
     private String email;
 
     @Column(nullable = false)
-    private UserEnum status;
+    private boolean status;
 
-    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @ManyToMany(cascade = CascadeType.DETACH, mappedBy = "user")
     private Set<Cohort> cohort = new HashSet<>();
 }

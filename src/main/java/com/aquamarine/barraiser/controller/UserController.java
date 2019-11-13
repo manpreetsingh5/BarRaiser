@@ -1,7 +1,6 @@
 package com.aquamarine.barraiser.controller;
 
 import com.aquamarine.barraiser.dto.model.UserDTO;
-import com.aquamarine.barraiser.enums.UserEnum;
 import com.aquamarine.barraiser.model.User;
 import com.aquamarine.barraiser.service.user.interfaces.UserService;
 import lombok.AllArgsConstructor;
@@ -35,7 +34,7 @@ public class UserController {
         private String last_name;
         private String email;
         private String password;
-        private UserEnum status;
+        private boolean status;
 
     }
 

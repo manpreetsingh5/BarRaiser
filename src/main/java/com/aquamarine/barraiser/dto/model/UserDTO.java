@@ -26,5 +26,5 @@ public class UserDTO {
 
     private String email;
 
-    private UserEnum status;
+    private boolean status;
 }
