@@ -1,11 +1,11 @@
-package com.aquamarine.barraiser.service.user.implementation;
+package com.aquamarine.barraiser.service.drink.implementation;
 
 import com.aquamarine.barraiser.dto.mapper.DrinkDTOMapper;
 import com.aquamarine.barraiser.dto.model.DrinkDTO;
 import com.aquamarine.barraiser.model.Drink;
 import com.aquamarine.barraiser.repository.DrinkRepository;
 import com.aquamarine.barraiser.repository.UserRepository;
-import com.aquamarine.barraiser.service.user.interfaces.DrinkService;
+import com.aquamarine.barraiser.service.drink.interfaces.DrinkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

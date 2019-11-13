@@ -4,7 +4,7 @@ import com.aquamarine.barraiser.dto.model.UserDTO;
 import com.aquamarine.barraiser.model.User;
 
 public class UserDTOMapper {
-    public UserDTO toUserDTO(User user) {
+    public static UserDTO toUserDTO(User user) {
         return new UserDTO()
                 .setId(user.getId())
                 .setFirst_name(user.getFirst_name())

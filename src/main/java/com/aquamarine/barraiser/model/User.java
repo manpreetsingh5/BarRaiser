@@ -3,6 +3,9 @@ package com.aquamarine.barraiser.model;
 import lombok.*;
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
 import com.aquamarine.barraiser.enums.UserEnum;
 import lombok.*;
 import javax.persistence.*;
@@ -32,4 +35,7 @@ public class User {
 
     @Column(nullable = false)
     private UserEnum status;
+
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private Set<Cohort> cohort = new HashSet<>();
 }

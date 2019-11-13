@@ -1,7 +1,7 @@
 package com.aquamarine.barraiser.controller;
 
 import com.aquamarine.barraiser.dto.model.DrinkDTO;
-import com.aquamarine.barraiser.service.user.interfaces.DrinkService;
+import com.aquamarine.barraiser.service.drink.interfaces.DrinkService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
