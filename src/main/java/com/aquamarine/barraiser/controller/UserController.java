@@ -26,6 +26,17 @@ public class UserController {
     }
 
 
+    @AllArgsConstructor
+    static class Person {
+        private String first_name;
+        private String last_name;
+        private String email;
+        private String password;
+        private boolean status;
+
+    }
+
+
     @RequestMapping(path="/getUser/{player_id}", method= RequestMethod.GET, headers = "Accept=application/json")
     public @ResponseBody
     User getUser(@PathVariable int player_id) {
