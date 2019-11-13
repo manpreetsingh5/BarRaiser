@@ -34,8 +34,15 @@ public class User {
     private String email;
 
     @Column(nullable = false)
-    private boolean status;
+    private String status;
 
     @ManyToMany(cascade = CascadeType.DETACH, mappedBy = "user")
     private Set<Cohort> cohort = new HashSet<>();
+
+    public User(String email, String first_name, String last_name, String status) {
+        this.email = email;
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.status = status;
+    }
 }

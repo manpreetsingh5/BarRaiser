@@ -34,7 +34,7 @@ public class UserController {
         private String last_name;
         private String email;
         private String password;
-        private boolean status;
+        private String status;
 
     }
 
