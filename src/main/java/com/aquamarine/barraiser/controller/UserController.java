@@ -1,6 +1,7 @@
 package com.aquamarine.barraiser.controller;
 
 import com.aquamarine.barraiser.dto.model.UserDTO;
+import com.aquamarine.barraiser.model.User;
 import com.aquamarine.barraiser.service.user.interfaces.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,8 @@ public class UserController {
 
 
     @RequestMapping(path="/getUser/{player_id}", method= RequestMethod.GET, headers = "Accept=application/json")
-    public @ResponseBody UserDTO getUser(@PathVariable int player_id) {
+    public @ResponseBody
+    User getUser(@PathVariable int player_id) {
         return userService.findUserById(player_id);
     }
 
