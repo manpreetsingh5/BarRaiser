@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.aquamarine.barraiser.enums.UserEnum;
 import lombok.*;
 import javax.persistence.*;
 
