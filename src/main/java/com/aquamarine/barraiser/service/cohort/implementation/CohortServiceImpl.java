@@ -4,7 +4,6 @@ import com.aquamarine.barraiser.dto.mapper.CohortDTOMapper;
 import com.aquamarine.barraiser.dto.mapper.UserDTOMapper;
 import com.aquamarine.barraiser.dto.model.CohortDTO;
 import com.aquamarine.barraiser.dto.model.UserDTO;
-import com.aquamarine.barraiser.enums.UserEnum;
 import com.aquamarine.barraiser.model.Cohort;
 import com.aquamarine.barraiser.model.User;
 import com.aquamarine.barraiser.repository.CohortRepository;

@@ -37,15 +37,12 @@ public class User {
 
     @ManyToMany(cascade = CascadeType.DETACH, mappedBy = "user")
     private Set<Cohort> cohort = new HashSet<>();
-<<<<<<< HEAD
 
-    public User(String email, String first_name, String last_name, String status) {
+    public User(String email, String first_name, String last_name, String password, String status) {
         this.email = email;
         this.first_name = first_name;
         this.last_name = last_name;
+        this.password = password;
         this.status = status;
     }
 }
-=======
-}
->>>>>>> c2a73ca065623d0433e95104463d35a46c059379
