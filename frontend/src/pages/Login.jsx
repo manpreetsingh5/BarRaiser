@@ -48,13 +48,13 @@ class Login extends Component {
 
         console.log(acc)
 
-        AuthenticationService.registerSuccessfulLogin(acc.email, acc.password)
-        .then(() => {
-            this.props.history.push(`/courses`)
-        }).catch(() => {
-            this.setState({ showSuccessMessage: false })
-            this.setState({ hasLoginFailed: true })
-        })
+        // AuthenticationService.registerSuccessfulLogin(acc.email, acc.password)
+        // .then(() => {
+        //     this.props.history.push(`/courses`)
+        // }).catch(() => {
+        //     this.setState({ showSuccessMessage: false })
+        //     this.setState({ hasLoginFailed: true })
+        // })
         event.preventDefault();
     }
 
@@ -86,7 +86,6 @@ class Login extends Component {
                                                     required
                                                     type="email" 
                                                     placeholder="Enter email" 
-                                                    // value={this.state.email}
                                                 />
 
                                             </Form.Group>
@@ -97,7 +96,6 @@ class Login extends Component {
                                                     required
                                                     type="password" 
                                                     placeholder="Enter password" 
-                                                    // value={this.state.password}
                                                 />
                                             </Form.Group>
 
