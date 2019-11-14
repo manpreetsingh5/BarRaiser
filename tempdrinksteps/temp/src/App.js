@@ -9,6 +9,9 @@ import glass_src from './img/wine.svg';
 import shaker_src from './img/shaker.svg';
 import salt_src from './img/salt.svg';
 import plate_src from './img/plate.svg';
+import ice_src from './img/ice.svg';
+import cookie_src from './img/cookie.svg';
+import milk_src from './img/milk.svg';
 import posed from 'react-pose';
 
 
@@ -58,7 +61,7 @@ class PourLiquidGame extends React.Component {
           <Col>
             <ProgressBar animated now={this.state.progress}>
             </ProgressBar>
-            <div className="marker" style={{ right: (100 - this.state.target) + '%' }}>
+            <div className="marker" style={{ left: (this.state.target) + '%' }}>
             </div>
           </Col>
         </Row>
@@ -179,7 +182,7 @@ class PourSolidGame extends React.Component {
           <Col>
             <ProgressBar animated now={this.state.progress}>
             </ProgressBar>
-            <div className="marker" style={{ right: (100 - this.state.target) + '%' }}>
+            <div className="marker" style={{ left: (this.state.target) + '%' }}>
             </div>
           </Col>
         </Row>
@@ -296,7 +299,7 @@ class ShakeGame extends React.Component{
           <Col>
             <ProgressBar animated now={this.state.progress}>
             </ProgressBar>
-            <div className="marker" style={{ right: (100 - this.state.target) + '%' }}>
+            <div className="marker" style={{ left: (this.state.target) + '%' }}>
             </div>
           </Col>
         </Row>
@@ -367,6 +370,116 @@ class ShakeGame extends React.Component{
   }
 }
 
+const Ingredient = posed.img({
+  up: {y: 0},
+  down: {y: 100}
+});
+
+class FillGame extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      progress: 0,
+      target: 20,
+      pressed: false,
+      competed: false,
+      drink_result: null,
+    }
+  }
+
+  checkProgress() {
+    if (!this.state.completed && this.state.progress > (this.state.target)) {
+      this.setState({
+        completed: true,
+        drink_result: 'FAILED',
+        progress: 0,
+      })
+    }
+  }
+
+  render() {
+    return (
+      <Container>
+        <Row>
+          <Col>
+            <ProgressBar animated now={this.state.progress}>
+            </ProgressBar>
+            <div className="marker" style={{ left: (this.state.target) + '%' }}>
+            </div>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <h4>Target: {this.state.target}</h4>
+          </Col>
+          <Col>
+            <h4>Current: {this.state.progress}</h4>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <Repeatable
+              tag={Button}
+              repeatDelay={0}
+              repeatInterval={150}
+              onPress={() => {
+                this.setState({
+                  pressed: true,
+                  progress: Math.min(this.state.progress + 5, 100)
+                })
+                this.checkProgress()
+              }}
+              onHoldStart={() => {
+              }}
+              onHold={() => {
+              }}
+              onHoldEnd={() => {
+              }}
+              onRelease={() => {
+                this.setState({
+                  pressed: false,
+                })
+              }}
+            >
+              Fill 
+          </Repeatable>
+          </Col>
+          <Col>
+            <Button variant="success"
+              onClick={() => {
+                this.setState({
+                  completed: true,
+                });
+                if (this.state.progress === this.state.target) {
+                  alert('Congratulations')
+                } else {
+                  this.setState({
+                    drink_result: 'FAILED',
+                    progress: 0,
+                  })
+                }
+              }}
+            >Complete</Button>
+          </Col>
+        </Row>
+        <Row>
+          <h5>{this.state.drink_result}</h5>
+        </Row>
+        <Row className="mt-5">
+          <Col sm={1} className="mx-auto">
+            <Ingredient className="front img-fluid" src={ice_src} alt={'ice'} pose={this.state.pressed ? 'down' : 'up'} />
+          </Col>
+        </Row>
+        <Row>
+          <Col sm={3} className="mx-auto">
+            <img className="img-fluid" src={glass_src} alt={'glass'} />
+          </Col>
+        </Row>
+      </Container>
+    );
+  }
+}
+
 class App extends React.Component {
   render() {
     return (
@@ -381,6 +494,9 @@ class App extends React.Component {
           </Tab>
           <Tab eventKey="poursolid" title="Pour Solid">
             <PourSolidGame />
+          </Tab>
+          <Tab eventKey="fill" title="Fill with Ingredient">
+            <FillGame />
           </Tab>
         </Tabs>
       </Container>
