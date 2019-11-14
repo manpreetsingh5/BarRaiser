@@ -21,7 +21,7 @@ class Cohorts extends Component {
         return (
             <Fragment>
                 <Row className={style.container}>
-                    <div className={style.titleContainer}>
+                    <div className={style.titleDiv}>
                         <h3>Cohorts</h3>
                     </div>
                 </Row>

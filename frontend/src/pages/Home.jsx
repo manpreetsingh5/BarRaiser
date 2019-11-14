@@ -20,8 +20,10 @@ class Help extends Component {
     render() {
         return (
             <Fragment>
-                <Row>
-                    Home
+                <Row className={style.container}>
+                    <div className={style.titleDiv}>
+                        <h3>Home</h3>
+                    </div>
                 </Row>
             </Fragment>
         );
