@@ -1,10 +1,13 @@
 .container {
-    /* height: 100vh; */
+    height: 100vh;
     background-color: white;
 }
 
-.titleContainer {
-    text-align: center;
-    /* box-shadow: 10px 10px grey; */
-    width: 100vh;
+.titleDiv {
+    width: 100%;
+    height: 75px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    box-shadow: 0 0 5px 5px grey;
 }

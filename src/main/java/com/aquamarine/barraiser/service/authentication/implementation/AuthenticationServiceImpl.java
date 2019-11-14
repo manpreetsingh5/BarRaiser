@@ -48,6 +48,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         System.out.println(SecurityContextHolder.getContext().getAuthentication().isAuthenticated());
 
         String jwt = tokenProvider.generateToken(authentication);
+        System.out.println(jwt);
         return ResponseEntity.ok(new JWTAuthenticationResponse(jwt));
     }
 

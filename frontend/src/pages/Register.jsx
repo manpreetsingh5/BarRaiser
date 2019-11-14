@@ -10,19 +10,83 @@ import Form from 'react-bootstrap/Form';
 
 
 class Register extends Component {
-    handleSubmit = () => {
-
+    constructor(props) {
+        super(props);
+    
+        this.state = {
+            validCredentials: true,
+            accepted: false
+        };
     }
 
-    handleChange = () => {
+    handleSubmit = event => {
+        let form = event.target;
+        let typeval;
 
-    }
+        if(form.elements.type[0].checked === true) {
+            typeval = form.elements.type[0].id
+        }
+        else {
+            typeval = form.elements.type[1].id
+        }
+        
+        const acc = {
+            first_name: form.elements.firstName.value,
+            last_name: form.elements.lastName.value,
+            email: form.elements.email.value,
+            password: form.elements.password.value,
+            status: typeval
+        }
+        console.log(JSON.stringify(acc));
 
-    test = () => {
-        console.log("test");
+        fetch('api/auth/signup', {
+            method: 'POST',
+            body: JSON.stringify(acc),
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => {
+            console.log(response.status)
+            if(response.status !== 201) {
+                return null;
+            }
+            return response;
+        })
+        .then(data => {
+            if(data === null) {
+                this.setState({
+                    validCredentials: false
+                });
+            }
+            else {
+                this.setState({
+                    validCredentials: true,
+                    accepted: true
+                })
+            }
+        })
+
+        event.preventDefault();
     }
 
     render() {
+        let accepted = this.state.accepted;
+        let validCredentials = this.state.validCredentials;
+
+        let invalidMessage = "";
+        if(!validCredentials) invalidMessage = "An account with that email has already been taken.";
+
+        if(accepted) {
+            return (
+                <Redirect
+                    to={{
+                    pathname: "/login",
+                    }}
+                />
+            )
+        }
+
         return (
             <Fragment>
                 <Row className={style.cardWrapper}>
@@ -36,6 +100,7 @@ class Register extends Component {
                                         <div className={style.titleDiv}>
                                             <h1>BarRaiser</h1>
                                             <p className={style.subtitle}>raising the bar of bartending, one click at a time</p>
+                                            <h6 className={style.invalid}>{invalidMessage}</h6>
                                         </div>
 
                                         <Form onSubmit={this.handleSubmit}>
@@ -78,9 +143,9 @@ class Register extends Component {
                                                 />
                                             </Form.Group>
 
-                                            <Form.Group controldId="type">
-                                                <Form.Check type="radio" name="type" label="Trainee" inline checked/>
-                                                <Form.Check type="radio" name="type" label="Professional" inline />
+                                            <Form.Group controlId="type">
+                                                <Form.Check id="TRAINEE" type="radio" name="type" label="Trainee" inline checked/>
+                                                <Form.Check id="BARTENDER" type="radio" name="type" label="Bartender" inline />
                                             </Form.Group>
                                             
 
