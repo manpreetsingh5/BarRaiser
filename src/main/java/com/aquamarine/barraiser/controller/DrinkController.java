@@ -4,9 +4,8 @@ import com.aquamarine.barraiser.dto.model.DrinkDTO;
 import com.aquamarine.barraiser.service.drink.interfaces.DrinkService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping(path="/api/drink")
@@ -16,6 +15,7 @@ public class DrinkController {
     private DrinkService drinkService;
 
     @RequestMapping(value = "/addDrink", method = RequestMethod.POST)
+    @PreAuthorize("hasAuthority('BARTENDER')")
     public @ResponseBody String addNewDrink (@RequestBody DrinkDTO drink) {
         drinkService.addDrink(drink);
 
@@ -24,6 +24,7 @@ public class DrinkController {
 
 
     @RequestMapping(value = "/deleteDrink", method = RequestMethod.DELETE)
+    @PreAuthorize("hasAuthority('BARTENDER')")
     public @ResponseBody String deleteDrink(@RequestBody DrinkDTO drinkDTO){
         if (drinkService.deleteDrink(drinkDTO.getId())){
             return "Success\n";
@@ -35,17 +36,20 @@ public class DrinkController {
 
     // Will only return all public drinks
     @RequestMapping(value = "/viewAll", method = RequestMethod.GET)
-    public @ResponseBody List<DrinkDTO> viewAllDrinks(){
+    @PreAuthorize("hasAuthority('BARTENDER')")
+    public @ResponseBody Iterable<DrinkDTO> viewAllDrinks(){
         return drinkService.viewAllDrinks();
     }
 
     @RequestMapping(value = "/view", method = RequestMethod.GET)
-    public @ResponseBody List<DrinkDTO> viewDrinksByBartender(@RequestBody DrinkDTO drinkDTO){
+    @PreAuthorize("hasAuthority('BARTENDER')")
+    public @ResponseBody Iterable<DrinkDTO> viewDrinksByBartender(@RequestBody DrinkDTO drinkDTO){
         return drinkService.viewDrinksByUser(drinkDTO.getAdded_by());
 
     }
 
     @RequestMapping(value = "/editDrink", method = RequestMethod.POST)
+    @PreAuthorize("hasAuthority('BARTENDER')")
     public @ResponseBody String editDrink (@RequestBody DrinkDTO drink) {
         drinkService.editDrink(drink);
 

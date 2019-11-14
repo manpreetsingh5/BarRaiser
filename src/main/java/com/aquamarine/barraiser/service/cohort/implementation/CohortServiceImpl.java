@@ -4,7 +4,6 @@ import com.aquamarine.barraiser.dto.mapper.CohortDTOMapper;
 import com.aquamarine.barraiser.dto.mapper.UserDTOMapper;
 import com.aquamarine.barraiser.dto.model.CohortDTO;
 import com.aquamarine.barraiser.dto.model.UserDTO;
-import com.aquamarine.barraiser.enums.UserEnum;
 import com.aquamarine.barraiser.model.Cohort;
 import com.aquamarine.barraiser.model.User;
 import com.aquamarine.barraiser.repository.CohortRepository;
@@ -104,16 +103,16 @@ public class CohortServiceImpl implements CohortService {
 
     @Override
     public Set<CohortDTO> getUserCohorts(UserDTO userDTO) {
-        UserEnum status = userDTO.getStatus();
+        String status = userDTO.getStatus();
         Set<CohortDTO> res = new HashSet<>();
 
-        if (status == UserEnum.BARTENDER) {
+        if (status == "BARTENDER") {
             Set<Cohort> cohorts = cohortRepository.findAllByInstructor(userRepository.findById(userDTO.getId()).get());
             for (Cohort c : cohorts) {
                 res.add(CohortDTOMapper.toCohortDTO(c));
             }
         }
-        else if (status == UserEnum.TRAINEE) {
+        else if (status == "TRAINEE") {
             Set<Cohort> cohorts = userRepository.findById(userDTO.getId()).get().getCohort();
 
             for (Cohort c : cohorts) {
