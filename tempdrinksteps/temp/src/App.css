@@ -41,6 +41,14 @@ body{
   transition: 0s;
 }
 
+.filled_ingredient_row{
+  position: absolute;
+  left: 0;
+  top: 30px; 
+/* might have to change this */
+  z-index: 2;
+}
+
 #pour_liquid{
   width:16px;
   height:0px;

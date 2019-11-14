@@ -375,6 +375,11 @@ const Ingredient = posed.img({
   down: {y: 100}
 });
 
+const FilledIngredient = posed.img({
+  visible: {opacity: 1},
+  hidden: {opacity: 0},
+})
+
 class FillGame extends React.Component {
   constructor(props) {
     super(props);
@@ -472,7 +477,16 @@ class FillGame extends React.Component {
         </Row>
         <Row>
           <Col sm={3} className="mx-auto">
-            <img className="img-fluid" src={glass_src} alt={'glass'} />
+              <Row>
+                <Col sm={12} className="mx-auto">
+                  <img className="img-fluid" src={glass_src} alt={'glass'} />
+                </Col>
+              </Row>
+              <Row className="filled_ingredient_row">
+                <Col sm={4} className="mx-auto">
+                  <FilledIngredient className="img-fluid" src={ice_src} alt={'ice'} pose={this.state.progress > 0 ? 'visible' : 'hidden'}/>
+                </Col>
+              </Row>
           </Col>
         </Row>
       </Container>
