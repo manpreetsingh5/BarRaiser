@@ -4,6 +4,8 @@ import lombok.*;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -24,7 +26,9 @@ public class Cohort {
     @JoinColumn(name = "instructor_id", referencedColumnName = "id")
     private User instructor;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
+    @ManyToMany(cascade = CascadeType.DETACH)
+    @JoinTable(name = "cohort_to_users",
+            joinColumns = @JoinColumn(name = "cohort_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
+    private Set<User> user = new HashSet<>();
 }

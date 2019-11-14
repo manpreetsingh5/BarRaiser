@@ -14,16 +14,14 @@ import lombok.experimental.Accessors;
 @Builder
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UserDTO {
+public class DrinkDTO {
     private int id;
 
-    private String first_name;
+    private String name;
 
-    private String last_name;
+    private String image_path;
 
-    private String password;
+    private int added_by;
 
-    private String email;
-
-    private String status;
+    private boolean isPublic;
 }

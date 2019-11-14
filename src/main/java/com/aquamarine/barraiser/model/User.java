@@ -3,7 +3,9 @@ package com.aquamarine.barraiser.model;
 import lombok.*;
 import javax.persistence.*;
 import java.util.Date;
-import com.aquamarine.barraiser.enums.UserEnum;
+import java.util.HashSet;
+import java.util.Set;
+
 import lombok.*;
 import javax.persistence.*;
 
@@ -25,11 +27,22 @@ public class User {
     private String last_name;
 
     @Column(name = "password", nullable = false)
-    private String hash_pass;
+    private String password;
 
     @Column(nullable = false, unique = true)
     private String email;
 
     @Column(nullable = false)
-    private UserEnum status;
+    private String status;
+
+    @ManyToMany(cascade = CascadeType.DETACH, mappedBy = "user")
+    private Set<Cohort> cohort = new HashSet<>();
+
+    public User(String email, String first_name, String last_name, String password, String status) {
+        this.email = email;
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.password = password;
+        this.status = status;
+    }
 }

@@ -1,9 +1,12 @@
 package com.aquamarine.barraiser.dto.model;
 
+import com.aquamarine.barraiser.model.User;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import lombok.experimental.Accessors;
+
+import java.util.Set;
 
 @Getter
 @Setter
@@ -14,16 +17,12 @@ import lombok.experimental.Accessors;
 @Builder
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UserDTO {
+public class CohortDTO {
     private int id;
 
-    private String first_name;
+    private String description;
 
-    private String last_name;
+    private int instructor;
 
-    private String password;
-
-    private String email;
-
-    private String status;
+    private Set<User> user;
 }
