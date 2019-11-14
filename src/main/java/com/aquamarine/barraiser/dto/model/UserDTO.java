@@ -25,5 +25,5 @@ public class UserDTO {
 
     private String email;
 
-    private boolean status;
+    private String status;
 }

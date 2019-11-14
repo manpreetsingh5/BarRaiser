@@ -37,23 +37,23 @@ public class CohortController {
 
     }
 
-    @RequestMapping(path="/addTrainee", method= RequestMethod.GET)
+    @RequestMapping(path="/addTrainee", method= RequestMethod.POST)
     public void addTraineeToCohort(@RequestBody CohortDTO cohortDTO, @RequestBody UserDTO userDTO) {
         cohortService.addUserToCohort(cohortDTO, userDTO);
     }
 
-    @RequestMapping(path="/deleteTrainee", method= RequestMethod.GET)
+    @RequestMapping(path="/deleteTrainee", method= RequestMethod.POST)
     public void deleteTraineeToCohort(@RequestBody CohortDTO cohortDTO, @RequestBody UserDTO userDTO) {
         cohortService.deleteStudentFromCohort(cohortDTO, userDTO);
 
     }
 
-    @RequestMapping(path="/viewTrainees", method= RequestMethod.POST)
+    @RequestMapping(path="/viewTrainees", method= RequestMethod.GET)
     public Set<UserDTO> viewTrainees(@RequestBody CohortDTO cohortDTO) {
         return cohortService.getCohortUsers(cohortDTO);
     }
 
-    @RequestMapping(path="/viewCohorts", method= RequestMethod.POST)
+    @RequestMapping(path="/viewCohorts", method= RequestMethod.GET)
     public Set<CohortDTO> viewCohorts(@RequestBody UserDTO userDTO) {
         return cohortService.getUserCohorts(userDTO);
     }
