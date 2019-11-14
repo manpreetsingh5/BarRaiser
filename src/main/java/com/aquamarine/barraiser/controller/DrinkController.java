@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(path="/api/drink")
 public class DrinkController {
@@ -33,12 +35,12 @@ public class DrinkController {
 
     // Will only return all public drinks
     @RequestMapping(value = "/viewAll", method = RequestMethod.GET)
-    public @ResponseBody Iterable<DrinkDTO> viewAllDrinks(){
+    public @ResponseBody List<DrinkDTO> viewAllDrinks(){
         return drinkService.viewAllDrinks();
     }
 
     @RequestMapping(value = "/view", method = RequestMethod.GET)
-    public @ResponseBody Iterable<DrinkDTO> viewDrinksByBartender(@RequestBody DrinkDTO drinkDTO){
+    public @ResponseBody List<DrinkDTO> viewDrinksByBartender(@RequestBody DrinkDTO drinkDTO){
         return drinkService.viewDrinksByUser(drinkDTO.getAdded_by());
 
     }

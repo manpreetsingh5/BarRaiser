@@ -12,9 +12,9 @@ public interface DrinkService {
 
     boolean deleteDrink(int id);
 
-    Iterable<DrinkDTO> viewAllDrinks();
+    List<DrinkDTO> viewAllDrinks();
 
-    Iterable<DrinkDTO> viewDrinksByUser(int id);
+    List<DrinkDTO> viewDrinksByUser(int id);
 
     void editDrink(DrinkDTO drink);
 }

@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(path="/api/user")
 public class UserController {
@@ -25,14 +27,15 @@ public class UserController {
         return "Success\n";
     }
 
-    @RequestMapping(path="/getUser/{player_id}", method= RequestMethod.GET, headers = "Accept=application/json")
-    public @ResponseBody
-    User getUser(@PathVariable int player_id) {
-        return userService.findUserById(player_id);
+    @RequestMapping(path="/getUser", method= RequestMethod.GET, headers = "Accept=application/json")
+    public @ResponseBody UserDTO getUser(@RequestBody UserDTO userDTO) {
+
+        return userService.findUserByEmail(userDTO.getEmail());
+
     }
 
     @RequestMapping(path="/allUsers", method= RequestMethod.GET, headers = "Accept=application/json")
-    public @ResponseBody Iterable<UserDTO> getAllUsers() {
+    public @ResponseBody List<UserDTO> getAllUsers() {
 
         return userService.findAll();
     }
