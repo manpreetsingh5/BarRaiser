@@ -25,19 +25,6 @@ public class UserController {
         return "Success\n";
     }
 
-<<<<<<< HEAD
-    @AllArgsConstructor
-    static class Person {
-        private String first_name;
-        private String last_name;
-        private String email;
-        private String password;
-        private String status;
-
-    }
-
-=======
->>>>>>> c2a73ca065623d0433e95104463d35a46c059379
     @RequestMapping(path="/getUser/{player_id}", method= RequestMethod.GET, headers = "Accept=application/json")
     public @ResponseBody
     User getUser(@PathVariable int player_id) {
