@@ -26,11 +26,12 @@ public class DrinkServiceImp implements DrinkService {
     DrinkDTOMapper drinkDTOMapper = new DrinkDTOMapper();
 
     @Override
-    public void addDrink(DrinkDTO drinkDTO) {
+    public Drink addDrink(DrinkDTO drinkDTO) {
         Optional <User> user = userRepository.findById(drinkDTO.getAdded_by());
+        Drink drink = new Drink();
 
         if (user.isPresent()){
-            Drink drink = Drink.builder().added_by(user.get())
+             drink = Drink.builder().added_by(user.get())
                     .id(drinkDTO.getId())
                     .image_path(drinkDTO.getImage_path())
                     .name(drinkDTO.getName())
@@ -39,6 +40,7 @@ public class DrinkServiceImp implements DrinkService {
 
             drinkRepository.save(drink);
         }
+        return drink;
     }
 
     @Override
