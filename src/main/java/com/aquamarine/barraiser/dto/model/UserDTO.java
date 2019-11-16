@@ -26,4 +26,6 @@ public class UserDTO {
     private String email;
 
     private String status;
+
+    private String accessToken;
 }

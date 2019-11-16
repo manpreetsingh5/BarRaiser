@@ -39,22 +39,47 @@ class Login extends Component {
     }
 
     handleSubmit = event => {
-        let form = event.target
+        let form = event.target;
         
         const acc = {
             email: form.elements.email.value,
-            password: form.elements.password.value
+            password: form.elements.password.value,
         }
+        console.log(JSON.stringify(acc));
 
-        console.log(acc)
+        fetch('api/auth/signin', {
+            method: 'POST',
+            body: JSON.stringify(acc),
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => {
+            if(response.status !== 200) {
+                return null;
+            }
+            return response;
+        })
+        .then(data => {
+            if(data === null) {
+                
+            }
+            // response.json().then(json => {
+            //     console.log(json);
+            // });
+            // if(data === null) {
+            //     this.setState({
+            //         validCredentials: false
+            //     });
+            // }
+            // else {
+            //     this.setState({
+            //         validCredentials: true,
+            //         accepted: true
+            //     })
+            // }
+        })
 
-        // AuthenticationService.registerSuccessfulLogin(acc.email, acc.password)
-        // .then(() => {
-        //     this.props.history.push(`/courses`)
-        // }).catch(() => {
-        //     this.setState({ showSuccessMessage: false })
-        //     this.setState({ hasLoginFailed: true })
-        // })
         event.preventDefault();
     }
 
