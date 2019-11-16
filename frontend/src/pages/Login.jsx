@@ -1,6 +1,5 @@
 import React, { Fragment, Component } from 'react';
-import { BrowserRouter as Router, Route, Link, Switch, Redirect } from "react-router-dom";
-import AuthenticationService from '../AuthenticationService';
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import style from '../style/Login.module.css';
 
 import Card from 'react-bootstrap/Card';
@@ -104,7 +103,7 @@ class Login extends Component {
                                                 </Button>
 
                                                 <Link to="/register">
-                                                    <p className={style.register} onClick={this.test}>Register</p>
+                                                    <p className={style.register}>Register</p>
                                                 </Link>
                                             </div>
                                         </Form>
