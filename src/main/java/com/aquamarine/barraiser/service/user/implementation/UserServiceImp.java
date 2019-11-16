@@ -34,7 +34,7 @@ public class UserServiceImp implements UserService {
     @Override
     public UserDTO findUserByEmail(String email) {
         User user = userRepository.findByEmail(email);
-        return userDtOMapper.toUserDTO(user);
+        return UserDTOMapper.toUserDTO(user);
 
     }
 
