@@ -1,5 +1,5 @@
 import React, { Fragment, Component } from 'react';
-import { BrowserRouter as Router, Route, Link, Switch, Redirect } from "react-router-dom";
+import { BrowserRouter as Link } from "react-router-dom";
 import style from '../style/Register.module.css';
 
 import Card from 'react-bootstrap/Card';
@@ -73,19 +73,21 @@ class Register extends Component {
     render() {
         let accepted = this.state.accepted;
         let validCredentials = this.state.validCredentials;
-
+        let validMessage = "";
         let invalidMessage = "";
+        if(this.state.accepted) validMessage = "Account successfully created! Please return to the login page to login."
         if(!validCredentials) invalidMessage = "An account with that email has already been taken.";
 
-        if(accepted) {
-            return (
-                <Redirect
-                    to={{
-                    pathname: "/login",
-                    }}
-                />
-            )
-        }
+        // if(accepted) {
+        //     return (
+        //         <Redirect
+        //             to={{
+        //             pathname: "/login",
+        //             oops: "hello"
+        //             }}
+        //         />
+        //     )
+        // }
 
         return (
             <Fragment>
@@ -100,6 +102,7 @@ class Register extends Component {
                                         <div className={style.titleDiv}>
                                             <h1>BarRaiser</h1>
                                             <p className={style.subtitle}>raising the bar of bartending, one click at a time</p>
+                                            <h6 className={style.valid}>{validMessage}</h6>
                                             <h6 className={style.invalid}>{invalidMessage}</h6>
                                         </div>
 

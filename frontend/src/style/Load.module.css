@@ -1,0 +1,12 @@
+.spinner {
+    color: #5ceab3 !important;
+}
+
+.loadingDiv {
+    text-align: center;
+    margin-top: 30vh;
+}
+
+.loadMessageDiv {
+    margin-top: 2em;
+}

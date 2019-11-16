@@ -15,27 +15,9 @@ class Login extends Component {
         super(props);
     
         this.state = {
-          showSuccessMessage: false,
-          hasLoginFailed: false,
+            showSuccessMessage: false,
+            hasLoginFailed: false
         };
-    }
-
-    componentDidMount() {
-        // fetch('api/hello', {
-        //     method: 'GET',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     }
-        // })
-        // .then(response => {
-        //     if(response.status !== 200) {
-        //         return null;
-        //     }
-        //     return response.json();
-        // })
-        // .then(data => {
-        //     console.log(data);
-        // })
     }
 
     handleSubmit = event => {
@@ -58,33 +40,22 @@ class Login extends Component {
             if(response.status !== 200) {
                 return null;
             }
-            return response;
+            return response.json();
         })
         .then(data => {
             if(data === null) {
-                
+                console.log("oops");
             }
-            // response.json().then(json => {
-            //     console.log(json);
-            // });
-            // if(data === null) {
-            //     this.setState({
-            //         validCredentials: false
-            //     });
-            // }
-            // else {
-            //     this.setState({
-            //         validCredentials: true,
-            //         accepted: true
-            //     })
-            // }
+            else {
+                console.log(data)
+                this.props.authorize(data);
+            }
         })
 
         event.preventDefault();
     }
 
     render() {
-        console.log(this.state.showSuccessMessage, this.state.hasLoginFailed)
         return (
             <Fragment>
                 <Row className={style.cardWrapper}>

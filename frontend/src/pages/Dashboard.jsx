@@ -1,10 +1,10 @@
 import React, { Fragment, Component } from 'react';
-import { BrowserRouter as Router, Route, Link, Switch, Redirect } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link, Switch, Redirect, withRouter } from "react-router-dom";
 import Home from './Home';
 import Drinks from './Drinks';
 import Cohorts from './Cohorts';
 import Help from './Help';
-import style from '../style/ProfessionalDashboard.module.css';
+import style from '../style/Dashboard.module.css';
 
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button'
@@ -19,7 +19,7 @@ import {FaUsers} from "react-icons/fa";
 import {FaQuestionCircle} from "react-icons/fa";
 import {FaSignOutAlt} from "react-icons/fa";
 
-class ProfessionalDashboard extends Component {
+class Dashboard extends Component {
     constructor(props) {
         super(props);
     
@@ -28,10 +28,40 @@ class ProfessionalDashboard extends Component {
         };
     }
 
+    componentDidMount() {
+        let token = localStorage.getItem("accessToken")
+        fetch(`api/user/getUser/${this.props.userId}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer '+ token,
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => {
+            if(response.status !== 200) {
+                return null;
+            }
+            return response.json();
+        })
+        .then(data => {
+            if(data === null) {
+                console.log("oops");
+            }
+            else {
+                console.log(data);
+            }
+        })
+    }
+
     changePane = (comp) => {
         this.setState({
             pane: comp
         });
+    }
+
+    logout = () => {
+        this.props.handleLogout();
+        this.props.history.push("/");
     }
 
     render() {
@@ -68,7 +98,7 @@ class ProfessionalDashboard extends Component {
                                         <h6 className={style.linkTitle}>HELP</h6>
                                     </Button>
                                     
-                                    <Button className={style.btn} type="button" onClick={() => this.changePane("5")}>
+                                    <Button className={style.btn} type="button" onClick={this.logout}>
                                         <h3 className={style.icon}><FaSignOutAlt/></h3>
                                         <h6 className={style.linkTitle}>LOGOUT</h6>
                                     </Button>
@@ -87,4 +117,4 @@ class ProfessionalDashboard extends Component {
     }
 }
 
-export default ProfessionalDashboard;
+export default withRouter(Dashboard);
