@@ -24,5 +24,7 @@ public class CohortDTO {
 
     private int instructor;
 
+    private String image_path;
+
     private Set<User> user;
 }

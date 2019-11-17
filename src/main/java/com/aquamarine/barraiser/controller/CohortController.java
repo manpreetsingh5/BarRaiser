@@ -13,12 +13,18 @@ import com.aquamarine.barraiser.security.UserPrincipal;
 import com.aquamarine.barraiser.service.cohort.interfaces.CohortService;
 import com.aquamarine.barraiser.service.user.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -34,10 +40,14 @@ public class CohortController {
     @Autowired
     private UserService userService;
 
-    @RequestMapping(path="/addCohort", method= RequestMethod.GET)
-    @PreAuthorize("hasAuthority('BARTENDER')")
-    public ResponseEntity addCohort(@RequestBody CohortDTO cohortDTO) {
-        cohortService.createCohort(cohortDTO);
+    @Value("/cohorts")
+    private String folder;
+
+    @RequestMapping(path="/addCohort", method= RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+//    @PreAuthorize("hasAuthority('BARTENDER')")
+    public ResponseEntity addCohort(@RequestPart CohortDTO cohortDTO, @RequestPart(value = "file") MultipartFile multipartFile) throws IOException {
+
+        cohortService.createCohort(cohortDTO, multipartFile);
         return new ResponseEntity(HttpStatus.OK);
     }
 
@@ -67,4 +77,10 @@ public class CohortController {
         return cohortService.getUserCohorts(userDTO);
     }
 
+    @RequestMapping(path="/getCohortPicture", method = RequestMethod.GET)
+//    @PreAuthorize("hasAnyAuthority('BARTENDER', 'TRAINEE')")
+    public ResponseEntity<byte[]> getCohortPicture(@RequestBody CohortDTO cohortDTO) throws IOException {
+        System.out.println("HERE");
+        return cohortService.getCohortPicture(cohortDTO);
+    }
 }

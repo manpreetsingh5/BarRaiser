@@ -8,6 +8,7 @@ import com.aquamarine.barraiser.repository.DrinkRepository;
 import com.aquamarine.barraiser.repository.UserRepository;
 import com.aquamarine.barraiser.service.drink.interfaces.DrinkService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -22,6 +23,9 @@ public class DrinkServiceImp implements DrinkService {
 
     @Autowired
     private DrinkRepository drinkRepository;
+
+    @Value("/drinks")
+    private String sub_folder;
 
     DrinkDTOMapper drinkDTOMapper = new DrinkDTOMapper();
 

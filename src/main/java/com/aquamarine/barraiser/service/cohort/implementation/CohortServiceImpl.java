@@ -9,9 +9,23 @@ import com.aquamarine.barraiser.model.User;
 import com.aquamarine.barraiser.repository.CohortRepository;
 import com.aquamarine.barraiser.repository.UserRepository;
 import com.aquamarine.barraiser.service.cohort.interfaces.CohortService;
+import com.aquamarine.barraiser.service.images.interfaces.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,13 +38,27 @@ public class CohortServiceImpl implements CohortService {
     @Autowired
     private CohortRepository cohortRepository;
 
+    @Autowired
+    private ImageService imageService;
+
+    @Value("images/cohorts/")
+    private String sub_folder;
+
+    @Value("${app.awsServices.bucketName}")
+    private String bucketName;
+
     private UserDTOMapper userDTOMapper = new UserDTOMapper();
 
     @Override
-    public int createCohort(CohortDTO cohortdto) {
+    public int createCohort(CohortDTO cohortdto, MultipartFile multipartFile) throws IOException {
+        File file = imageService.convertMultiPartToFile(multipartFile);
+        String fileName = cohortdto.getDescription();
+        imageService.uploadFileToS3bucket(fileName, file, sub_folder);
+
         Cohort cohort = new Cohort()
                 .setDescription(cohortdto.getDescription())
-                .setInstructor(userRepository.findById(cohortdto.getInstructor()).get());
+                .setInstructor(userRepository.findById(cohortdto.getInstructor()).get())
+                .setImage_path(sub_folder+"/"+fileName);
 
         cohortRepository.save(cohort);
 
@@ -43,6 +71,25 @@ public class CohortServiceImpl implements CohortService {
         if (cohortRepository.findById(cohortID).isPresent()) {
             cohortRepository.delete(cohortRepository.findById(cohortID).get());
         }
+    }
+
+    @Override
+    public ResponseEntity<byte[]> getCohortPicture(CohortDTO cohortDTO) throws IOException {
+        Cohort cohort = cohortRepository.findById(cohortDTO.getId()).get();
+        System.out.println(bucketName+sub_folder+cohort.getDescription());
+        InputStream in = imageService.downloadFileFromS3bucket(bucketName, "images/cohorts/test3").getObjectContent();
+        BufferedImage imageFromAWS = ImageIO.read(in);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(imageFromAWS, "png", baos );
+        byte[] imageBytes = baos.toByteArray();
+        in.close();
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.IMAGE_PNG);
+        httpHeaders.setContentLength(imageBytes.length);
+        httpHeaders.setContentDispositionFormData("attachment", cohort.getDescription());
+
+        return new ResponseEntity<>(imageBytes, httpHeaders, HttpStatus.OK);
     }
 
     @Override
@@ -62,9 +109,12 @@ public class CohortServiceImpl implements CohortService {
     }
 
     @Override
-    public CohortDTO findById(int id) {
+    public Set<Object> findById(int id) {
+        HashSet<Object> ret = new HashSet<>();
         System.out.println(id);
-        return CohortDTOMapper.toCohortDTO(cohortRepository.findById(id).get());
+        Cohort res = cohortRepository.findById(id).get();
+        ret.add(Arrays.asList(CohortDTOMapper.toCohortDTO(res), imageService.downloadFileFromS3bucket(res.getImage_path(), "/cohorts/")));
+        return ret;
     }
 
     @Override
@@ -85,8 +135,6 @@ public class CohortServiceImpl implements CohortService {
         else {
             return null;
         }
-
-
     }
 
     @Override
@@ -123,6 +171,9 @@ public class CohortServiceImpl implements CohortService {
         return res;
 
     }
+
+
+
 
 
 }

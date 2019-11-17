@@ -26,6 +26,9 @@ public class Cohort {
     @JoinColumn(name = "instructor_id", referencedColumnName = "id")
     private User instructor;
 
+    @Column(unique = true, nullable = false)
+    private String image_path;
+
     @ManyToMany(cascade = CascadeType.DETACH)
     @JoinTable(name = "cohort_to_users",
             joinColumns = @JoinColumn(name = "cohort_id", referencedColumnName = "id"),
