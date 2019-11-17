@@ -34,15 +34,6 @@ public class UserController {
     @Value("${app.awsServices.bucketName}")
     private String bucketName;
 
-
-    @RequestMapping(value = "/addUser", method = RequestMethod.POST, consumes = { "application/JSON", "application/XML" })
-    public @ResponseBody String addNewUser (@RequestBody UserDTO user) {
-
-        userService.signUp(user);
-
-        return "Success\n";
-    }
-
     @RequestMapping(path="/getUser/{player_id}", method= RequestMethod.GET, headers = "Accept=application/json")
     public @ResponseBody
     User getUser(@PathVariable int player_id) {

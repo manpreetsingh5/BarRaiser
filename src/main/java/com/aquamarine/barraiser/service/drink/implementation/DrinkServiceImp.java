@@ -31,15 +31,13 @@ public class DrinkServiceImp implements DrinkService {
 
     @Override
     public void addDrink(DrinkDTO drinkDTO) {
-        Optional <User> user = userRepository.findById(drinkDTO.getAdded_by());
+        Optional <User> user = userRepository.findByEmail(drinkDTO.getCreatedBy());
 
         if (user.isPresent()){
-            Drink drink = Drink.builder().added_by(user.get())
-                    .id(drinkDTO.getId())
-                    .image_path(drinkDTO.getImage_path())
-                    .name(drinkDTO.getName())
-                    .isPublic(drinkDTO.isPublic())
-                    .build();
+            Drink drink = new Drink()
+                    .setImage_path(drinkDTO.getImage_path())
+                    .setName(drinkDTO.getName())
+                    .setPublic(drinkDTO.isPublic());
 
             drinkRepository.save(drink);
         }
@@ -80,7 +78,7 @@ public class DrinkServiceImp implements DrinkService {
         List<DrinkDTO> drinksById = new ArrayList<>();
 
         for (Drink drink: drinks){
-            if (drink.getAdded_by().getId() == id){
+            if (userRepository.findByEmail(drink.getCreatedBy()).get().getId() == id){
                 DrinkDTO drinkDTO = drinkDTOMapper.toDrinkDTO(drink);
                 drinksById.add(drinkDTO);
             }
@@ -93,7 +91,7 @@ public class DrinkServiceImp implements DrinkService {
     public void editDrink(DrinkDTO drink) {
         Drink drink1 = drinkRepository.findById(drink.getId()).get();
 
-        if (drink.getAdded_by() == drink1.getAdded_by().getId()){
+        if (drink.getAdded_by() == userRepository.findByEmail(drink.getCreatedBy()).get().getId() ){
             drink1.setName(drink.getName());
             drink1.setImage_path(drink.getImage_path());
             drink1.setPublic(drink.isPublic());

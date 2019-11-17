@@ -16,7 +16,6 @@ import java.util.Set;
 @Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 public class Equipment extends Auditable<String> {
@@ -29,4 +28,7 @@ public class Equipment extends Auditable<String> {
 
     @Column(unique = true, nullable = false)
     private String image_path;
+
+    @Column(nullable = false)
+    private boolean isPublic;
 }

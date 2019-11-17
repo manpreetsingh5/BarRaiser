@@ -10,7 +10,6 @@ import javax.persistence.*;
 @Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Entity
 public class Drink extends Auditable<String>{
 

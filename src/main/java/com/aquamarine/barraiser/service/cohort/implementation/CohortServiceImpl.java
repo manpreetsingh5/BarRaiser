@@ -77,7 +77,7 @@ public class CohortServiceImpl implements CohortService {
     public ResponseEntity<byte[]> getCohortPicture(CohortDTO cohortDTO) throws IOException {
         Cohort cohort = cohortRepository.findById(cohortDTO.getId()).get();
         System.out.println(bucketName+sub_folder+cohort.getDescription());
-        InputStream in = imageService.downloadFileFromS3bucket(bucketName, "images/cohorts/test3").getObjectContent();
+        InputStream in = imageService.downloadFileFromS3bucket(bucketName, cohort.getImage_path()).getObjectContent();
         BufferedImage imageFromAWS = ImageIO.read(in);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ImageIO.write(imageFromAWS, "png", baos );

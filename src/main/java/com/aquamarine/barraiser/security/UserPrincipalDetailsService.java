@@ -19,7 +19,7 @@ public class UserPrincipalDetailsService implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(s);
+        User user = userRepository.findByEmail(s).get();
         UserPrincipal userPrincipal;
         userPrincipal = UserPrincipal.create(user);
 

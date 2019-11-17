@@ -12,7 +12,6 @@ import java.util.Set;
 @Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Entity
 public class Cohort extends Auditable<String> {
     @Id
