@@ -14,7 +14,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 @Entity
-public class Cohort {
+public class Cohort extends Auditable<String> {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer id;
