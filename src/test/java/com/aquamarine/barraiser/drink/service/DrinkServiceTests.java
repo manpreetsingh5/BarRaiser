@@ -44,7 +44,7 @@ public class DrinkServiceTests {
     private Drink drink2;
 
     private User user1 = User.builder().email("barack@whitehouse.gov").first_name("Barack").last_name("Obama")
-                        .id(1).password("44").status("BARTENDER").build();
+                        .id(33).password("44").status("BARTENDER").build();
 
     private User user2 = User.builder().email("george@whitehouse.gov").first_name("George W.").last_name("Bush")
                         .id(2).password("43").status("TRAINEE").build();
@@ -65,8 +65,8 @@ public class DrinkServiceTests {
 
         Mockito.when(drinkRepository.findAll()).thenReturn(drinks);
         Mockito.when(drinkRepository.save(any(Drink.class))).thenReturn(drink1);
-        Mockito.when(userRepository.findById(1)).thenReturn();
-       // Mockito.when(userRepository.findById(2)).thenReturn(user2);
+        Mockito.when(userRepository.findById(any(Integer.class))).thenReturn(java.util.Optional.ofNullable(user1));
+        Mockito.when(drinkRepository.findById(any(Integer.class))).thenReturn(java.util.Optional.ofNullable(drink1));
     }
 
     @Test
@@ -95,11 +95,30 @@ public class DrinkServiceTests {
         newDTO.setId(1);
         Drink newDrink = drinkService.addDrink(newDTO);
 
+        assertEquals(newDrink.getId(), drink1.getId());
+        assertEquals(newDrink.getAdded_by(), drink1.getAdded_by());
+        assertEquals(newDrink.getImage_path(), drink1.getImage_path());
+        assertEquals(newDrink.getName(), drink1.getName());
         assertEquals(newDrink, drink1);
+
+    }
+
+    @Test
+    public void testDeleteDrink(){
+        DrinkDTO newDTO = new DrinkDTO();
+        newDTO.setId(1);
+        Drink newDrink = drinkService.addDrink(newDTO);
+
+
+
+
+
 
 
 
     }
+
+
 
 
 

@@ -38,7 +38,7 @@ public class DrinkServiceImp implements DrinkService {
                     .isPublic(drinkDTO.isPublic())
                     .build();
 
-            drinkRepository.save(drink);
+            drink = drinkRepository.save(drink);
         }
         return drink;
     }
