@@ -10,7 +10,6 @@ public class UserDTOMapper {
                 .setFirst_name(user.getFirst_name())
                 .setLast_name(user.getLast_name())
                 .setEmail(user.getEmail())
-                .setPassword(user.getPassword())
                 .setStatus(user.getStatus());
     }
 }

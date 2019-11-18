@@ -10,9 +10,8 @@ import javax.persistence.*;
 @Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Entity
-public class Drink {
+public class Drink extends Auditable<String>{
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
@@ -27,8 +26,5 @@ public class Drink {
     @Column(nullable = false)
     private boolean isPublic;
 
-    @OneToOne
-    @JoinColumn(name = "added_by", referencedColumnName = "id")
-    private User added_by;
 
 }
