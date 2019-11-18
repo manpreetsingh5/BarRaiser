@@ -7,13 +7,15 @@ import java.util.HashSet;
 import java.util.Set;
 
 import lombok.*;
+import lombok.experimental.Accessors;
+
 import javax.persistence.*;
 
 @Getter
 @Setter
+@Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Entity // This tells Hibernate to make a table out of this class
 public class User {
     @Id

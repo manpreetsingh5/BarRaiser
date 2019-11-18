@@ -12,9 +12,8 @@ import java.util.Set;
 @Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Entity
-public class Cohort {
+public class Cohort extends Auditable<String> {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer id;
@@ -25,6 +24,9 @@ public class Cohort {
     @OneToOne
     @JoinColumn(name = "instructor_id", referencedColumnName = "id")
     private User instructor;
+
+    @Column(unique = true, nullable = false)
+    private String image_path;
 
     @ManyToMany(cascade = CascadeType.DETACH)
     @JoinTable(name = "cohort_to_users",

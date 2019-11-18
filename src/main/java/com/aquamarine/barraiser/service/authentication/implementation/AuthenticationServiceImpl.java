@@ -53,7 +53,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String jwt = tokenProvider.generateToken(authentication);
         UserDTO res = userService.findUserByEmail(userDTO.getEmail());
         res.setAccessToken(jwt);
-        res.setPassword(null);
         return ResponseEntity.ok(res);
     }
 
