@@ -15,7 +15,7 @@ public interface DrinkService {
 
     List<DrinkDTO> viewAllDrinks();
 
-    List<DrinkDTO> viewDrinksByUser(int id);
+    List<DrinkDTO> viewDrinksByUser(DrinkDTO drinkDTO);
 
-    void editDrink(DrinkDTO drink);
+    boolean editDrink(DrinkDTO drink);
 }
