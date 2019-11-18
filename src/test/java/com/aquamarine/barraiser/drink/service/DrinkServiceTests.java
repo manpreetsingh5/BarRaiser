@@ -17,16 +17,24 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.doNothing;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@EnableJpaAuditing
 public class DrinkServiceTests {
 
     @Autowired
@@ -40,33 +48,47 @@ public class DrinkServiceTests {
 
     private DrinkDTOMapper drinkDTOMapper = new DrinkDTOMapper();
 
-    private Drink drink1;
-    private Drink drink2;
+    private Drink drink1 = new Drink();
+    private Drink drink2 = new Drink();
 
-    private User user1 = User.builder().email("barack@whitehouse.gov").first_name("Barack").last_name("Obama")
-                        .id(33).password("44").status("BARTENDER").build();
+    private User user1 = new User().setEmail("barack@whitehouse.gov")
+                                    .setFirst_name("Barack")
+                                    .setLast_name("Obama")
+                                    .setId(33).setPassword("44").setStatus("BARTENDER");
 
-    private User user2 = User.builder().email("george@whitehouse.gov").first_name("George W.").last_name("Bush")
-                        .id(2).password("43").status("TRAINEE").build();
+    private User user2 = new User().setEmail("george@whitehouse.gov")
+                                    .setFirst_name("George W.")
+                                    .setLast_name("Bush")
+                                    .setId(2).setPassword("43").setStatus("TRAINEE");
 
     private List <Drink> drinks = new ArrayList<>();
 
     @Before
     public void setUp(){
-        drink1 = Drink.builder().name("Bourbon").added_by(user1).id(1).image_path("downloads/bourbon").isPublic(true)
-                .build();
 
-        drink2 = Drink.builder().name("Vodka").added_by(user2).id(2).image_path("downloads/vodka").isPublic(false)
-                .build();
+        drink1.setName("Bourbon");
+        drink1.setId(1);
+        drink1.setImage_path("downloads/bourbon");
+        drink1.setPublic(true);
+        drink1.setCreatedBy("barack@whitehouse.gov");
+        drink1.setCreatedDate(new Date());
+
+        drink2.setName("Vodka");
+        drink2.setId(2);
+        drink2.setImage_path("downloads/vodka");
+        drink2.setPublic(false);
+        drink2.setCreatedBy("george@whitehouse.gov");
+        drink2.setCreatedDate(new Date());
 
         drinks.add(drink1);
         drinks.add(drink2);
-
 
         Mockito.when(drinkRepository.findAll()).thenReturn(drinks);
         Mockito.when(drinkRepository.save(any(Drink.class))).thenReturn(drink1);
         Mockito.when(userRepository.findById(any(Integer.class))).thenReturn(java.util.Optional.ofNullable(user1));
         Mockito.when(drinkRepository.findById(any(Integer.class))).thenReturn(java.util.Optional.ofNullable(drink1));
+        doNothing().when(drinkRepository).delete(any(Drink.class));
+
     }
 
     @Test
@@ -81,7 +103,10 @@ public class DrinkServiceTests {
 
     @Test
     public void testFindByBartender(){
-        List <DrinkDTO> drinksByBartender = drinkService.viewDrinksByUser(2);
+        DrinkDTO drinkDTO = new DrinkDTO();
+        drinkDTO.setCreatedBy("george@whitehouse.gov");
+
+        List <DrinkDTO> drinksByBartender = drinkService.viewDrinksByUser(drinkDTO);
 
         assertNotNull(drinksByBartender);
         assertEquals(1, drinksByBartender.size());
@@ -96,7 +121,6 @@ public class DrinkServiceTests {
         Drink newDrink = drinkService.addDrink(newDTO);
 
         assertEquals(newDrink.getId(), drink1.getId());
-        assertEquals(newDrink.getAdded_by(), drink1.getAdded_by());
         assertEquals(newDrink.getImage_path(), drink1.getImage_path());
         assertEquals(newDrink.getName(), drink1.getName());
         assertEquals(newDrink, drink1);
@@ -108,14 +132,55 @@ public class DrinkServiceTests {
         DrinkDTO newDTO = new DrinkDTO();
         newDTO.setId(1);
         Drink newDrink = drinkService.addDrink(newDTO);
+        boolean isAvailable;
 
+        isAvailable = drinkService.deleteDrink(newDrink.getId());
 
+        assertTrue(isAvailable);
+    }
 
+    @Test
+    public void testDeleteDrink_notFound(){
+        Mockito.when(drinkRepository.findById(any(Integer.class))).thenReturn(Optional.empty());
 
+        DrinkDTO newDTO = new DrinkDTO();
+        newDTO.setId(1);
+        Drink newDrink = drinkService.addDrink(newDTO);
+        boolean isAvailable;
 
+        isAvailable = drinkService.deleteDrink(newDrink.getId());
 
+        assertFalse(isAvailable);
 
+    }
 
+    @Test
+    public void testEditDrink(){
+        DrinkDTO newDTO = new DrinkDTO();
+        newDTO.setName("New Bourbon");
+        newDTO.setImage_path("downloads/newbourbon");
+        newDTO.setPublic(false);
+        boolean successfulEdit;
+
+        successfulEdit = drinkService.editDrink(newDTO);
+
+        assertTrue(successfulEdit);
+
+    }
+
+    @Test
+    public void testEditDrink_notFound(){
+        Mockito.when(drinkRepository.findById(any(Integer.class))).thenReturn(Optional.empty());
+
+        DrinkDTO newDTO = new DrinkDTO();
+        newDTO.setName("New Bourbon");
+        newDTO.setImage_path("downloads/newbourbon");
+        newDTO.setPublic(false);
+        boolean successfulEdit;
+
+        successfulEdit = drinkService.editDrink(newDTO);
+
+        assertFalse(successfulEdit);
     }
 
 

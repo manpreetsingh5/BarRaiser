@@ -47,16 +47,18 @@ public class DrinkController {
     @RequestMapping(value = "/view", method = RequestMethod.GET)
     @PreAuthorize("hasAuthority('BARTENDER')")
     public @ResponseBody List<DrinkDTO> viewDrinksByBartender(@RequestBody DrinkDTO drinkDTO){
-        return drinkService.viewDrinksByUser(drinkDTO.getAdded_by());
+        return drinkService.viewDrinksByUser(drinkDTO);
 
     }
 
     @RequestMapping(value = "/editDrink", method = RequestMethod.POST)
     @PreAuthorize("hasAuthority('BARTENDER')")
     public @ResponseBody String editDrink (@RequestBody DrinkDTO drink) {
-        drinkService.editDrink(drink);
+        if (drinkService.editDrink(drink)){
+            return "Success\n";
+        }
 
-        return "Success\n";
+        return "Could not edit";
     }
 
 
