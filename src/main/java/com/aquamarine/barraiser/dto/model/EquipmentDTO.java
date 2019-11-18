@@ -1,6 +1,5 @@
 package com.aquamarine.barraiser.dto.model;
 
-import com.aquamarine.barraiser.model.Auditable;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
@@ -16,13 +15,16 @@ import java.util.Date;
 @ToString
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class DrinkDTO extends Auditable<String> {
+public class EquipmentDTO {
     private int id;
 
-    private String name;
+    private String description;
 
     private String image_path;
 
     private boolean isPublic;
 
+    private String createdBy;
+
+    private Date createdDate;
 }

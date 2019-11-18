@@ -8,6 +8,7 @@ import com.aquamarine.barraiser.repository.DrinkRepository;
 import com.aquamarine.barraiser.repository.UserRepository;
 import com.aquamarine.barraiser.service.drink.interfaces.DrinkService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -23,24 +24,19 @@ public class DrinkServiceImp implements DrinkService {
     @Autowired
     private DrinkRepository drinkRepository;
 
+    @Value("/drinks")
+    private String sub_folder;
+
     DrinkDTOMapper drinkDTOMapper = new DrinkDTOMapper();
 
     @Override
     public Drink addDrink(DrinkDTO drinkDTO) {
-        Optional <User> user = userRepository.findById(drinkDTO.getAdded_by());
         Drink drink = new Drink();
+        drink.setImage_path(drinkDTO.getImage_path());
+        drink.setName(drinkDTO.getName());
+        drink.setPublic(drinkDTO.isPublic());
 
-        if (user.isPresent()){
-             drink = Drink.builder().added_by(user.get())
-                    .id(drinkDTO.getId())
-                    .image_path(drinkDTO.getImage_path())
-                    .name(drinkDTO.getName())
-                    .isPublic(drinkDTO.isPublic())
-                    .build();
-
-            drink = drinkRepository.save(drink);
-        }
-        return drink;
+        return drinkRepository.save(drink);
     }
 
     @Override
@@ -78,7 +74,7 @@ public class DrinkServiceImp implements DrinkService {
         List<DrinkDTO> drinksById = new ArrayList<>();
 
         for (Drink drink: drinks){
-            if (drink.getAdded_by().getId() == id){
+            if (userRepository.findByEmail(drink.getCreatedBy()).get().getId() == id){
                 DrinkDTO drinkDTO = drinkDTOMapper.toDrinkDTO(drink);
                 drinksById.add(drinkDTO);
             }
@@ -91,11 +87,10 @@ public class DrinkServiceImp implements DrinkService {
     public void editDrink(DrinkDTO drink) {
         Drink drink1 = drinkRepository.findById(drink.getId()).get();
 
-        if (drink.getAdded_by() == drink1.getAdded_by().getId()){
-            drink1.setName(drink.getName());
-            drink1.setImage_path(drink.getImage_path());
-            drink1.setPublic(drink.isPublic());
-        }
+        drink1.setName(drink.getName());
+        drink1.setImage_path(drink.getImage_path());
+        drink1.setPublic(drink.isPublic());
+
 
         drinkRepository.save(drink1);
     }
