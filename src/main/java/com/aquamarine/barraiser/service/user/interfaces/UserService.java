@@ -7,6 +7,5 @@ import java.util.List;
 
 public interface UserService {
     UserDTO findUserByEmail(String email);
-    User findUserById(int id);
     List<UserDTO> findAll();
 }

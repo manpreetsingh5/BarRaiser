@@ -23,8 +23,6 @@ public class DrinkDTO extends Auditable<String> {
 
     private String image_path;
 
-    private int added_by;
-
     private boolean isPublic;
 
 }

@@ -30,17 +30,13 @@ public class DrinkServiceImp implements DrinkService {
     DrinkDTOMapper drinkDTOMapper = new DrinkDTOMapper();
 
     @Override
-    public void addDrink(DrinkDTO drinkDTO) {
-        Optional <User> user = userRepository.findByEmail(drinkDTO.getCreatedBy());
+    public Drink addDrink(DrinkDTO drinkDTO) {
+        Drink drink = new Drink();
+        drink.setImage_path(drinkDTO.getImage_path());
+        drink.setName(drinkDTO.getName());
+        drink.setPublic(drinkDTO.isPublic());
 
-        if (user.isPresent()){
-            Drink drink = new Drink()
-                    .setImage_path(drinkDTO.getImage_path())
-                    .setName(drinkDTO.getName())
-                    .setPublic(drinkDTO.isPublic());
-
-            drinkRepository.save(drink);
-        }
+        return drinkRepository.save(drink);
     }
 
     @Override
@@ -91,11 +87,10 @@ public class DrinkServiceImp implements DrinkService {
     public void editDrink(DrinkDTO drink) {
         Drink drink1 = drinkRepository.findById(drink.getId()).get();
 
-        if (drink.getAdded_by() == userRepository.findByEmail(drink.getCreatedBy()).get().getId() ){
-            drink1.setName(drink.getName());
-            drink1.setImage_path(drink.getImage_path());
-            drink1.setPublic(drink.isPublic());
-        }
+        drink1.setName(drink.getName());
+        drink1.setImage_path(drink.getImage_path());
+        drink1.setPublic(drink.isPublic());
+
 
         drinkRepository.save(drink1);
     }

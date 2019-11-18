@@ -1,11 +1,14 @@
 package com.aquamarine.barraiser.controller;
 
 import com.aquamarine.barraiser.dto.model.DrinkDTO;
+import com.aquamarine.barraiser.model.Drink;
 import com.aquamarine.barraiser.service.drink.interfaces.DrinkService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(path="/api/drink")
@@ -16,10 +19,10 @@ public class DrinkController {
 
     @RequestMapping(value = "/addDrink", method = RequestMethod.POST)
     @PreAuthorize("hasAuthority('BARTENDER')")
-    public @ResponseBody String addNewDrink (@RequestBody DrinkDTO drink) {
-        drinkService.addDrink(drink);
+    public @ResponseBody Drink addNewDrink (@RequestBody DrinkDTO drink) {
+        return drinkService.addDrink(drink);
 
-        return "Success\n";
+        //return "Success\n";
     }
 
 
@@ -37,13 +40,13 @@ public class DrinkController {
     // Will only return all public drinks
     @RequestMapping(value = "/viewAll", method = RequestMethod.GET)
     @PreAuthorize("hasAuthority('BARTENDER')")
-    public @ResponseBody Iterable<DrinkDTO> viewAllDrinks(){
+    public @ResponseBody List<DrinkDTO> viewAllDrinks(){
         return drinkService.viewAllDrinks();
     }
 
     @RequestMapping(value = "/view", method = RequestMethod.GET)
     @PreAuthorize("hasAuthority('BARTENDER')")
-    public @ResponseBody Iterable<DrinkDTO> viewDrinksByBartender(@RequestBody DrinkDTO drinkDTO){
+    public @ResponseBody List<DrinkDTO> viewDrinksByBartender(@RequestBody DrinkDTO drinkDTO){
         return drinkService.viewDrinksByUser(drinkDTO.getAdded_by());
 
     }
