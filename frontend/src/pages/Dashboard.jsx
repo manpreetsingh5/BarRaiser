@@ -26,6 +26,7 @@ class Dashboard extends Component {
     
         this.state = {
             pane: "home",
+            id: -1,
             firstName: "",
             lastName: "",
             status: "",
@@ -56,6 +57,7 @@ class Dashboard extends Component {
                 console.log(data)
                 setTimeout(() => {
                     this.setState({
+                        id: data.id,
                         firstName: data.first_name,
                         lastName: data.last_name,
                         status: data.status,
@@ -98,7 +100,7 @@ class Dashboard extends Component {
         else {
             return (
                 <Fragment>
-                    <Row>
+                    <Row className={style.specialRow}>
                         <Col sm={3} className={style.sidebarCol}>
                             <div className={style.sidebarDiv}>
                                 <h1 className={style.barraiser}>BarRaiser</h1>
@@ -138,7 +140,7 @@ class Dashboard extends Component {
                         <Col sm={9} className={style.contentCol}>
                             {pane === "home" && <Home/>}
                             {pane === "drinks" && <Drinks/>}
-                            {pane === "cohorts" && <Cohorts/>}
+                            {pane === "cohorts" && <Cohorts id={this.state.id}/>}
                             {pane === "help" && <Help/>}
                         </Col>
                     </Row>
