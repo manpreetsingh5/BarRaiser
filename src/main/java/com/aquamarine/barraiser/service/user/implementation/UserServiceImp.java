@@ -43,4 +43,9 @@ public class UserServiceImp implements UserService {
 
     }
 
+    @Override
+    public UserDTO findById(int id) {
+        return UserDTOMapper.toUserDTO(userRepository.findById(id).get());
+    }
+
 }

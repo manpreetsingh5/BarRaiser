@@ -50,18 +50,18 @@ public class CohortServiceImpl implements CohortService {
     private UserDTOMapper userDTOMapper = new UserDTOMapper();
 
     @Override
-    public int createCohort(CohortDTO cohortdto, MultipartFile multipartFile) throws IOException {
-        File file = imageService.convertMultiPartToFile(multipartFile);
-        String fileName = cohortdto.getDescription();
-        imageService.uploadFileToS3bucket(fileName, file, sub_folder);
+    public int createCohort(CohortDTO cohortdto) throws IOException {
+//        System.out.println(cohortdto);
+//        String fileName = cohortdto.getDescription();
+//        File file = imageService.convertMultiPartToFile(multipartFile, fileName);
+//        imageService.uploadFileToS3bucket(fileName, file, sub_folder);
 
         Cohort cohort = new Cohort()
+                .setName(cohortdto.getName())
                 .setDescription(cohortdto.getDescription())
                 .setInstructor(userRepository.findById(cohortdto.getInstructor()).get())
-                .setImage_path(sub_folder+"/"+fileName);
-
-        System.out.println(fileName);
-        System.out.println(sub_folder);
+                .setImage_path(cohortdto.getImage_path());
+//                .setImage_path(sub_folder+"/"+fileName);
 
 
         cohortRepository.save(cohort);

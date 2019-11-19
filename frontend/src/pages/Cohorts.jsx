@@ -26,20 +26,21 @@ class Cohorts extends Component {
         let file = form.elements.image.files[0];
 
         const cohort = {
-            description: form.elements.name.value,
+            name: form.elements.name.value,
+            description: form.elements.description.value,
             instructor: this.props.id,
             image_path: `/cohort/${form.elements.name.value}`
-        }
+        };
 
         let data = new FormData();
         data.append('file', file);
-        data.append('cohortDTO', cohort);
-        
-        console.log(data)
+        data.append('cohortDTO', JSON.stringify(cohort));
+
         fetch('api/cohort/addCohort', {
             method: 'POST',
-            body: data,
+            body: JSON.stringify(cohort),
             headers: {
+                'Content-Type': 'application/json',
                 'Authorization': 'Bearer '+ token,
             }
         })

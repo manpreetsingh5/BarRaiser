@@ -43,8 +43,9 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public File convertMultiPartToFile(MultipartFile file) throws IOException {
-        File convFile = new File(file.getOriginalFilename());
+    public File convertMultiPartToFile(MultipartFile file, String fileName) throws IOException {
+        System.out.println(file.getOriginalFilename());
+        File convFile = new File(fileName);
         FileOutputStream fos = new FileOutputStream(convFile);
         fos.write(file.getBytes());
         fos.close();

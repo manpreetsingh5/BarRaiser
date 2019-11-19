@@ -19,6 +19,9 @@ public class Cohort extends Auditable<String> {
     private Integer id;
 
     @Column(unique = true, nullable = false)
+    private String name;
+
+    @Column(nullable = false)
     private String description;
 
     @OneToOne

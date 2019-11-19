@@ -36,10 +36,10 @@ public class UserController {
     @Value("${app.awsServices.bucketName}")
     private String bucketName;
 
-    @RequestMapping(path="/getUser", method= RequestMethod.GET, headers = "Accept=application/json")
-    public @ResponseBody UserDTO getUser(@RequestBody UserDTO userDTO) {
+    @RequestMapping(path="/getUser/{player_id}", method= RequestMethod.GET, headers = "Accept=application/json")
+    public @ResponseBody UserDTO getUser(@PathVariable int player_id) {
 
-        return userService.findUserByEmail(userDTO.getEmail());
+        return userService.findById(player_id);
 
     }
 
@@ -57,7 +57,7 @@ public class UserController {
         try {
 
             //converting multipart file to file
-            File file = imageService.convertMultiPartToFile(multipartFile);
+            File file = imageService.convertMultiPartToFile(multipartFile, "test");
 
             //filename
             String fileName = multipartFile.getOriginalFilename();
@@ -85,7 +85,7 @@ public class UserController {
         try {
 
             //converting multipart file to file
-            File file = imageService.convertMultiPartToFile(multipartFile);
+            File file = imageService.convertMultiPartToFile(multipartFile, "test");
 
             //filename
             String fileName = multipartFile.getOriginalFilename();

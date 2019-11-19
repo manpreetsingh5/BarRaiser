@@ -20,6 +20,8 @@ import java.util.Set;
 public class CohortDTO  {
     private int id;
 
+    private String name;
+
     private String description;
 
     private int instructor;
