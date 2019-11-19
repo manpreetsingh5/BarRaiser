@@ -8,25 +8,31 @@
     overflow-x: hidden;
     color: #ffffff;
     z-index: 1;
+    position: fixed !important;
 }
-
-/* .contentCol {
-    background: #ea7fff;
-    background: linear-gradient(to right, #204237, #ea7fff);
-    height: 100vh;
-} */
 
 .sidebarDiv {
     text-align: center;
 }
 
+.contentCol {
+    margin-left: 25.6%;
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+    color: darkslategray;
+}
+
 .name {
     font-size: 20px;
     margin-bottom: 5px;
+    text-shadow: 0 3px 3px rgb(0,0,0.1);
+
 }
 
 .title {
-    font-size: 12px;;
+    font-size: 12px;
+    text-shadow: 0 3px 3px rgb(0,0,0.1);
+
 }
 
 .divider {
@@ -36,6 +42,8 @@
 
 .barraiser {
     margin-top: 10px;
+    text-shadow: 0 3px 3px rgb(0,0,0.1);
+
 }
 
 .icon {
@@ -61,4 +69,9 @@
 
 .btn {
     text-align: left !important;
+}
+
+.specialRow {
+    margin-right: -15px;
+    margin-left: -15px;
 }
