@@ -1,6 +1,5 @@
 import React, { Fragment, Component } from 'react';
-import { BrowserRouter as Router, Route, Link, Switch, Redirect } from "react-router-dom";
-import AuthenticationService from '../AuthenticationService';
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import style from '../style/Login.module.css';
 
 import Card from 'react-bootstrap/Card';
@@ -16,7 +15,8 @@ class Login extends Component {
     
         this.state = {
             showSuccessMessage: false,
-            hasLoginFailed: false
+            hasLoginFailed: false,
+            validCredentials: true
         };
     }
 
@@ -44,7 +44,9 @@ class Login extends Component {
         })
         .then(data => {
             if(data === null) {
-                console.log("oops");
+                this.setState({
+                    validCredentials: false
+                });
             }
             else {
                 console.log(data)
@@ -56,6 +58,10 @@ class Login extends Component {
     }
 
     render() {
+        let validCredentials = this.state.validCredentials;
+        let invalidMessage = "";
+        if(!validCredentials) invalidMessage = "Invalid credentials.";
+
         return (
             <Fragment>
                 <Row className={style.cardWrapper}>
@@ -69,6 +75,7 @@ class Login extends Component {
                                         <div className={style.titleDiv}>
                                             <h1>BarRaiser</h1>
                                             <p className={style.subtitle}>raising the bar of bartending, one click at a time</p>
+                                            <h6 className={style.invalid}>{invalidMessage}</h6>
                                         </div>
 
                                         {this.state.hasLoginFailed && <div className="alert alert-warning">Invalid Credentials</div>}
@@ -104,7 +111,7 @@ class Login extends Component {
                                                 </Button>
 
                                                 <Link to="/register">
-                                                    <p className={style.register} onClick={this.test}>Register</p>
+                                                    <p className={style.register}>Register</p>
                                                 </Link>
                                             </div>
                                         </Form>

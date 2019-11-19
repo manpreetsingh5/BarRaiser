@@ -1,5 +1,5 @@
 import React, { Fragment, Component } from 'react';
-import { BrowserRouter as Link } from "react-router-dom";
+import { Link, Redirect, withRouter } from "react-router-dom";
 import style from '../style/Register.module.css';
 
 import Card from 'react-bootstrap/Card';
@@ -70,6 +70,8 @@ class Register extends Component {
         event.preventDefault();
     }
 
+    handleChange = () => {}
+
     render() {
         let accepted = this.state.accepted;
         let validCredentials = this.state.validCredentials;
@@ -78,16 +80,13 @@ class Register extends Component {
         if(this.state.accepted) validMessage = "Account successfully created! Please return to the login page to login."
         if(!validCredentials) invalidMessage = "An account with that email has already been taken.";
 
-        // if(accepted) {
-        //     return (
-        //         <Redirect
-        //             to={{
-        //             pathname: "/login",
-        //             oops: "hello"
-        //             }}
-        //         />
-        //     )
-        // }
+        if(accepted) {
+            return (
+                <Redirect
+                    to={"/login"}
+                />
+            )
+        }
 
         return (
             <Fragment>
@@ -147,8 +146,8 @@ class Register extends Component {
                                             </Form.Group>
 
                                             <Form.Group controlId="type">
-                                                <Form.Check id="TRAINEE" type="radio" name="type" label="Trainee" inline checked/>
-                                                <Form.Check id="BARTENDER" type="radio" name="type" label="Bartender" inline />
+                                                <Form.Check id="TRAINEE" type="radio" onChange={this.handleChange} name="type" label="Trainee" inline checked/>
+                                                <Form.Check id="BARTENDER" type="radio" name="type" onChange={this.handleChange} label="Bartender" inline />
                                             </Form.Group>
                                             
 
@@ -161,8 +160,9 @@ class Register extends Component {
                                                 </Button>
 
                                                 <Link to="/login">
-                                                    <p className={style.register} onClick={this.test}>Return to login</p>
+                                                    <p className={style.register}>Return to login</p>
                                                 </Link>
+                                                
                                             </div>
                                         </Form>
                                     </div>
@@ -176,4 +176,4 @@ class Register extends Component {
     }
 }
 
-export default Register;
+export default withRouter(Register);

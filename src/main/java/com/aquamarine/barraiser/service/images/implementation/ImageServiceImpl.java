@@ -28,7 +28,6 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public void uploadFileToS3bucket(String fileName, File file, String sub_folder) {
-        System.out.println(bucketName+sub_folder);
         amazonS3Client.putObject(new PutObjectRequest(bucketName, sub_folder+fileName, file));
     }
 
