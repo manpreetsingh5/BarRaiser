@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.Set;
 
 public interface CohortService {
-    int createCohort(CohortDTO cohortdto, MultipartFile multipartFile) throws IOException;
+    int createCohort(CohortDTO cohortdto) throws IOException;
     void addUserToCohort(CohortDTO cohortDTO, UserDTO userdto);
     Set<UserDTO> getCohortUsers(CohortDTO cohortDTO);
     Set<CohortDTO> getUserCohorts(UserDTO userDTO);

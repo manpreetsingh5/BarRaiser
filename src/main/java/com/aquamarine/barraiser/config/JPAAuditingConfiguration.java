@@ -1,5 +1,7 @@
 package com.aquamarine.barraiser.config;
 
+import com.aquamarine.barraiser.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
@@ -11,6 +13,9 @@ import java.util.Optional;
 @Configuration
 @EnableJpaAuditing(auditorAwareRef = "auditorProvider")
 public class JPAAuditingConfiguration {
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Bean
     public AuditorAware<String> auditorProvider() {

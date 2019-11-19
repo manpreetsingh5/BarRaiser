@@ -11,7 +11,9 @@ import com.aquamarine.barraiser.model.User;
 import com.aquamarine.barraiser.security.CurrentUser;
 import com.aquamarine.barraiser.security.UserPrincipal;
 import com.aquamarine.barraiser.service.cohort.interfaces.CohortService;
+import com.aquamarine.barraiser.service.images.interfaces.ImageService;
 import com.aquamarine.barraiser.service.user.interfaces.UserService;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -40,15 +42,57 @@ public class CohortController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private ImageService imageService;
+
+    @Value("${app.awsServices.endpoint}")
+    private String endpointUrl;
+
+    @Value("${app.awsServices.bucketName}")
+    private String bucketName;
+
     @Value("/cohorts")
     private String folder;
 
-    @RequestMapping(path="/addCohort", method= RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-//    @PreAuthorize("hasAuthority('BARTENDER')")
-    public ResponseEntity addCohort(@RequestPart CohortDTO cohortDTO, @RequestPart(value = "file") MultipartFile multipartFile) throws IOException {
-
-        cohortService.createCohort(cohortDTO, multipartFile);
+    @RequestMapping(path="/addCohort", method= RequestMethod.POST)
+    @PreAuthorize("hasAuthority('BARTENDER')")
+    public ResponseEntity addCohort(@RequestBody CohortDTO cohortDTO) throws IOException {
+        cohortService.createCohort(cohortDTO);
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @RequestMapping(path="/uploadCohortPicture", method = RequestMethod.POST)
+    public void uploadFile(@RequestPart(value = "file") MultipartFile multipartFile){
+        String fileUrl = "";
+        String  status = null;
+
+        try {
+
+            //converting multipart file to file
+            File file = imageService.convertMultiPartToFile(multipartFile, "test");
+
+            //filename
+            String fileName = multipartFile.getOriginalFilename();
+            System.out.println(fileName);
+            fileUrl = endpointUrl + "/" + bucketName + "/" + fileName;
+            System.out.println(fileUrl);
+
+            imageService.uploadFileToS3bucket(fileName, file, "/images/cohorts");
+
+            file.delete();
+
+        } catch (Exception e) {
+
+            System.out.println(e.getMessage());
+
+        }
+
+    }
+
+    @Getter
+    public static class FormWrapper {
+        public MultipartFile file;
+        public CohortDTO cohortDTO;
     }
 
     @RequestMapping(path = "/deleteCohort", method = RequestMethod.DELETE)

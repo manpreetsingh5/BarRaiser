@@ -46,8 +46,9 @@ public class DrinkController {
 
     @RequestMapping(value = "/view", method = RequestMethod.GET)
     @PreAuthorize("hasAuthority('BARTENDER')")
-    public @ResponseBody List<DrinkDTO> viewDrinksByBartender(@RequestBody DrinkDTO drinkDTO){
-        return drinkService.viewDrinksByUser(drinkDTO);
+    public @ResponseBody Iterable<DrinkDTO> viewDrinksByBartender(@RequestBody DrinkDTO drinkDTO){
+//        return drinkService.viewDrinksByUser(drinkDTO.getCreatedBy());
+        return null;
 
     }
 
