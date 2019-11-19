@@ -15,6 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(path="/api/user")
 public class UserController {
@@ -34,14 +36,15 @@ public class UserController {
     @Value("${app.awsServices.bucketName}")
     private String bucketName;
 
-    @RequestMapping(path="/getUser/{player_id}", method= RequestMethod.GET, headers = "Accept=application/json")
-    public @ResponseBody
-    User getUser(@PathVariable int player_id) {
-        return userService.findUserById(player_id);
+    @RequestMapping(path="/getUser", method= RequestMethod.GET, headers = "Accept=application/json")
+    public @ResponseBody UserDTO getUser(@RequestBody UserDTO userDTO) {
+
+        return userService.findUserByEmail(userDTO.getEmail());
+
     }
 
     @RequestMapping(path="/allUsers", method= RequestMethod.GET, headers = "Accept=application/json")
-    public @ResponseBody Iterable<UserDTO> getAllUsers() {
+    public @ResponseBody List<UserDTO> getAllUsers() {
 
         return userService.findAll();
     }

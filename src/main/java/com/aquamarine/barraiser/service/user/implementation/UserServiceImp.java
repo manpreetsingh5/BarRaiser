@@ -30,13 +30,6 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public User findUserById(int id){
-
-        User user = userRepository.findById(id).get();
-        return user;
-    }
-
-    @Override
     public List<UserDTO> findAll(){
         List<User> arrayList = userRepository.findAll();
         List<UserDTO> dtoList = new ArrayList<>();

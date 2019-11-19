@@ -51,6 +51,13 @@ public class CohortController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    @RequestMapping(path = "/deleteCohort", method = RequestMethod.DELETE)
+    @PreAuthorize("hasAuthority('BARTENDER')")
+    public ResponseEntity deleteCohort(@RequestBody CohortDTO cohortDTO){
+        cohortService.deleteCohort(cohortDTO);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
     @RequestMapping(path="/addTrainee", method= RequestMethod.POST)
     @PreAuthorize("hasAuthority('BARTENDER')")
     public ResponseEntity addTraineeToCohort(@RequestBody CohortDTO cohortDTO, @RequestBody UserDTO userDTO) {
