@@ -43,7 +43,7 @@ public class CohortController {
     @Value("/cohorts")
     private String folder;
 
-    @RequestMapping(path="/addCohort", method= RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @RequestMapping(path="/addCohort", method= RequestMethod.POST, consumes = MediaType.MULTIPART_MIXED_VALUE)
 //    @PreAuthorize("hasAuthority('BARTENDER')")
     public ResponseEntity addCohort(@RequestPart CohortDTO cohortDTO, @RequestPart(value = "file") MultipartFile multipartFile) throws IOException {
 

@@ -91,7 +91,7 @@ public class DrinkServiceImp implements DrinkService {
     public void editDrink(DrinkDTO drink) {
         Drink drink1 = drinkRepository.findById(drink.getId()).get();
 
-        if (drink.getAdded_by() == userRepository.findByEmail(drink.getCreatedBy()).get().getId() ){
+        if (drink.getCreatedBy() == drink1.getCreatedBy()){
             drink1.setName(drink.getName());
             drink1.setImage_path(drink.getImage_path());
             drink1.setPublic(drink.isPublic());
