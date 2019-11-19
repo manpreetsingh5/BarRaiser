@@ -10,11 +10,11 @@ import java.util.Set;
 
 public interface CohortService {
     int createCohort(CohortDTO cohortdto) throws IOException;
-    void addUserToCohort(CohortDTO cohortDTO, UserDTO userdto);
-    Set<UserDTO> getCohortUsers(CohortDTO cohortDTO);
-    Set<CohortDTO> getUserCohorts(UserDTO userDTO);
-    Set<Object> findById(int id);
-    UserDTO deleteStudentFromCohort(CohortDTO cohortDTO, UserDTO userDTO);
+    void addUserToCohort(int cohort_id, int user_id);
+    Set<UserDTO> getCohortUsers(int cohort_id);
+    Set<CohortDTO> getUserCohorts(int user_id);
+    CohortDTO findById(int id);
+    UserDTO deleteStudentFromCohort(int cohort_id, int user_id);
     void deleteCohort(CohortDTO cohortDTO);
     ResponseEntity<byte[]> getCohortPicture(CohortDTO cohortDTO) throws IOException;
 
