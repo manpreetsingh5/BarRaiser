@@ -89,11 +89,6 @@ public class CohortController {
 
     }
 
-    @Getter
-    public static class FormWrapper {
-        public MultipartFile file;
-        public CohortDTO cohortDTO;
-    }
 
     @RequestMapping(path = "/deleteCohort", method = RequestMethod.DELETE)
     @PreAuthorize("hasAuthority('BARTENDER')")
@@ -102,30 +97,32 @@ public class CohortController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @RequestMapping(path="/addTrainee", method= RequestMethod.POST)
-    @PreAuthorize("hasAuthority('BARTENDER')")
-    public ResponseEntity addTraineeToCohort(@RequestBody CohortDTO cohortDTO, @RequestBody UserDTO userDTO) {
-        cohortService.addUserToCohort(cohortDTO, userDTO);
+    @RequestMapping(path="/addTrainee/{cohort_id}/{user_id}", method= RequestMethod.POST)
+//    @PreAuthorize("hasAuthority('BARTENDER')")
+    public ResponseEntity addTraineeToCohort( @PathVariable  int cohort_id,  @PathVariable int user_id) {
+        System.out.println(cohort_id);
+        System.out.println(user_id);
+        cohortService.addUserToCohort(cohort_id, user_id);
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @RequestMapping(path="/deleteTrainee", method= RequestMethod.POST)
-    @PreAuthorize("hasAuthority('BARTENDER')")
-    public ResponseEntity deleteTraineeToCohort(@RequestBody CohortDTO cohortDTO, @RequestBody UserDTO userDTO) {
-        cohortService.deleteStudentFromCohort(cohortDTO, userDTO);
+    @RequestMapping(path="/deleteTrainee/{cohort_id}/{user_id}", method= RequestMethod.POST)
+//    @PreAuthorize("hasAuthority('BARTENDER')")
+    public ResponseEntity deleteTraineeToCohort( @PathVariable  int cohort_id,  @PathVariable int user_id) {
+        cohortService.deleteStudentFromCohort(cohort_id, user_id);
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @RequestMapping(path="/viewTrainees", method= RequestMethod.GET)
     @PreAuthorize("hasAuthority('BARTENDER')")
-    public Set<UserDTO> viewTrainees(@RequestBody CohortDTO cohortDTO) {
-        return cohortService.getCohortUsers(cohortDTO);
+    public Set<UserDTO> viewTrainees(@PathVariable int cohort_id) {
+        return cohortService.getCohortUsers(cohort_id);
     }
 
-    @RequestMapping(path="/viewCohorts", method= RequestMethod.GET)
-    @PreAuthorize("hasAnyAuthority('BARTENDER', 'TRAINEE')")
-    public Set<CohortDTO> viewCohorts(@RequestBody UserDTO userDTO) {
-        return cohortService.getUserCohorts(userDTO);
+    @RequestMapping(path="/viewCohorts/{user_id}", method= RequestMethod.GET)
+//    @PreAuthorize("hasAnyAuthority('BARTENDER', 'TRAINEE')")
+    public Set<CohortDTO> viewCohorts(@PathVariable int user_id) {
+        return cohortService.getUserCohorts(user_id);
     }
 
     @RequestMapping(path="/getCohortPicture", method = RequestMethod.GET)
