@@ -15,7 +15,7 @@ public interface DrinkService {
 
     List<DrinkDTO> viewAllDrinks();
 
-    List<DrinkDTO> viewDrinksByUser(DrinkDTO drinkDTO);
+    List<DrinkDTO> viewDrinksByUser(String email);
 
     boolean editDrink(DrinkDTO drink);
 }

@@ -5,6 +5,8 @@ import com.aquamarine.barraiser.model.Drink;
 import com.aquamarine.barraiser.service.drink.interfaces.DrinkService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,21 +21,20 @@ public class DrinkController {
 
     @RequestMapping(value = "/addDrink", method = RequestMethod.POST)
     @PreAuthorize("hasAuthority('BARTENDER')")
-    public @ResponseBody Drink addNewDrink (@RequestBody DrinkDTO drink) {
-        return drinkService.addDrink(drink);
-
-        //return "Success\n";
+    public @ResponseBody ResponseEntity<?> addNewDrink (@RequestBody DrinkDTO drink) {
+        drinkService.addDrink(drink);
+        return new ResponseEntity<>("Drink added successfully", HttpStatus.OK);
     }
 
 
     @RequestMapping(value = "/deleteDrink", method = RequestMethod.DELETE)
     @PreAuthorize("hasAuthority('BARTENDER')")
-    public @ResponseBody String deleteDrink(@RequestBody DrinkDTO drinkDTO){
+    public @ResponseBody ResponseEntity<?> deleteDrink(@RequestBody DrinkDTO drinkDTO){
         if (drinkService.deleteDrink(drinkDTO.getId())){
-            return "Success\n";
+            return new ResponseEntity<>("Drink deleted successfully", HttpStatus.OK);
         }
         else{
-            return "You can't delete a drink that has not been added";
+            return new ResponseEntity<>("Drink not deleted successfully", HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -46,20 +47,18 @@ public class DrinkController {
 
     @RequestMapping(value = "/view", method = RequestMethod.GET)
     @PreAuthorize("hasAuthority('BARTENDER')")
-    public @ResponseBody Iterable<DrinkDTO> viewDrinksByBartender(@RequestBody DrinkDTO drinkDTO){
-//        return drinkService.viewDrinksByUser(drinkDTO.getCreatedBy());
-        return null;
-
+    public @ResponseBody List<DrinkDTO> viewDrinksByBartender(@RequestParam String email){
+        return drinkService.viewDrinksByUser(email);
     }
 
     @RequestMapping(value = "/editDrink", method = RequestMethod.POST)
     @PreAuthorize("hasAuthority('BARTENDER')")
-    public @ResponseBody String editDrink (@RequestBody DrinkDTO drink) {
+    public @ResponseBody ResponseEntity<?> editDrink (@RequestBody DrinkDTO drink) {
         if (drinkService.editDrink(drink)){
-            return "Success\n";
+            return new ResponseEntity<>("Drink deleted successfully", HttpStatus.OK);
         }
 
-        return "Could not edit";
+        return new ResponseEntity<>("Drink not deleted successfully", HttpStatus.BAD_REQUEST);
     }
 
 

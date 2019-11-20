@@ -69,12 +69,12 @@ public class DrinkServiceImp implements DrinkService {
     }
 
     @Override
-    public List<DrinkDTO> viewDrinksByUser(DrinkDTO drink1) {
+    public List<DrinkDTO> viewDrinksByUser(String email) {
         List<Drink> drinks = drinkRepository.findAll();
         List<DrinkDTO> drinksById = new ArrayList<>();
 
         for (Drink drink: drinks){
-            if (drink.getCreatedBy().equals(drink1.getCreatedBy())){
+            if (drink.getCreatedBy().equals(email)){
                 DrinkDTO drinkDTO = drinkDTOMapper.toDrinkDTO(drink);
                 drinksById.add(drinkDTO);
             }
