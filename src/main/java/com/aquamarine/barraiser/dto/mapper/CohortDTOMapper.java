@@ -8,6 +8,10 @@ public class CohortDTOMapper {
         return new CohortDTO()
                 .setId(cohort.getId())
                 .setDescription(cohort.getDescription())
+                .setName(cohort.getName())
+                .setImage_path(cohort.getImage_path())
+                .setCreatedBy(cohort.getCreatedBy())
+                .setCreatedDate(cohort.getCreatedDate())
                 .setInstructor(cohort.getInstructor().getId())
                 .setUser(cohort.getUser());
     }

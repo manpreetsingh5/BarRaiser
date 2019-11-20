@@ -25,9 +25,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class CohortServiceImpl implements CohortService {
@@ -50,18 +48,16 @@ public class CohortServiceImpl implements CohortService {
     private UserDTOMapper userDTOMapper = new UserDTOMapper();
 
     @Override
-    public int createCohort(CohortDTO cohortdto) throws IOException {
-//        System.out.println(cohortdto);
-//        String fileName = cohortdto.getDescription();
-//        File file = imageService.convertMultiPartToFile(multipartFile, fileName);
-//        imageService.uploadFileToS3bucket(fileName, file, sub_folder);
+    public int createCohort(CohortDTO cohortdto, MultipartFile multipartFile) throws IOException {
+        String fileName = cohortdto.getName();
+        File file = imageService.convertMultiPartToFile(multipartFile, fileName);
+        imageService.uploadFileToS3bucket(fileName, file, sub_folder);
 
         Cohort cohort = new Cohort()
                 .setName(cohortdto.getName())
                 .setDescription(cohortdto.getDescription())
                 .setInstructor(userRepository.findById(cohortdto.getInstructor()).get())
-                .setImage_path(cohortdto.getImage_path());
-//                .setImage_path(sub_folder+"/"+fileName);
+                .setImage_path(sub_folder+fileName);
 
 
         cohortRepository.save(cohort);
@@ -78,9 +74,8 @@ public class CohortServiceImpl implements CohortService {
     }
 
     @Override
-    public ResponseEntity<byte[]> getCohortPicture(CohortDTO cohortDTO) throws IOException {
-        Cohort cohort = cohortRepository.findById(cohortDTO.getId()).get();
-        System.out.println(bucketName+sub_folder+cohort.getDescription());
+    public ResponseEntity<byte[]> getCohortPicture(int cohort_id) throws IOException {
+        Cohort cohort = cohortRepository.findById(cohort_id).get();
         InputStream in = imageService.downloadFileFromS3bucket(bucketName, cohort.getImage_path()).getObjectContent();
         BufferedImage imageFromAWS = ImageIO.read(in);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -98,7 +93,6 @@ public class CohortServiceImpl implements CohortService {
 
     @Override
     public void addUserToCohort(int cohort_id, int user_id) {
-        System.out.println("ID is" + cohort_id);
         if (cohortRepository.findById(cohort_id).isPresent()) {
             Cohort cohort = cohortRepository.findById(cohort_id).get();
 
@@ -106,18 +100,23 @@ public class CohortServiceImpl implements CohortService {
             users.add(userRepository.findById(user_id).get());
 
             cohort.setUser(users);
-            System.out.println(users.size());
             cohortRepository.save(cohort);
         }
     }
 
     @Override
-    public CohortDTO findById(int id) {
-        HashSet<Object> ret = new HashSet<>();
-        System.out.println(id);
-        Cohort res = cohortRepository.findById(id).get();
-        ret.add(Arrays.asList(CohortDTOMapper.toCohortDTO(res), imageService.downloadFileFromS3bucket(res.getImage_path(), "/cohorts/")));
-        return CohortDTOMapper.toCohortDTO(res);
+    public Map<String, Object> findById(int id) throws IOException {
+        HashMap<String, Object> ret = new HashMap<>();
+        CohortDTO cohortDTO = CohortDTOMapper.toCohortDTO(cohortRepository.findById(id).get());
+        ret.put("cohort", cohortDTO);
+        InputStream in = imageService.downloadFileFromS3bucket(bucketName, cohortDTO.getImage_path()).getObjectContent();
+        BufferedImage imageFromAWS = ImageIO.read(in);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(imageFromAWS, "png", baos );
+        byte[] imageBytes = baos.toByteArray();
+        in.close();
+        ret.put("file", Base64.getEncoder().encode(imageBytes));
+        return ret;
     }
 
     @Override

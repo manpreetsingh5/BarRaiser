@@ -32,15 +32,18 @@ class Cohorts extends Component {
             image_path: `/cohort/${form.elements.name.value}`
         };
 
+        const blob = new Blob([JSON.stringify(cohort)], {
+            type: 'application/json'
+        });
+
         let data = new FormData();
         data.append('file', file);
-        data.append('cohortDTO', JSON.stringify(cohort));
+        data.append('cohortDTO', blob);
 
         fetch('api/cohort/addCohort', {
             method: 'POST',
-            body: JSON.stringify(cohort),
+            body: data,
             headers: {
-                'Content-Type': 'application/json',
                 'Authorization': 'Bearer '+ token,
             }
         })

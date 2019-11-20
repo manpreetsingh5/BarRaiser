@@ -56,8 +56,8 @@ public class CohortController {
 
     @RequestMapping(path="/addCohort", method= RequestMethod.POST)
     @PreAuthorize("hasAuthority('BARTENDER')")
-    public ResponseEntity addCohort(@RequestBody CohortDTO cohortDTO) throws IOException {
-        cohortService.createCohort(cohortDTO);
+    public ResponseEntity addCohort(@RequestPart(value = "file") MultipartFile multipartFile, @RequestPart CohortDTO cohortDTO) throws IOException {
+        cohortService.createCohort(cohortDTO, multipartFile);
         return new ResponseEntity(HttpStatus.OK);
     }
 
@@ -82,9 +82,7 @@ public class CohortController {
             file.delete();
 
         } catch (Exception e) {
-
             System.out.println(e.getMessage());
-
         }
 
     }
@@ -92,23 +90,23 @@ public class CohortController {
 
     @RequestMapping(path = "/deleteCohort", method = RequestMethod.DELETE)
     @PreAuthorize("hasAuthority('BARTENDER')")
-    public ResponseEntity deleteCohort(@RequestBody CohortDTO cohortDTO){
+    public ResponseEntity deleteCohort(@RequestParam CohortDTO cohortDTO){
         cohortService.deleteCohort(cohortDTO);
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @RequestMapping(path="/addTrainee/{cohort_id}/{user_id}", method= RequestMethod.POST)
+    @RequestMapping(path="/addTrainee", method= RequestMethod.POST)
 //    @PreAuthorize("hasAuthority('BARTENDER')")
-    public ResponseEntity addTraineeToCohort( @PathVariable  int cohort_id,  @PathVariable int user_id) {
+    public ResponseEntity addTraineeToCohort( @RequestParam  int cohort_id,  @RequestParam int user_id) {
         System.out.println(cohort_id);
         System.out.println(user_id);
         cohortService.addUserToCohort(cohort_id, user_id);
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @RequestMapping(path="/deleteTrainee/{cohort_id}/{user_id}", method= RequestMethod.POST)
+    @RequestMapping(path="/deleteTrainee", method= RequestMethod.POST)
 //    @PreAuthorize("hasAuthority('BARTENDER')")
-    public ResponseEntity deleteTraineeToCohort( @PathVariable  int cohort_id,  @PathVariable int user_id) {
+    public ResponseEntity deleteTraineeToCohort( @RequestParam  int cohort_id,  @RequestParam int user_id) {
         cohortService.deleteStudentFromCohort(cohort_id, user_id);
         return new ResponseEntity(HttpStatus.OK);
     }
@@ -127,8 +125,14 @@ public class CohortController {
 
     @RequestMapping(path="/getCohortPicture", method = RequestMethod.GET)
 //    @PreAuthorize("hasAnyAuthority('BARTENDER', 'TRAINEE')")
-    public ResponseEntity<byte[]> getCohortPicture(@RequestBody CohortDTO cohortDTO) throws IOException {
+    public ResponseEntity<byte[]> getCohortPicture(int cohort_id) throws IOException {
         System.out.println("HERE");
-        return cohortService.getCohortPicture(cohortDTO);
+        return cohortService.getCohortPicture(cohort_id);
+    }
+
+    @RequestMapping(path="/getCohort", method = RequestMethod.GET)
+    @ResponseBody
+    public Map<String, Object> getCohort(@RequestParam int cohort_id) throws IOException {
+        return cohortService.findById(cohort_id);
     }
 }

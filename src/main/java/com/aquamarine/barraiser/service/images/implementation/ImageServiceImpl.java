@@ -33,6 +33,8 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public S3Object downloadFileFromS3bucket(String fileName, String sub_folder) {
+        System.out.println(bucketName);
+        System.out.println(sub_folder);
         S3Object object = this.amazonS3Client.getObject(bucketName, sub_folder);
         return object;
     }
