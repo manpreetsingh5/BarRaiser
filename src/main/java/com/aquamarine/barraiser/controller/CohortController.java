@@ -11,7 +11,9 @@ import com.aquamarine.barraiser.model.User;
 import com.aquamarine.barraiser.security.CurrentUser;
 import com.aquamarine.barraiser.security.UserPrincipal;
 import com.aquamarine.barraiser.service.cohort.interfaces.CohortService;
+import com.aquamarine.barraiser.service.images.interfaces.ImageService;
 import com.aquamarine.barraiser.service.user.interfaces.UserService;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -40,16 +42,53 @@ public class CohortController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private ImageService imageService;
+
+    @Value("${app.awsServices.endpoint}")
+    private String endpointUrl;
+
+    @Value("${app.awsServices.bucketName}")
+    private String bucketName;
+
     @Value("/cohorts")
     private String folder;
 
-    @RequestMapping(path="/addCohort", method= RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-//    @PreAuthorize("hasAuthority('BARTENDER')")
-    public ResponseEntity addCohort(@RequestPart CohortDTO cohortDTO, @RequestPart(value = "file") MultipartFile multipartFile) throws IOException {
-
-        cohortService.createCohort(cohortDTO, multipartFile);
+    @RequestMapping(path="/addCohort", method= RequestMethod.POST)
+    @PreAuthorize("hasAuthority('BARTENDER')")
+    public ResponseEntity addCohort(@RequestBody CohortDTO cohortDTO) throws IOException {
+        cohortService.createCohort(cohortDTO);
         return new ResponseEntity(HttpStatus.OK);
     }
+
+    @RequestMapping(path="/uploadCohortPicture", method = RequestMethod.POST)
+    public void uploadFile(@RequestPart(value = "file") MultipartFile multipartFile){
+        String fileUrl = "";
+        String  status = null;
+
+        try {
+
+            //converting multipart file to file
+            File file = imageService.convertMultiPartToFile(multipartFile, "test");
+
+            //filename
+            String fileName = multipartFile.getOriginalFilename();
+            System.out.println(fileName);
+            fileUrl = endpointUrl + "/" + bucketName + "/" + fileName;
+            System.out.println(fileUrl);
+
+            imageService.uploadFileToS3bucket(fileName, file, "/images/cohorts");
+
+            file.delete();
+
+        } catch (Exception e) {
+
+            System.out.println(e.getMessage());
+
+        }
+
+    }
+
 
     @RequestMapping(path = "/deleteCohort", method = RequestMethod.DELETE)
     @PreAuthorize("hasAuthority('BARTENDER')")
@@ -58,30 +97,32 @@ public class CohortController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @RequestMapping(path="/addTrainee", method= RequestMethod.POST)
-    @PreAuthorize("hasAuthority('BARTENDER')")
-    public ResponseEntity addTraineeToCohort(@RequestBody CohortDTO cohortDTO, @RequestBody UserDTO userDTO) {
-        cohortService.addUserToCohort(cohortDTO, userDTO);
+    @RequestMapping(path="/addTrainee/{cohort_id}/{user_id}", method= RequestMethod.POST)
+//    @PreAuthorize("hasAuthority('BARTENDER')")
+    public ResponseEntity addTraineeToCohort( @PathVariable  int cohort_id,  @PathVariable int user_id) {
+        System.out.println(cohort_id);
+        System.out.println(user_id);
+        cohortService.addUserToCohort(cohort_id, user_id);
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @RequestMapping(path="/deleteTrainee", method= RequestMethod.POST)
-    @PreAuthorize("hasAuthority('BARTENDER')")
-    public ResponseEntity deleteTraineeToCohort(@RequestBody CohortDTO cohortDTO, @RequestBody UserDTO userDTO) {
-        cohortService.deleteStudentFromCohort(cohortDTO, userDTO);
+    @RequestMapping(path="/deleteTrainee/{cohort_id}/{user_id}", method= RequestMethod.POST)
+//    @PreAuthorize("hasAuthority('BARTENDER')")
+    public ResponseEntity deleteTraineeToCohort( @PathVariable  int cohort_id,  @PathVariable int user_id) {
+        cohortService.deleteStudentFromCohort(cohort_id, user_id);
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @RequestMapping(path="/viewTrainees", method= RequestMethod.GET)
     @PreAuthorize("hasAuthority('BARTENDER')")
-    public Set<UserDTO> viewTrainees(@RequestBody CohortDTO cohortDTO) {
-        return cohortService.getCohortUsers(cohortDTO);
+    public Set<UserDTO> viewTrainees(@PathVariable int cohort_id) {
+        return cohortService.getCohortUsers(cohort_id);
     }
 
-    @RequestMapping(path="/viewCohorts", method= RequestMethod.GET)
-    @PreAuthorize("hasAnyAuthority('BARTENDER', 'TRAINEE')")
-    public Set<CohortDTO> viewCohorts(@RequestBody UserDTO userDTO) {
-        return cohortService.getUserCohorts(userDTO);
+    @RequestMapping(path="/viewCohorts/{user_id}", method= RequestMethod.GET)
+//    @PreAuthorize("hasAnyAuthority('BARTENDER', 'TRAINEE')")
+    public Set<CohortDTO> viewCohorts(@PathVariable int user_id) {
+        return cohortService.getUserCohorts(user_id);
     }
 
     @RequestMapping(path="/getCohortPicture", method = RequestMethod.GET)

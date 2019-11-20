@@ -1,5 +1,5 @@
 import React, {Fragment, Component} from 'react';
-import { BrowserRouter as Link, Redirect, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import styles from '../style/Error.module.css';
 
 import Button from 'react-bootstrap/Button';

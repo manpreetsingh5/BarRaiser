@@ -10,10 +10,11 @@ class Load extends Component {
         return (
             <Fragment>
                 <div className={style.loadingDiv}>
-                    <Spinner animation="grow" role="status" className={style.spinner}>
+                    
+                    <div className={style.loadMessageDiv}>
+                    <Spinner animation="border" role="status" className={style.spinner}>
                         <span className="sr-only">Loading...</span>
                     </Spinner>
-                    <div className={style.loadMessageDiv}>
                         <h4>Loading...</h4>
                     </div>
                 </div>

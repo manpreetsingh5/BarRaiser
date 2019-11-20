@@ -28,7 +28,7 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public void uploadFileToS3bucket(String fileName, File file, String sub_folder) {
-        amazonS3Client.putObject(new PutObjectRequest(bucketName+sub_folder, fileName, file));
+        amazonS3Client.putObject(new PutObjectRequest(bucketName, sub_folder+fileName, file));
     }
 
     @Override
@@ -43,8 +43,9 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public File convertMultiPartToFile(MultipartFile file) throws IOException {
-        File convFile = new File(file.getOriginalFilename());
+    public File convertMultiPartToFile(MultipartFile file, String fileName) throws IOException {
+        System.out.println(file.getOriginalFilename());
+        File convFile = new File(fileName);
         FileOutputStream fos = new FileOutputStream(convFile);
         fos.write(file.getBytes());
         fos.close();

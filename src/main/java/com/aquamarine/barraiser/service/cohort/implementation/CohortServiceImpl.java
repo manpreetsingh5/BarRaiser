@@ -50,15 +50,19 @@ public class CohortServiceImpl implements CohortService {
     private UserDTOMapper userDTOMapper = new UserDTOMapper();
 
     @Override
-    public int createCohort(CohortDTO cohortdto, MultipartFile multipartFile) throws IOException {
-        File file = imageService.convertMultiPartToFile(multipartFile);
-        String fileName = cohortdto.getDescription();
-        imageService.uploadFileToS3bucket(fileName, file, sub_folder);
+    public int createCohort(CohortDTO cohortdto) throws IOException {
+//        System.out.println(cohortdto);
+//        String fileName = cohortdto.getDescription();
+//        File file = imageService.convertMultiPartToFile(multipartFile, fileName);
+//        imageService.uploadFileToS3bucket(fileName, file, sub_folder);
 
         Cohort cohort = new Cohort()
+                .setName(cohortdto.getName())
                 .setDescription(cohortdto.getDescription())
                 .setInstructor(userRepository.findById(cohortdto.getInstructor()).get())
-                .setImage_path(sub_folder+"/"+fileName);
+                .setImage_path(cohortdto.getImage_path());
+//                .setImage_path(sub_folder+"/"+fileName);
+
 
         cohortRepository.save(cohort);
 
@@ -77,7 +81,7 @@ public class CohortServiceImpl implements CohortService {
     public ResponseEntity<byte[]> getCohortPicture(CohortDTO cohortDTO) throws IOException {
         Cohort cohort = cohortRepository.findById(cohortDTO.getId()).get();
         System.out.println(bucketName+sub_folder+cohort.getDescription());
-        InputStream in = imageService.downloadFileFromS3bucket(bucketName, "images" + cohort.getImage_path()).getObjectContent();
+        InputStream in = imageService.downloadFileFromS3bucket(bucketName, cohort.getImage_path()).getObjectContent();
         BufferedImage imageFromAWS = ImageIO.read(in);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ImageIO.write(imageFromAWS, "png", baos );
@@ -93,14 +97,13 @@ public class CohortServiceImpl implements CohortService {
     }
 
     @Override
-    public void addUserToCohort(CohortDTO cohortDTO, UserDTO userDTO) {
-        int cohortID = cohortDTO.getId();
-        System.out.println("ID is" + cohortID);
-        if (cohortRepository.findById(1).isPresent()) {
-            Cohort cohort = cohortRepository.findById(1).get();
+    public void addUserToCohort(int cohort_id, int user_id) {
+        System.out.println("ID is" + cohort_id);
+        if (cohortRepository.findById(cohort_id).isPresent()) {
+            Cohort cohort = cohortRepository.findById(cohort_id).get();
 
             Set<User> users = cohort.getUser();
-            users.add(userRepository.findById(userDTO.getId()).get());
+            users.add(userRepository.findById(user_id).get());
 
             cohort.setUser(users);
             System.out.println(users.size());
@@ -109,22 +112,21 @@ public class CohortServiceImpl implements CohortService {
     }
 
     @Override
-    public Set<Object> findById(int id) {
+    public CohortDTO findById(int id) {
         HashSet<Object> ret = new HashSet<>();
         System.out.println(id);
         Cohort res = cohortRepository.findById(id).get();
         ret.add(Arrays.asList(CohortDTOMapper.toCohortDTO(res), imageService.downloadFileFromS3bucket(res.getImage_path(), "/cohorts/")));
-        return ret;
+        return CohortDTOMapper.toCohortDTO(res);
     }
 
     @Override
-    public UserDTO deleteStudentFromCohort(CohortDTO cohortDTO, UserDTO userDTO) {
-        int cohortID = cohortDTO.getId();
-        if (cohortRepository.findById(cohortID).isPresent()) {
-            Cohort cohort = cohortRepository.findById(cohortID).get();
+    public UserDTO deleteStudentFromCohort(int cohort_id, int user_id) {
+        if (cohortRepository.findById(cohort_id).isPresent()) {
+            Cohort cohort = cohortRepository.findById(cohort_id).get();
 
             Set<User> users = cohort.getUser();
-            User user = userRepository.findById(userDTO.getId()).get();
+            User user = userRepository.findById(user_id).get();
 
             users.remove(user);
 
@@ -138,8 +140,8 @@ public class CohortServiceImpl implements CohortService {
     }
 
     @Override
-    public Set<UserDTO> getCohortUsers(CohortDTO cohortDTO) {
-        Set<User> users = cohortRepository.findById(cohortDTO.getId()).get().getUser();
+    public Set<UserDTO> getCohortUsers(int cohort_id) {
+        Set<User> users = cohortRepository.findById(cohort_id).get().getUser();
         Set<UserDTO> res = new HashSet<>();
 
         for (User user : users) {
@@ -150,20 +152,23 @@ public class CohortServiceImpl implements CohortService {
     }
 
     @Override
-    public Set<CohortDTO> getUserCohorts(UserDTO userDTO) {
-        String status = userDTO.getStatus();
+    public Set<CohortDTO> getUserCohorts(int user_id) {
+        User user = userRepository.findById(user_id).get();
+        String status = user.getStatus();
         Set<CohortDTO> res = new HashSet<>();
 
-        if (status == "BARTENDER") {
-            Set<Cohort> cohorts = cohortRepository.findAllByInstructor(userRepository.findById(userDTO.getId()).get());
+        if (status.equals("BARTENDER")) {
+            Set<Cohort> cohorts = cohortRepository.findAllByInstructor(userRepository.findById(user_id).get());
             for (Cohort c : cohorts) {
+                c.setUser(null);
                 res.add(CohortDTOMapper.toCohortDTO(c));
             }
         }
-        else if (status == "TRAINEE") {
-            Set<Cohort> cohorts = userRepository.findById(userDTO.getId()).get().getCohort();
+        else if (status.equals("TRAINEE")) {
+            Set<Cohort> cohorts = userRepository.findById(user_id).get().getCohort();
 
             for (Cohort c : cohorts) {
+                c.setUser(null);
                 res.add(CohortDTOMapper.toCohortDTO(c));
             }
         }

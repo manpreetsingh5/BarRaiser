@@ -49,7 +49,6 @@ public class DrinkController {
     @PreAuthorize("hasAuthority('BARTENDER')")
     public @ResponseBody List<DrinkDTO> viewDrinksByBartender(@RequestParam String email){
         return drinkService.viewDrinksByUser(email);
-
     }
 
     @RequestMapping(value = "/editDrink", method = RequestMethod.POST)
