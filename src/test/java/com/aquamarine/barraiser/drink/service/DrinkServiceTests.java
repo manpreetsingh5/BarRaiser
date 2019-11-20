@@ -64,7 +64,7 @@ public class DrinkServiceTests {
     private List <Drink> drinks = new ArrayList<>();
 
     @Before
-    public void setUp(){
+    public void setup(){
 
         drink1.setName("Bourbon");
         drink1.setId(1);
@@ -103,10 +103,9 @@ public class DrinkServiceTests {
 
     @Test
     public void testFindByBartender(){
-        DrinkDTO drinkDTO = new DrinkDTO();
-        drinkDTO.setCreatedBy("george@whitehouse.gov");
+        String emailOfUser = "george@whitehouse.gov";
 
-        List <DrinkDTO> drinksByBartender = drinkService.viewDrinksByUser(drinkDTO);
+        List <DrinkDTO> drinksByBartender = drinkService.viewDrinksByUser(emailOfUser);
 
         assertNotNull(drinksByBartender);
         assertEquals(1, drinksByBartender.size());
