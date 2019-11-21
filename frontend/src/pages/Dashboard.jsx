@@ -36,7 +36,7 @@ class Dashboard extends Component {
 
     componentDidMount() {
         let token = localStorage.getItem("accessToken")
-        fetch(`api/user/getUser/${this.props.userId}`, {
+        fetch(`api/user/getUser?player_id=${this.props.userId}`, {
             method: 'GET',
             headers: {
                 'Authorization': 'Bearer '+ token,
