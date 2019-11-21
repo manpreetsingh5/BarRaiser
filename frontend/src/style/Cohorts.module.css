@@ -35,6 +35,74 @@
     margin-top: 5%;
 }
 
-.cohortsListDiv {
-    margin-top: 5%;
+.card {
+    border: 0 !important;
+    /* width: 40em; */
+    box-shadow: 2px 2px 7px rgba(0,0,0,0.7);
+    margin: 5% 0 5% 0;
+}
+
+.cohortTitle {
+    font-weight: 300
+}
+
+.cohortRow {
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.p {
+    margin: 0;
+}
+
+.span {
+    font-size: 14px;
+}
+
+.strong {
+    font-size: 14px;
+}
+
+.cohortButtonsRow {
+    margin-top: 10px;
+}
+
+.cohortButtonsDiv {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.buttonText {
+    margin-left: 5px;
+}
+
+.middleButton {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.modal {
+    width: 50% !important;
+    max-width: none!important;
+}
+
+.deleteModalButtons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.deleteButton {
+    margin-right: 5px;
+}
+
+.returnButton {
+    margin-left: 5px;
+}
+
+.deleteHeader {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
 }
