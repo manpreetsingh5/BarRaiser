@@ -1,5 +1,6 @@
 import React, { Fragment, Component } from 'react';
 import Empty from './Empty';
+import Load from './Load';
 import style from '../style/Cohorts.module.css';
 
 import Row from 'react-bootstrap/Row';
@@ -13,7 +14,8 @@ class Cohorts extends Component {
 
         this.state = {
             show: false,
-            cohorts: []
+            cohorts: [],
+            isLoaded: false
         };
     }
 
@@ -68,7 +70,12 @@ class Cohorts extends Component {
         })
     }
 
-    callback = (cohorts) => {this.setState({cohorts: cohorts})}
+    callback = (cohorts) => {
+        this.setState({
+            cohorts: cohorts,
+            isLoaded: true
+        })
+    }
 
     handleShow = () => {this.setState({show: true})}
 
@@ -116,6 +123,7 @@ class Cohorts extends Component {
         let show = this.state.show;
         let cohorts = this.state.cohorts;
         let cohortsList = []
+        let isLoaded = this.state.isLoaded;
         // let Empty = null
 
         // if(cohorts.length) {
@@ -129,108 +137,105 @@ class Cohorts extends Component {
 
         if(cohorts.length) {
             if("file" in cohorts[0]) {
-                cohorts.forEach(el => {
-                    console.log(el)
+                cohorts.sort((a, b) => (a.name > b.name) ? 1 : -1)
+                cohorts.forEach(el => 
                     cohortsList.push(
                         <div className={style.cohortsListDiv} key={el.id}>
                             <h4>{el.name}</h4>
                             <p>{el.description}</p>
-                            <img src={`data:image/png[jpg];base64,${el.file}`} />
+                            <img src={`data:image/png;base64,${el.file}`} />
                         </div>
                     )
-                }
-                    
                 )
             }
         }
-        
-        
 
-        // cohorts.forEach(el => 
-        //     cohortsList.push(
-        //         <div className={style.cohortsListDiv} key={el.id}>
-        //             <h4>{el.name}</h4>
-        //             <p>{el.description}</p>
-        //             <img src={`data:image/png[jpg];base64,${el.file}`} />
-        //         </div>
-        //     )
-        // )
-
-        return (
-            <Fragment>
-                <Row className={style.titleContainer}>
-                    <div className={style.titleDiv}>
-                        <h3>Cohorts</h3>
-                    </div>
-                </Row>
-
-                <Row className={style.contentContainer}>
-                    <div className={style.contentDiv}>
-                        <div>
-                            <h4>Your Cohorts</h4>
+        if(!isLoaded) {
+            return (
+                <Fragment>
+                    <Row className={style.titleContainer}>
+                        <div className={style.titleDiv}>
+                            <h3>Cohorts</h3>
                         </div>
-
-                        <div>
-                            <Button variant="primary" onClick={this.handleShow}>
-                                Add Cohort
-                            </Button>
-
-                            <Modal show={show} onHide={this.handleClose} centered>
-                                <Modal.Header closeButton>
-                                    <Modal.Title>Add Cohort</Modal.Title>
-                                </Modal.Header>
-
-                                <Modal.Body>
-                                    <Form onSubmit={this.handleSubmit}>
-                                        <Form.Group controlId="name">
-                                            <Form.Label>Name</Form.Label>
-
-                                            <Form.Control 
-                                                required
-                                                type="name" 
-                                                placeholder="Enter name" 
-                                            />
-
-                                        </Form.Group>
-
-                                        <Form.Group controlId="description">
-                                            <Form.Label>Description</Form.Label>
-                                            <Form.Control 
-                                                required
-                                                as="textarea"
-                                                placeholder="Enter description" 
-                                            />
-                                        </Form.Group>
-
-                                        <Form.Group controlId="image">
-                                            <Form.Label>Image</Form.Label>
-                                            <Form.Control 
-                                                required
-                                                type="file"
-                                            />
-                                        </Form.Group>
-
-                                        <Modal.Footer>
-                                            <Button variant="secondary" onClick={this.handleClose}>
-                                                Close
-                                            </Button>
-
-                                            <Button variant="primary" type="submit">
-                                                Save Changes
-                                            </Button>
-                                        </Modal.Footer>
-                                    </Form>
-                                </Modal.Body>
-                            </Modal>
+                    </Row>
+                        <Load/>
+                </Fragment>
+            )
+        }
+        else {
+            return (
+                <Fragment>
+                    <Row className={style.titleContainer}>
+                        <div className={style.titleDiv}>
+                            <h3>Cohorts</h3>
                         </div>
-                        {cohortsList}
-                        {/* {Empty}
-                        {cohortsList} */}
-
-                    </div>
-                </Row>
-            </Fragment>
-        );
+                    </Row>
+    
+                    <Row className={style.contentContainer}>
+                        <div className={style.contentDiv}>
+                            <div>
+                                <h4>Your Cohorts</h4>
+                            </div>
+    
+                            <div>
+                                <Button variant="primary" onClick={this.handleShow}>
+                                    Add Cohort
+                                </Button>
+    
+                                <Modal show={show} onHide={this.handleClose} centered>
+                                    <Modal.Header closeButton>
+                                        <Modal.Title>Add Cohort</Modal.Title>
+                                    </Modal.Header>
+    
+                                    <Modal.Body>
+                                        <Form onSubmit={this.handleSubmit}>
+                                            <Form.Group controlId="name">
+                                                <Form.Label>Name</Form.Label>
+    
+                                                <Form.Control 
+                                                    required
+                                                    type="name" 
+                                                    placeholder="Enter name" 
+                                                />
+    
+                                            </Form.Group>
+    
+                                            <Form.Group controlId="description">
+                                                <Form.Label>Description</Form.Label>
+                                                <Form.Control 
+                                                    required
+                                                    as="textarea"
+                                                    placeholder="Enter description" 
+                                                />
+                                            </Form.Group>
+    
+                                            <Form.Group controlId="image">
+                                                <Form.Label>Image</Form.Label>
+                                                <Form.Control 
+                                                    required
+                                                    type="file"
+                                                />
+                                            </Form.Group>
+    
+                                            <Modal.Footer>
+                                                <Button variant="secondary" onClick={this.handleClose}>
+                                                    Close
+                                                </Button>
+    
+                                                <Button variant="primary" type="submit">
+                                                    Save Changes
+                                                </Button>
+                                            </Modal.Footer>
+                                        </Form>
+                                    </Modal.Body>
+                                </Modal>
+                            </div>
+                            {cohortsList}
+                        </div>
+                    </Row>
+                </Fragment>
+            );
+        }
     }
 }
 

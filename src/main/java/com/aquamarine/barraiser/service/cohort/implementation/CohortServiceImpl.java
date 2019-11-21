@@ -115,7 +115,7 @@ public class CohortServiceImpl implements CohortService {
         ImageIO.write(imageFromAWS, "png", baos );
         byte[] imageBytes = baos.toByteArray();
         in.close();
-        ret.put("file", Base64.getEncoder().encode(imageBytes));
+        ret.put("file", imageBytes);
         return ret;
     }
 
