@@ -2,7 +2,10 @@
     display:flex;
     justify-content:center;
     align-items:center;
-    margin-top: 10vh;
+    height: 100vh;
+    padding-bottom: 20vh;
+    background: #7fffd4;
+    background: linear-gradient(to right, #204237, #7fffd4);
 }
 
 .subtitle {
