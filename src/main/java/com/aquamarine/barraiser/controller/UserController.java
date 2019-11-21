@@ -36,7 +36,7 @@ public class UserController {
     @Value("${app.awsServices.bucketName}")
     private String bucketName;
 
-    @RequestMapping(path="/getUser}", method= RequestMethod.GET, headers = "Accept=application/json")
+    @RequestMapping(path="/getUser", method= RequestMethod.GET, headers = "Accept=application/json")
     public @ResponseBody UserDTO getUser(@RequestParam int player_id) {
 
         return userService.findById(player_id);

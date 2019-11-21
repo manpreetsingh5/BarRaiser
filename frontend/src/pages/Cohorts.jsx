@@ -12,15 +12,70 @@ class Cohorts extends Component {
         super(props);
 
         this.state = {
-            show: false
+            show: false,
+            cohorts: []
         };
     }
+
+    componentDidMount() {
+        let token = localStorage.getItem("accessToken");
+        fetch(`api/cohort/viewCohorts/${this.props.id}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer '+ token,
+            }
+        })
+        .then(response => {
+            if(response.status !== 200) {
+                return null;
+            }
+            return response.json();
+        })
+        .then(data => {
+            if(data !== null) {
+                this.setState({
+                    cohorts: data
+                })
+                return this.state.cohorts;
+            }
+            return null;
+        })
+        .then(cohorts => {
+            if(cohorts !== null) {
+                let processed = 0;
+                cohorts.forEach((cohort, index) => 
+                    fetch(`api/cohort/getCohort?cohort_id=${cohort.id}`, {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': 'Bearer '+ token,
+                        }
+                    })
+                    .then(response => {
+                        if(response.status !== 200) {
+                            return null;
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        cohort.file = data.file;
+                        processed++;
+                        if(processed === cohorts.length) {
+                            this.callback(cohorts);
+                        }
+                    })
+                )
+            }
+        })
+    }
+
+    callback = (cohorts) => {this.setState({cohorts: cohorts})}
 
     handleShow = () => {this.setState({show: true})}
 
     handleClose = () => {this.setState({show: false})}
 
     handleSubmit = event => {
+        // console.log("hello")
         let token = localStorage.getItem("accessToken");
         let form = event.target;
         let file = form.elements.image.files[0];
@@ -50,20 +105,56 @@ class Cohorts extends Component {
         .then(response => {
             console.log(response)
         })
-        // .then(data => {
-        //     if(data === null) {
-        //         console.log("wrong")
-        //     }
-        //     else {
-        //         console.log(data, "right")
-        //     }
-        // })
+        .then(() => {
+            this.handleClose();
+        })
 
         event.preventDefault();
     }
 
     render() {
         let show = this.state.show;
+        let cohorts = this.state.cohorts;
+        let cohortsList = []
+        // let Empty = null
+
+        // if(cohorts.length) {
+        //     Empty = (
+        //         <div className={style.emptyDiv}>
+        //             <Empty/>
+        //             <h5>No Data</h5>
+        //         </div>
+        //     )
+        // }
+
+        if(cohorts.length) {
+            if("file" in cohorts[0]) {
+                cohorts.forEach(el => {
+                    console.log(el)
+                    cohortsList.push(
+                        <div className={style.cohortsListDiv} key={el.id}>
+                            <h4>{el.name}</h4>
+                            <p>{el.description}</p>
+                            <img src={`data:image/png[jpg];base64,${el.file}`} />
+                        </div>
+                    )
+                }
+                    
+                )
+            }
+        }
+        
+        
+
+        // cohorts.forEach(el => 
+        //     cohortsList.push(
+        //         <div className={style.cohortsListDiv} key={el.id}>
+        //             <h4>{el.name}</h4>
+        //             <p>{el.description}</p>
+        //             <img src={`data:image/png[jpg];base64,${el.file}`} />
+        //         </div>
+        //     )
+        // )
 
         return (
             <Fragment>
@@ -102,15 +193,6 @@ class Cohorts extends Component {
 
                                         </Form.Group>
 
-                                        <Form.Group controlId="location">
-                                            <Form.Label>Location</Form.Label>
-                                            <Form.Control 
-                                                required
-                                                type="location" 
-                                                placeholder="Enter location" 
-                                            />
-                                        </Form.Group>
-
                                         <Form.Group controlId="description">
                                             <Form.Label>Description</Form.Label>
                                             <Form.Control 
@@ -133,7 +215,7 @@ class Cohorts extends Component {
                                                 Close
                                             </Button>
 
-                                            <Button variant="primary" type="submit" onClick={this.handleClose}>
+                                            <Button variant="primary" type="submit">
                                                 Save Changes
                                             </Button>
                                         </Modal.Footer>
@@ -141,11 +223,9 @@ class Cohorts extends Component {
                                 </Modal.Body>
                             </Modal>
                         </div>
-
-                        <div className={style.emptyDiv}>
-                            <Empty/>
-                            <h5>No Data</h5>
-                        </div>
+                        {cohortsList}
+                        {/* {Empty}
+                        {cohortsList} */}
 
                     </div>
                 </Row>
