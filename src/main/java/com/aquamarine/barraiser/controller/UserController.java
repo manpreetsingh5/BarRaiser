@@ -65,7 +65,7 @@ public class UserController {
             fileUrl = endpointUrl + "/" + bucketName + "/" + fileName;
             System.out.println(fileUrl);
 
-            imageService.uploadFileToS3bucket(fileName, file, "/drinks");
+//            imageService.uploadFileToS3bucket(fileName, file, "/drinks");
 
             file.delete();
 
@@ -92,7 +92,7 @@ public class UserController {
             System.out.println(fileName);
 
 
-            imageService.uploadFileToS3bucket(fileName, file, "/images/drinks");
+//            imageService.uploadFileToS3bucket(fileName, file, "/images/drinks");
 
             file.delete();
 

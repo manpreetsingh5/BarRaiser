@@ -13,10 +13,10 @@ public interface CohortService {
     int createCohort(CohortDTO cohortdto, MultipartFile multipartFile) throws IOException;
     void addUserToCohort(int cohort_id, int user_id);
     Set<UserDTO> getCohortUsers(int cohort_id);
-    Set<CohortDTO> getUserCohorts(int user_id);
+    Set<Map<String, Object>> getUserCohorts(int user_id) throws IOException;
     Map<String, Object> findById(int id) throws IOException;
     UserDTO deleteStudentFromCohort(int cohort_id, int user_id);
     void deleteCohort(int cohort_id);
     ResponseEntity<byte[]> getCohortPicture(int cohort_id) throws IOException;
-
+    void editCohort(CohortDTO cohortDTO, MultipartFile multipartFile) throws IOException;
 }

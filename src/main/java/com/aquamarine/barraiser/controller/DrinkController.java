@@ -9,8 +9,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(path="/api/drink")
@@ -21,8 +24,8 @@ public class DrinkController {
 
     @RequestMapping(value = "/addDrink", method = RequestMethod.POST)
     @PreAuthorize("hasAuthority('BARTENDER')")
-    public @ResponseBody ResponseEntity<?> addNewDrink (@RequestBody DrinkDTO drink) {
-        drinkService.addDrink(drink);
+    public @ResponseBody ResponseEntity<?> addNewDrink (@RequestPart(value = "file") MultipartFile multipartFile, @RequestPart DrinkDTO drink) {
+        drinkService.addDrink(drink, multipartFile);
         return new ResponseEntity<>("Drink added successfully", HttpStatus.OK);
     }
 
@@ -49,6 +52,12 @@ public class DrinkController {
     @PreAuthorize("hasAuthority('BARTENDER')")
     public @ResponseBody List<DrinkDTO> viewDrinksByBartender(@RequestParam String email){
         return drinkService.viewDrinksByUser(email);
+    }
+
+    @RequestMapping(value = "/viewDrink", method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('BARTENDER')")
+    public @ResponseBody Map<String, Object> viewDrinksByBartender(@RequestParam int id) throws IOException {
+        return drinkService.findDrinkById(id);
     }
 
     @RequestMapping(value = "/editDrink", method = RequestMethod.POST)
