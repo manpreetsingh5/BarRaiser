@@ -20,10 +20,6 @@ public class StepEquipment {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer id;
 
-    @OneToOne
-    @JoinColumn(name = "recipe_id", referencedColumnName = "id")
-    private Recipe recipe;
-
     @ManyToOne
     @JoinColumn(name = "step_id", referencedColumnName = "id")
     private Step step;
