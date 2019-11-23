@@ -11,7 +11,7 @@ import java.util.Set;
 
 public interface CohortService {
     int createCohort(CohortDTO cohortdto, MultipartFile multipartFile) throws IOException;
-    void addUserToCohort(int cohort_id, int user_id);
+    void addUserToCohort(int cohort_id, String traineeEmail);
     Set<UserDTO> getCohortUsers(int cohort_id);
     Set<Map<String, Object>> getUserCohorts(int user_id) throws IOException;
     Map<String, Object> findById(int id) throws IOException;
