@@ -109,12 +109,12 @@ public class CohortServiceImpl implements CohortService {
     }
 
     @Override
-    public void addUserToCohort(int cohort_id, int user_id) {
+    public void addUserToCohort(int cohort_id, String traineeEmail) {
         if (cohortRepository.findById(cohort_id).isPresent()) {
             Cohort cohort = cohortRepository.findById(cohort_id).get();
 
             Set<User> users = cohort.getUser();
-            users.add(userRepository.findById(user_id).get());
+            users.add(userRepository.findByEmail(traineeEmail).get());
 
             cohort.setUser(users);
             cohortRepository.save(cohort);

@@ -1,5 +1,6 @@
 package com.aquamarine.barraiser.dto.model;
 
+import com.aquamarine.barraiser.enums.EquipmentEnum;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
@@ -24,7 +25,5 @@ public class EquipmentDTO {
 
     private boolean isPublic;
 
-    private String createdBy;
-
-    private Date createdDate;
+    private EquipmentEnum type;
 }

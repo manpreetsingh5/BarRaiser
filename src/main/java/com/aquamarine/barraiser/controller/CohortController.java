@@ -58,10 +58,8 @@ public class CohortController {
 
     @RequestMapping(path="/addTrainee", method= RequestMethod.POST)
 //    @PreAuthorize("hasAuthority('BARTENDER')")
-    public ResponseEntity addTraineeToCohort( @RequestParam  int cohort_id,  @RequestParam int user_id) {
-        System.out.println(cohort_id);
-        System.out.println(user_id);
-        cohortService.addUserToCohort(cohort_id, user_id);
+    public ResponseEntity addTraineeToCohort( @RequestParam  int cohort_id,  @RequestParam String traineeEmail) {
+        cohortService.addUserToCohort(cohort_id, traineeEmail);
         return new ResponseEntity(HttpStatus.OK);
     }
 
@@ -74,11 +72,11 @@ public class CohortController {
 
     @RequestMapping(path="/getTraineesInCohort", method= RequestMethod.GET)
     @PreAuthorize("hasAuthority('BARTENDER')")
-    public Set<UserDTO> viewTrainees(@PathVariable int cohort_id) {
+    public Set<UserDTO> viewTrainees(@RequestParam int cohort_id) {
         return cohortService.getCohortUsers(cohort_id);
     }
 
-    @RequestMapping(path="/getCohortForUser}", method= RequestMethod.GET)
+    @RequestMapping(path="/getCohortForUser", method= RequestMethod.GET)
 //    @PreAuthorize("hasAnyAuthority('BARTENDER', 'TRAINEE')")
 
     public Set<Map<String, Object>> viewCohorts(@RequestParam int user_id) throws IOException {
