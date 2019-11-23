@@ -1,4 +1,6 @@
 package com.aquamarine.barraiser.enums;
 
-public class IngredientEnum {
+public enum EquipmentEnum {
+    EQUIPMENT,
+    INGREDIENT
 }

@@ -4,6 +4,8 @@ import lombok.*;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -18,10 +20,15 @@ public class Recipe {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer id;
 
-    @Column(unique = true, nullable = false)
-    private String step;
+    @OneToOne
+    @JoinColumn(name = "drink_id", referencedColumnName = "id")
+    private Drink drink;
 
-    @Column(unique = true, nullable = false)
-    private Integer step_number;
+    @ManyToMany(cascade = CascadeType.DETACH)
+    @JoinTable(name = "recipe_to_steps",
+            joinColumns = @JoinColumn(name = "recipe_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "drink_id", referencedColumnName = "id"))
+    private Set<Step> steps = new HashSet<>();
+
 
 }
