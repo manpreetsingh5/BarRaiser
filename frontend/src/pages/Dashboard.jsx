@@ -2,7 +2,7 @@ import React, { Fragment, Component } from 'react';
 import { withRouter } from "react-router-dom";
 import Home from './Home';
 import Drinks from './Drinks';
-import Cohorts from './Cohorts';
+import Bars from './Bars';
 import Help from './Help';
 import Load from './Load';
 import style from '../style/Dashboard.module.css';
@@ -120,9 +120,9 @@ class Dashboard extends Component {
                                             <h6 className={style.linkTitle}>DRINKS</h6>
                                         </Button>
                                         
-                                        <Button className={style.btn} type="button" onClick={() => this.changePane("cohorts")}>
+                                        <Button className={style.btn} type="button" onClick={() => this.changePane("bars")}>
                                             <h3 className={style.icon}><FaUsers/></h3>
-                                            <h6 className={style.linkTitle}>COHORTS</h6>
+                                            <h6 className={style.linkTitle}>BARS</h6>
                                         </Button>
                                         
                                         <Button className={style.btn} type="button" onClick={() => this.changePane("help")}>
@@ -140,7 +140,7 @@ class Dashboard extends Component {
                         <Col sm={9} className={style.contentCol}>
                             {pane === "home" && <Home/>}
                             {pane === "drinks" && <Drinks/>}
-                            {pane === "cohorts" && <Cohorts id={this.state.id}/>}
+                            {pane === "bars" && <Bars id={this.state.id}/>}
                             {pane === "help" && <Help/>}
                         </Col>
                     </Row>
