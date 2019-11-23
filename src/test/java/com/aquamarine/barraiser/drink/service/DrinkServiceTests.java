@@ -19,7 +19,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -117,7 +119,7 @@ public class DrinkServiceTests {
     public void testAddDrink(){
         DrinkDTO newDTO = new DrinkDTO();
         newDTO.setId(1);
-        Drink newDrink = drinkService.addDrink(newDTO);
+        Drink newDrink = drinkService.addDrink(newDTO, any(MultipartFile.class));
 
         assertEquals(newDrink.getId(), drink1.getId());
         assertEquals(newDrink.getImage_path(), drink1.getImage_path());
@@ -130,7 +132,7 @@ public class DrinkServiceTests {
     public void testDeleteDrink(){
         DrinkDTO newDTO = new DrinkDTO();
         newDTO.setId(1);
-        Drink newDrink = drinkService.addDrink(newDTO);
+        Drink newDrink = drinkService.addDrink(newDTO, any(MultipartFile.class));
         boolean isAvailable;
 
         isAvailable = drinkService.deleteDrink(newDrink.getId());
@@ -144,7 +146,7 @@ public class DrinkServiceTests {
 
         DrinkDTO newDTO = new DrinkDTO();
         newDTO.setId(1);
-        Drink newDrink = drinkService.addDrink(newDTO);
+        Drink newDrink = drinkService.addDrink(newDTO, any(MultipartFile.class));
         boolean isAvailable;
 
         isAvailable = drinkService.deleteDrink(newDrink.getId());
