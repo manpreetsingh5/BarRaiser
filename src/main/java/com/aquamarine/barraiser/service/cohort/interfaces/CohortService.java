@@ -16,7 +16,7 @@ public interface CohortService {
     Set<Map<String, Object>> getUserCohorts(int user_id) throws IOException;
     Map<String, Object> findById(int id) throws IOException;
     UserDTO deleteStudentFromCohort(int cohort_id, int user_id);
-    void deleteCohort(CohortDTO cohortDTO);
+    void deleteCohort(int cohort_id);
     ResponseEntity<byte[]> getCohortPicture(int cohort_id) throws IOException;
 
 }
