@@ -11,7 +11,9 @@ public class EquipmentDTOMapper {
                 .setDescription(equipment.getDescription())
                 .setImage_path(equipment.getImage_path())
                 .setType(equipment.getType())
-                .setPublic(equipment.isPublic());
+                .setPublic(equipment.isPublic())
+                .setCreatedBy(equipment.getCreatedBy())
+                .setCreatedDate(equipment.getCreatedDate());
 
     }
 }
