@@ -105,7 +105,7 @@ class Bars extends Component {
 
     updateView = () => {
         let token = localStorage.getItem("accessToken");
-        fetch(`api/cohort/viewCohorts/${this.props.id}`, {
+        fetch(`api/cohort/getCohortForUser?user_id=${this.props.id}`, {
             method: 'GET',
             headers: {
                 'Authorization': 'Bearer '+ token,
@@ -130,7 +130,7 @@ class Bars extends Component {
             if(bars !== null && bars.length) {
                 let processed = 0;
                 bars.forEach((bar) => 
-                    fetch(`api/cohort/getCohort?cohort_id=${bar.id}`, {
+                    fetch(`api/cohort/getCohort?cohort_id=${bar.cohort.id}`, {
                         method: 'GET',
                         headers: {
                             'Authorization': 'Bearer '+ token,
@@ -144,7 +144,7 @@ class Bars extends Component {
                     })
                     .then(data => {
                         bar.file = data.file;
-                        bar.createdDate = new Date(bar.createdDate);
+                        bar.createdDate = new Date(bar.cohort.createdDate);
                         let month = monthNames[bar.createdDate.getUTCMonth()];
                         let day = bar.createdDate.getUTCDate();
                         let year = bar.createdDate.getUTCFullYear();
@@ -273,13 +273,13 @@ class Bars extends Component {
         event.preventDefault();
     }
 
-    handleEdit = event => {
-        // console.log("hello")
+    handleEdit = (event) => {
         let token = localStorage.getItem("accessToken");
         let form = event.target;
         let file = form.elements.image.files[0];
 
         const bar = {
+            id: form.elements.id.value,
             name: form.elements.name.value,
             description: form.elements.description.value,
             instructor: this.props.id,
@@ -294,7 +294,7 @@ class Bars extends Component {
         data.append('file', file);
         data.append('cohortDTO', blob);
 
-        fetch('api/cohort/addCohort', {
+        fetch('api/cohort/editCohort', {
             method: 'POST',
             body: data,
             headers: {
@@ -305,7 +305,9 @@ class Bars extends Component {
             console.log(response)
         })
         .then(() => {
-            this.handleClose();
+            this.setState({isLoaded: false});
+            this.handleDeleteClose(bar.id);
+            this.updateView();
         })
 
         event.preventDefault();
@@ -430,7 +432,7 @@ class Bars extends Component {
                                                             <Form.Control 
                                                                 required
                                                                 type="name" 
-                                                                defaultValue={el.name}
+                                                                defaultValue={el.cohort.name}
                                                                 placeholder="Enter name" 
                                                             />
                 
@@ -451,6 +453,12 @@ class Bars extends Component {
                                                             <Form.Control 
                                                                 required
                                                                 type="file"
+                                                            />
+                                                        </Form.Group>
+
+                                                        <Form.Group controlId="id" className={style.hide}>
+                                                            <Form.Control 
+                                                                defaultValue={el.cohort.id}
                                                             />
                                                         </Form.Group>
                 
