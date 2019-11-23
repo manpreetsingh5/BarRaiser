@@ -1,5 +1,4 @@
 import React, { Fragment, Component } from 'react';
-import style from '../style/Cohorts.module.css';
 
 import Row from 'react-bootstrap/Row';
 import Button from 'react-bootstrap/Button';
