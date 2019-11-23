@@ -18,6 +18,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 
@@ -86,7 +87,7 @@ public class DrinkControllerTests {
         drinksDTO.add(drinkDTOMapper.toDrinkDTO(drink1));
         drinksDTO.add(drinkDTOMapper.toDrinkDTO(drink2));
 
-        Mockito.when(drinkService.addDrink(any(DrinkDTO.class))).thenReturn(drink1);
+        Mockito.when(drinkService.addDrink(any(DrinkDTO.class), any(MultipartFile.class))).thenReturn(drink1);
         Mockito.when(drinkService.deleteDrink(any(Integer.class))).thenReturn(true);
         Mockito.when(drinkService.viewAllDrinks()).thenReturn(drinksDTO);
         Mockito.when(drinkService.viewDrinksByUser(any(String.class))).thenReturn(Arrays.asList(drinkDTOMapper.toDrinkDTO(drink2)));
