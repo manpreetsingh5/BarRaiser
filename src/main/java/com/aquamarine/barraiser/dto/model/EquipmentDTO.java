@@ -26,4 +26,8 @@ public class EquipmentDTO {
     private boolean isPublic;
 
     private EquipmentEnum type;
+
+    private String createdBy;
+
+    private Date createdDate;
 }

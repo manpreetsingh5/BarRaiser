@@ -25,4 +25,8 @@ public class DrinkDTO extends Auditable<String> {
 
     private boolean isPublic;
 
+    private String createdBy;
+
+    private Date createdDate;
+
 }
