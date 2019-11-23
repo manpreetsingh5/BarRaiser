@@ -1,5 +1,6 @@
 package com.aquamarine.barraiser.model;
 
+import com.aquamarine.barraiser.enums.EquipmentEnum;
 import lombok.*;
 import lombok.experimental.Accessors;
 import org.joda.time.DateTime;
@@ -31,4 +32,8 @@ public class Equipment extends Auditable<String> {
 
     @Column(nullable = false)
     private boolean isPublic;
+
+    @Column(nullable = false)
+    private EquipmentEnum type;
+
 }
