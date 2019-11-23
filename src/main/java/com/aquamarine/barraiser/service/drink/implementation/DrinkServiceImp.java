@@ -101,7 +101,7 @@ public class DrinkServiceImp implements DrinkService {
         HashMap<String, Object> ret = new HashMap<>();
         DrinkDTO drinkDTO = DrinkDTOMapper.toDrinkDTO(drinkRepository.findById(id).get());
         ret.put("cohort", drinkDTO);
-        InputStream in = imageService.downloadFileFromS3bucket(bucketName, drinkDTO.getImage_path()).getObjectContent();
+        InputStream in = imageService.downloadFileFromS3bucket(drinkDTO.getImage_path()).getObjectContent();
         BufferedImage imageFromAWS = ImageIO.read(in);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ImageIO.write(imageFromAWS, "png", baos );

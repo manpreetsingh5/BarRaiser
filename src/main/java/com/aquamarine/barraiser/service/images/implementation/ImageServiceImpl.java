@@ -27,21 +27,19 @@ public class ImageServiceImpl implements ImageService {
     private String bucketName;
 
     @Override
-    public void uploadFileToS3bucket(String fileName, File file, String sub_folder) {
-        amazonS3Client.putObject(new PutObjectRequest(bucketName, sub_folder+fileName, file));
+    public void uploadFileToS3bucket(String filePath, File file) {
+        amazonS3Client.putObject(new PutObjectRequest(bucketName, filePath, file));
     }
 
     @Override
-    public S3Object downloadFileFromS3bucket(String fileName, String sub_folder) {
-        System.out.println(bucketName);
-        System.out.println(sub_folder);
+    public S3Object downloadFileFromS3bucket(String sub_folder) {
         S3Object object = this.amazonS3Client.getObject(bucketName, sub_folder);
         return object;
     }
 
     @Override
-    public void deleteFileFromS3bucket(String fileName, String sub_folder) {
-        this.amazonS3Client.deleteObject(bucketName+sub_folder, fileName);
+    public void deleteFileFromS3bucket(String filePath) {
+        this.amazonS3Client.deleteObject(bucketName, filePath);
     }
 
     @Override

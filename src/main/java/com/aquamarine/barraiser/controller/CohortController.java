@@ -48,32 +48,6 @@ public class CohortController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @RequestMapping(path="/uploadCohortPicture", method = RequestMethod.POST)
-    public void uploadFile(@RequestPart(value = "file") MultipartFile multipartFile){
-        String fileUrl = "";
-        String  status = null;
-
-        try {
-
-            //converting multipart file to file
-            File file = imageService.convertMultiPartToFile(multipartFile, "test");
-
-            //filename
-            String fileName = multipartFile.getOriginalFilename();
-            System.out.println(fileName);
-            fileUrl = endpointUrl + "/" + bucketName + "/" + fileName;
-            System.out.println(fileUrl);
-
-            imageService.uploadFileToS3bucket(fileName, file, "/images/cohorts");
-
-            file.delete();
-
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-
-    }
-
 
     @RequestMapping(path = "/deleteCohort", method = RequestMethod.DELETE)
     @PreAuthorize("hasAuthority('BARTENDER')")

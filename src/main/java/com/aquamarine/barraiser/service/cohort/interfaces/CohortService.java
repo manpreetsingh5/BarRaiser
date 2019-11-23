@@ -18,5 +18,5 @@ public interface CohortService {
     UserDTO deleteStudentFromCohort(int cohort_id, int user_id);
     void deleteCohort(int cohort_id);
     ResponseEntity<byte[]> getCohortPicture(int cohort_id) throws IOException;
-
+    void editCohort(CohortDTO cohortDTO, MultipartFile multipartFile) throws IOException;
 }

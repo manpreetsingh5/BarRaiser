@@ -51,7 +51,7 @@ public class CohortServiceImpl implements CohortService {
     public int createCohort(CohortDTO cohortdto, MultipartFile multipartFile) throws IOException {
         String fileName = cohortdto.getName();
         File file = imageService.convertMultiPartToFile(multipartFile, fileName);
-        imageService.uploadFileToS3bucket(fileName, file, sub_folder);
+        imageService.uploadFileToS3bucket(sub_folder+fileName, file);
 
         Cohort cohort = new Cohort()
                 .setName(cohortdto.getName())
@@ -75,7 +75,7 @@ public class CohortServiceImpl implements CohortService {
     @Override
     public ResponseEntity<byte[]> getCohortPicture(int cohort_id) throws IOException {
         Cohort cohort = cohortRepository.findById(cohort_id).get();
-        InputStream in = imageService.downloadFileFromS3bucket(bucketName, cohort.getImage_path()).getObjectContent();
+        InputStream in = imageService.downloadFileFromS3bucket(cohort.getImage_path()).getObjectContent();
         BufferedImage imageFromAWS = ImageIO.read(in);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ImageIO.write(imageFromAWS, "png", baos );
@@ -88,6 +88,24 @@ public class CohortServiceImpl implements CohortService {
         httpHeaders.setContentDispositionFormData("attachment", cohort.getDescription());
 
         return new ResponseEntity<>(imageBytes, httpHeaders, HttpStatus.OK);
+    }
+
+    @Override
+    public void editCohort(CohortDTO cohortDTO, MultipartFile multipartFile) throws IOException {
+        int cohort_id = cohortDTO.getId();
+        if (cohortRepository.findById(cohort_id).isPresent()) {
+            Cohort cohort = cohortRepository.findById(cohort_id).get();
+            cohort.setName(cohortDTO.getName());
+            cohort.setDescription(cohortDTO.getDescription());
+            cohort.setInstructor(userRepository.findById(cohortDTO.getInstructor()).get());
+            cohort.setImage_path(sub_folder+cohort.getName());
+
+            String filePath = cohort.getImage_path();
+            imageService.deleteFileFromS3bucket(filePath);
+            File file = imageService.convertMultiPartToFile(multipartFile, filePath);
+            imageService.uploadFileToS3bucket(filePath, file);
+            imageService.uploadFileToS3bucket(cohort.getImage_path(), file);
+        }
     }
 
     @Override
@@ -108,7 +126,7 @@ public class CohortServiceImpl implements CohortService {
         HashMap<String, Object> ret = new HashMap<>();
         CohortDTO cohortDTO = CohortDTOMapper.toCohortDTO(cohortRepository.findById(id).get());
         ret.put("cohort", cohortDTO);
-        InputStream in = imageService.downloadFileFromS3bucket(bucketName, cohortDTO.getImage_path()).getObjectContent();
+        InputStream in = imageService.downloadFileFromS3bucket(cohortDTO.getImage_path()).getObjectContent();
         BufferedImage imageFromAWS = ImageIO.read(in);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ImageIO.write(imageFromAWS, "png", baos );
