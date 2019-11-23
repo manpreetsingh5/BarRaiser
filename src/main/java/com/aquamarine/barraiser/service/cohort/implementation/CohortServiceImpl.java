@@ -66,10 +66,9 @@ public class CohortServiceImpl implements CohortService {
     }
 
     @Override
-    public void deleteCohort(CohortDTO cohortDTO) {
-        int cohortID = cohortDTO.getId();
-        if (cohortRepository.findById(cohortID).isPresent()) {
-            cohortRepository.delete(cohortRepository.findById(cohortID).get());
+    public void deleteCohort(int cohort_id) {
+        if (cohortRepository.findById(cohort_id).isPresent()) {
+            cohortRepository.delete(cohortRepository.findById(cohort_id).get());
         }
     }
 
