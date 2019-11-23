@@ -41,7 +41,8 @@ public class EquipmentServiceImpl implements EquipmentService {
             Equipment equipment = new Equipment()
                     .setImage_path(equipmentDTO.getImage_path())
                     .setDescription(equipmentDTO.getDescription())
-                    .setPublic(equipmentDTO.isPublic());
+                    .setPublic(equipmentDTO.isPublic())
+                    .setType(equipmentDTO.getType());
 
             equipmentRepository.save(equipment);
             return equipment.getId();
