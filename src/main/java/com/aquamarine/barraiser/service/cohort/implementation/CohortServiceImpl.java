@@ -151,16 +151,16 @@ public class CohortServiceImpl implements CohortService {
     }
 
     @Override
-    public Set<CohortDTO> getUserCohorts(int user_id) {
+    public Set<Map<String, Object>> getUserCohorts(int user_id) throws IOException {
         User user = userRepository.findById(user_id).get();
         String status = user.getStatus();
-        Set<CohortDTO> res = new HashSet<>();
+        Set<Map<String, Object>> res = new HashSet<>();
 
         if (status.equals("BARTENDER")) {
             Set<Cohort> cohorts = cohortRepository.findAllByInstructor(userRepository.findById(user_id).get());
             for (Cohort c : cohorts) {
                 c.setUser(null);
-                res.add(CohortDTOMapper.toCohortDTO(c));
+                res.add(findById(c.getId()));
             }
         }
         else if (status.equals("TRAINEE")) {
@@ -168,7 +168,7 @@ public class CohortServiceImpl implements CohortService {
 
             for (Cohort c : cohorts) {
                 c.setUser(null);
-                res.add(CohortDTOMapper.toCohortDTO(c));
+                res.add(findById(c.getId()));
             }
         }
 
