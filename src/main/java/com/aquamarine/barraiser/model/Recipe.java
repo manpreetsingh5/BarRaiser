@@ -14,7 +14,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 @Entity
-public class Recipe {
+public class Recipe extends Auditable {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
