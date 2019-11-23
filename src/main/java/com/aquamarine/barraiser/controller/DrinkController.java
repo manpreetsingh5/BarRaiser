@@ -57,7 +57,6 @@ public class DrinkController {
         if (drinkService.editDrink(drink)){
             return new ResponseEntity<>("Drink deleted successfully", HttpStatus.OK);
         }
-
         return new ResponseEntity<>("Drink not deleted successfully", HttpStatus.BAD_REQUEST);
     }
 
