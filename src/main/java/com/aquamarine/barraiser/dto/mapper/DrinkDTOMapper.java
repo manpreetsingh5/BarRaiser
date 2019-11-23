@@ -5,7 +5,7 @@ import com.aquamarine.barraiser.model.Drink;
 
 
 public class DrinkDTOMapper {
-    public DrinkDTO toDrinkDTO(Drink drink) {
+    public static DrinkDTO toDrinkDTO(Drink drink) {
         return (DrinkDTO) new DrinkDTO()
                 .setId(drink.getId())
                 .setImage_path(drink.getImage_path())
