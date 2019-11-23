@@ -42,11 +42,11 @@
     margin: 5% 0 5% 0;
 }
 
-.cohortTitle {
+.barTitle {
     font-weight: 300
 }
 
-.cohortRow {
+.barRow {
     justify-content: center;
     margin-bottom: 10px;
 }
@@ -63,7 +63,7 @@
     font-size: 14px;
 }
 
-.cohortButtonsRow {
+.barButtonsRow {
     margin-top: 10px;
 }
 
@@ -82,8 +82,13 @@
     margin-right: 10px;
 }
 
-.modal {
+.deleteModal {
     width: 50% !important;
+    max-width: none!important;
+}
+
+.viewTraineesModal {
+    width: 65% !important;
     max-width: none!important;
 }
 

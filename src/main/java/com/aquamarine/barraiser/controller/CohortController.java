@@ -72,11 +72,11 @@ public class CohortController {
 
     @RequestMapping(path="/getTraineesInCohort", method= RequestMethod.GET)
     @PreAuthorize("hasAuthority('BARTENDER')")
-    public Set<UserDTO> viewTrainees(@PathVariable int cohort_id) {
+    public Set<UserDTO> viewTrainees(@RequestParam int cohort_id) {
         return cohortService.getCohortUsers(cohort_id);
     }
 
-    @RequestMapping(path="/getCohortForUser}", method= RequestMethod.GET)
+    @RequestMapping(path="/getCohortForUser", method= RequestMethod.GET)
 //    @PreAuthorize("hasAnyAuthority('BARTENDER', 'TRAINEE')")
 
     public Set<Map<String, Object>> viewCohorts(@RequestParam int user_id) throws IOException {
