@@ -21,8 +21,8 @@ public class Step {
     private Integer id;
 
     @OneToOne
-    @JoinColumn(name = "recipe_id", referencedColumnName = "id")
-    private Recipe recipe;
+    @JoinColumn(name = "drink_id", referencedColumnName = "id")
+    private Drink drink;
 
     @Column(nullable = false)
     private Integer step_number;
