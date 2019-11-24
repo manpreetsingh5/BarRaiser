@@ -58,8 +58,8 @@ public class CohortController {
 
     @RequestMapping(path = "/editCohort", method = RequestMethod.POST)
     @PreAuthorize("hasAuthority('BARTENDER')")
-    public ResponseEntity editCohort(@RequestPart(value = "file") MultipartFile multipartFile, @RequestPart CohortDTO cohortDTO, @RequestPart int cohort_id) throws IOException{
-        cohortService.editCohort(cohortDTO, multipartFile, cohort_id);
+    public ResponseEntity editCohort(@RequestPart(value = "file") MultipartFile multipartFile, @RequestPart CohortDTO cohortDTO) throws IOException{
+        cohortService.editCohort(cohortDTO, multipartFile);
         return new ResponseEntity(HttpStatus.OK);
     }
 
@@ -72,7 +72,7 @@ public class CohortController {
 
     @RequestMapping(path="/deleteTrainee", method= RequestMethod.GET)
 //    @PreAuthorize("hasAuthority('BARTENDER')")
-    public ResponseEntity deleteTraineeToCohort( @RequestParam  int cohort_id,  @RequestParam int user_id) {
+    public ResponseEntity deleteTraineeFromCohort( @RequestParam  int cohort_id,  @RequestParam int user_id) {
         cohortService.deleteStudentFromCohort(cohort_id, user_id);
         return new ResponseEntity(HttpStatus.OK);
     }

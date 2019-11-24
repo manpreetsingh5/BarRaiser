@@ -48,12 +48,6 @@ public class DrinkController {
         return drinkService.viewAllDrinks();
     }
 
-    @RequestMapping(value = "/view", method = RequestMethod.GET)
-    @PreAuthorize("hasAuthority('BARTENDER')")
-    public @ResponseBody List<DrinkDTO> viewDrinksByBartender(@RequestParam String email){
-        return drinkService.viewDrinksByUser(email);
-    }
-
     @RequestMapping(value = "/viewDrink", method = RequestMethod.GET)
     @PreAuthorize("hasAuthority('BARTENDER')")
     public @ResponseBody Map<String, Object> viewDrinksByBartender(@RequestParam int id) throws IOException {
@@ -64,9 +58,9 @@ public class DrinkController {
     @PreAuthorize("hasAuthority('BARTENDER')")
     public @ResponseBody ResponseEntity<?> editDrink (@RequestBody DrinkDTO drink) {
         if (drinkService.editDrink(drink)){
-            return new ResponseEntity<>("Drink deleted successfully", HttpStatus.OK);
+            return new ResponseEntity<>("Equipment deleted successfully", HttpStatus.OK);
         }
-        return new ResponseEntity<>("Drink not deleted successfully", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>("Equipment not deleted successfully", HttpStatus.BAD_REQUEST);
     }
 
 

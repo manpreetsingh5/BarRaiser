@@ -1,9 +1,7 @@
 package com.aquamarine.barraiser.service.drink.interfaces;
 
-import com.aquamarine.barraiser.controller.DrinkController;
 import com.aquamarine.barraiser.dto.model.DrinkDTO;
 import com.aquamarine.barraiser.model.Drink;
-import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;

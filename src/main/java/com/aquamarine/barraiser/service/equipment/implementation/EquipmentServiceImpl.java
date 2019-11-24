@@ -7,16 +7,21 @@ import com.aquamarine.barraiser.model.User;
 import com.aquamarine.barraiser.repository.EquipmentRepository;
 import com.aquamarine.barraiser.repository.UserRepository;
 import com.aquamarine.barraiser.service.equipment.interfaces.EquipmentService;
+import com.aquamarine.barraiser.service.images.interfaces.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+@Service
 public class EquipmentServiceImpl implements EquipmentService {
     @Autowired
     private UserRepository userRepository;
@@ -24,8 +29,12 @@ public class EquipmentServiceImpl implements EquipmentService {
     @Autowired
     private EquipmentRepository equipmentRepository;
 
+
+    private EquipmentDTOMapper equipmentDTOMapper = new EquipmentDTOMapper();
+
     @Autowired
-    private EquipmentDTOMapper equipmentDTOMapper;
+    private ImageService imageService;
+
 
     @Value("images/equipment/")
     private String sub_folder;
@@ -34,7 +43,11 @@ public class EquipmentServiceImpl implements EquipmentService {
     private String bucketName;
 
     @Override
-    public int addEquipment(EquipmentDTO equipmentDTO) {
+    public int addEquipment(EquipmentDTO equipmentDTO, MultipartFile multipartFile) throws IOException{
+        String fileName = equipmentDTO.getName();
+        File file = imageService.convertMultiPartToFile(multipartFile, fileName);
+        imageService.uploadFileToS3bucket(sub_folder+fileName, file);
+
         Optional<User> user = userRepository.findByEmail(equipmentDTO.getCreatedBy());
 
         if (user.isPresent()){
@@ -42,6 +55,7 @@ public class EquipmentServiceImpl implements EquipmentService {
                     .setImage_path(equipmentDTO.getImage_path())
                     .setDescription(equipmentDTO.getDescription())
                     .setPublic(equipmentDTO.isPublic())
+                    .setName(equipmentDTO.getName())
                     .setType(equipmentDTO.getType());
 
             equipmentRepository.save(equipment);
@@ -71,29 +85,35 @@ public class EquipmentServiceImpl implements EquipmentService {
     }
 
     @Override
-    public Set<EquipmentDTO> getEquipmentByAddedBy(int user_id) {
-        return null;
+    public List<EquipmentDTO> getEquipmentByAddedBy(int user_id) {
+
+        return new ArrayList<EquipmentDTO>();
     }
 
     @Override
-    public void editEquipment(EquipmentDTO equipmentDTO) {
-        Equipment equipment = equipmentRepository.findById(equipmentDTO.getId()).get();
+    public boolean editEquipment(EquipmentDTO equipmentDTO) {
+        Optional<Equipment> equipment = equipmentRepository.findById(equipmentDTO.getId());
 
-        if (equipmentDTO.getCreatedBy() == equipment.getCreatedBy() ){
-            equipment.setDescription(equipmentDTO.getDescription());
-            equipment.setImage_path(equipmentDTO.getImage_path());
-            equipment.setPublic(equipmentDTO.isPublic());
+        if (equipment.isPresent() && equipmentDTO.getCreatedBy().equals(equipment.get().getCreatedBy())){
+            equipment.get().setDescription(equipmentDTO.getDescription());
+            equipment.get().setImage_path(equipmentDTO.getImage_path());
+            equipment.get().setPublic(equipmentDTO.isPublic());
+            equipment.get().setName(equipmentDTO.getName());
+            equipmentRepository.save(equipment.get());
+            return true;
         }
 
-        equipmentRepository.save(equipment);
+        return false;
     }
 
     @Override
-    public void deleteEquipment(EquipmentDTO equipmentDTO) {
-        int equipmentID = equipmentDTO.getId();
-        if (equipmentRepository.findById(equipmentID).isPresent()) {
-            equipmentRepository.delete(equipmentRepository.findById(equipmentID).get());
+    public boolean deleteEquipment(int equipment_id) {
+        if (equipmentRepository.findById(equipment_id).isPresent()) {
+            equipmentRepository.delete(equipmentRepository.findById(equipment_id).get());
+            return true;
         }
+
+        return false;
     }
 
     @Override
