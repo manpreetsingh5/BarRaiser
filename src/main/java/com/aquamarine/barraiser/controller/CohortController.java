@@ -72,7 +72,7 @@ public class CohortController {
 
     @RequestMapping(path="/deleteTrainee", method= RequestMethod.GET)
 //    @PreAuthorize("hasAuthority('BARTENDER')")
-    public ResponseEntity deleteTraineeToCohort( @RequestParam  int cohort_id,  @RequestParam int user_id) {
+    public ResponseEntity deleteTraineeFromCohort( @RequestParam  int cohort_id,  @RequestParam int user_id) {
         cohortService.deleteStudentFromCohort(cohort_id, user_id);
         return new ResponseEntity(HttpStatus.OK);
     }

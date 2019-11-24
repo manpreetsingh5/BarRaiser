@@ -24,6 +24,9 @@ public class Equipment extends Auditable<String> {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer id;
 
+    @Column(nullable = false)
+    private String name;
+
     @Column(unique = true, nullable = false)
     private String description;
 

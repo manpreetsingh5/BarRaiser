@@ -13,7 +13,9 @@ public class EquipmentDTOMapper {
                 .setType(equipment.getType())
                 .setPublic(equipment.isPublic())
                 .setCreatedBy(equipment.getCreatedBy())
-                .setCreatedDate(equipment.getCreatedDate());
+                .setCreatedDate(equipment.getCreatedDate())
+                .setName(equipment.getName());
+
 
     }
 }
