@@ -91,18 +91,25 @@ public class CohortServiceImpl implements CohortService {
     }
 
     @Override
-    public void editCohort(CohortDTO cohortDTO, MultipartFile multipartFile, int cohort_id) throws IOException {
+    public void editCohort(CohortDTO cohortDTO, MultipartFile multipartFile) throws IOException {
+        int cohort_id = cohortDTO.getId();
+        System.out.println("Here" + cohort_id);
         if (cohortRepository.findById(cohort_id).isPresent()) {
             Cohort cohort = cohortRepository.findById(cohort_id).get();
             cohort.setName(cohortDTO.getName());
             cohort.setDescription(cohortDTO.getDescription());
-            cohort.setImage_path(sub_folder+cohort.getName());
+            cohort.setInstructor(userRepository.findById(cohortDTO.getInstructor()).get());
+
 
             String filePath = cohort.getImage_path();
+            File file = imageService.convertMultiPartToFile(multipartFile, cohort.getName());
             imageService.deleteFileFromS3bucket(filePath);
-            File file = imageService.convertMultiPartToFile(multipartFile, filePath);
+            cohort.setImage_path(sub_folder+cohort.getName());
+            filePath = cohort.getImage_path();
             imageService.uploadFileToS3bucket(filePath, file);
-            imageService.uploadFileToS3bucket(cohort.getImage_path(), file);
+//            imageService.uploadFileToS3bucket(cohort.getImage_path(), file);
+
+            System.out.println("Made it here");
 
             cohortRepository.save(cohort);
         }

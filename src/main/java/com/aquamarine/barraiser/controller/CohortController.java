@@ -63,14 +63,14 @@ public class CohortController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @RequestMapping(path="/addTrainee", method= RequestMethod.POST)
+    @RequestMapping(path="/addTrainee", method= RequestMethod.GET)
 //    @PreAuthorize("hasAuthority('BARTENDER')")
     public ResponseEntity addTraineeToCohort( @RequestParam  int cohort_id,  @RequestParam String traineeEmail) {
         cohortService.addUserToCohort(cohort_id, traineeEmail);
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @RequestMapping(path="/deleteTrainee", method= RequestMethod.POST)
+    @RequestMapping(path="/deleteTrainee", method= RequestMethod.GET)
 //    @PreAuthorize("hasAuthority('BARTENDER')")
     public ResponseEntity deleteTraineeToCohort( @RequestParam  int cohort_id,  @RequestParam int user_id) {
         cohortService.deleteStudentFromCohort(cohort_id, user_id);

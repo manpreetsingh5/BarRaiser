@@ -33,7 +33,8 @@ public class Equipment extends Auditable<String> {
     @Column(nullable = false)
     private boolean isPublic;
 
-    @Column
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private EquipmentEnum type;
 
 }

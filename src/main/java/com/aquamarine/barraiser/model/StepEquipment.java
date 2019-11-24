@@ -1,6 +1,6 @@
 package com.aquamarine.barraiser.model;
 
-import com.aquamarine.barraiser.enums.ActionsEnum;
+import com.aquamarine.barraiser.enums.MeasurementEnum;
 import lombok.*;
 import lombok.experimental.Accessors;
 
@@ -15,25 +15,19 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 @Entity
-public class Step {
+public class StepEquipment {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer id;
 
-    @OneToOne
-    @JoinColumn(name = "recipe_id", referencedColumnName = "id")
-    private Recipe recipe;
+    @ManyToOne
+    @JoinColumn(name = "step_id", referencedColumnName = "id")
+    private Step step;
 
     @Column(nullable = false)
-    private Integer step_number;
-
-    @Column(nullable = false)
-    private String description;
+    private double quantity;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private ActionsEnum action;
-
-    @OneToMany(mappedBy="step")
-    private Set<StepEquipment> equipmentSet;
+    private MeasurementEnum unit;
 }
