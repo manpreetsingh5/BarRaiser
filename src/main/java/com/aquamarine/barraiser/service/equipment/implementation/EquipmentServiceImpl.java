@@ -51,12 +51,12 @@ public class EquipmentServiceImpl implements EquipmentService {
     }
 
     @Override
-    public EquipmentDTO getDrinkById(int id) {
+    public EquipmentDTO getEquipmentById(int id) {
         return equipmentDTOMapper.toEquipmentDTO(equipmentRepository.findById(id).get());
     }
 
     @Override
-    public List<EquipmentDTO> getAllEquipment() {
+    public List<EquipmentDTO> getAllPublicEquipment() {
         List<Equipment> equipmentList = equipmentRepository.findAll();
         List<EquipmentDTO> publicEquipment = new ArrayList<>();
 

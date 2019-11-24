@@ -10,8 +10,8 @@ import java.util.Set;
 
 public interface EquipmentService {
     int addEquipment(EquipmentDTO equipmentDTO);
-    EquipmentDTO getDrinkById(int id);
-    List<EquipmentDTO> getAllEquipment();
+    EquipmentDTO getEquipmentById(int id);
+    List<EquipmentDTO> getAllPublicEquipment();
     Set<EquipmentDTO> getEquipmentByAddedBy(int user_id);
     void editEquipment(EquipmentDTO equipmentDTO);
     void deleteEquipment(EquipmentDTO equipmentDTO);

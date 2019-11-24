@@ -91,13 +91,11 @@ public class CohortServiceImpl implements CohortService {
     }
 
     @Override
-    public void editCohort(CohortDTO cohortDTO, MultipartFile multipartFile) throws IOException {
-        int cohort_id = cohortDTO.getId();
+    public void editCohort(CohortDTO cohortDTO, MultipartFile multipartFile, int cohort_id) throws IOException {
         if (cohortRepository.findById(cohort_id).isPresent()) {
             Cohort cohort = cohortRepository.findById(cohort_id).get();
             cohort.setName(cohortDTO.getName());
             cohort.setDescription(cohortDTO.getDescription());
-            cohort.setInstructor(userRepository.findById(cohortDTO.getInstructor()).get());
             cohort.setImage_path(sub_folder+cohort.getName());
 
             String filePath = cohort.getImage_path();
@@ -105,6 +103,8 @@ public class CohortServiceImpl implements CohortService {
             File file = imageService.convertMultiPartToFile(multipartFile, filePath);
             imageService.uploadFileToS3bucket(filePath, file);
             imageService.uploadFileToS3bucket(cohort.getImage_path(), file);
+
+            cohortRepository.save(cohort);
         }
     }
 

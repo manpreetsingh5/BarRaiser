@@ -58,8 +58,8 @@ public class CohortController {
 
     @RequestMapping(path = "/editCohort", method = RequestMethod.POST)
     @PreAuthorize("hasAuthority('BARTENDER')")
-    public ResponseEntity editCohort(@RequestPart(value = "file") MultipartFile multipartFile, @RequestPart CohortDTO cohortDTO) throws IOException{
-        cohortService.editCohort(cohortDTO, multipartFile);
+    public ResponseEntity editCohort(@RequestPart(value = "file") MultipartFile multipartFile, @RequestPart CohortDTO cohortDTO, @RequestPart int cohort_id) throws IOException{
+        cohortService.editCohort(cohortDTO, multipartFile, cohort_id);
         return new ResponseEntity(HttpStatus.OK);
     }
 
