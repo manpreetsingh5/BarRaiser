@@ -5,5 +5,4 @@ public enum ActionsEnum {
     POURING_SOLID,
     SHAKE,
     PUT
-
 }
