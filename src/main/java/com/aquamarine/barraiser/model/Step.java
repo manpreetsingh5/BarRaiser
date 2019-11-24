@@ -15,7 +15,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 @Entity
-public class Step extends Auditable {
+public class Step {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer id;
