@@ -100,13 +100,14 @@ public class CohortServiceImpl implements CohortService {
             cohort.setDescription(cohortDTO.getDescription());
             cohort.setInstructor(userRepository.findById(cohortDTO.getInstructor()).get());
 
+
             String filePath = cohort.getImage_path();
+            File file = imageService.convertMultiPartToFile(multipartFile, cohort.getName());
             imageService.deleteFileFromS3bucket(filePath);
             cohort.setImage_path(sub_folder+cohort.getName());
             filePath = cohort.getImage_path();
-            File file = imageService.convertMultiPartToFile(multipartFile, filePath);
             imageService.uploadFileToS3bucket(filePath, file);
-            imageService.uploadFileToS3bucket(cohort.getImage_path(), file);
+//            imageService.uploadFileToS3bucket(cohort.getImage_path(), file);
 
             System.out.println("Made it here");
 
