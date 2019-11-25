@@ -1,6 +1,7 @@
 package com.aquamarine.barraiser.dto.model;
 
 import com.aquamarine.barraiser.enums.MeasurementEnum;
+import com.aquamarine.barraiser.model.Equipment;
 import com.aquamarine.barraiser.model.Step;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -20,6 +21,8 @@ public class StepEquipmentDTO {
     private Integer id;
 
     private Step step;
+
+    private Equipment equipment;
 
     private Double quantity;
 

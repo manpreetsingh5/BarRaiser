@@ -10,6 +10,7 @@ public class StepEquipmentDTOMapper {
                 .setId(stepEquipment.getId())
                 .setStep(stepEquipment.getStep())
                 .setQuantity(stepEquipment.getQuantity())
-                .setUnit(stepEquipment.getUnit());
+                .setUnit(stepEquipment.getUnit())
+                .setEquipment(stepEquipment.getEquipment());
     }
 }

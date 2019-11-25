@@ -25,7 +25,7 @@ public class ActionServiceImpl implements ActionService {
     @Autowired
     private ImageService imageService;
 
-    @Value("images/cohorts/")
+    @Value("images/actions/")
     private String sub_folder;
 
     @Override

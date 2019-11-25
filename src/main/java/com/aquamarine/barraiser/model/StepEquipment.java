@@ -26,9 +26,8 @@ public class StepEquipment {
     @JsonIgnore
     private Step step;
 
-    @Column(nullable = false)
+    @OneToOne
     @JoinColumn(name = "equipment_id", referencedColumnName = "id")
-    @JsonIgnore
     private Equipment equipment;
 
     @Column(nullable = false)

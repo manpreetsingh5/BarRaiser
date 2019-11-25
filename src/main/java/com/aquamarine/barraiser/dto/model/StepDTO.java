@@ -30,7 +30,9 @@ public class StepDTO {
 
     private ActionsEnum action;
 
-    private Set<StepEquipment> equipmentSet;
+    private Integer successAmount;
+
+    private Set<StepEquipmentDTO> equipmentSet;
 
 
 }
