@@ -1,6 +1,5 @@
 package com.aquamarine.barraiser.controller;
 
-import com.aquamarine.barraiser.dto.model.DrinkDTO;
 import com.aquamarine.barraiser.dto.model.EquipmentDTO;
 import com.aquamarine.barraiser.service.equipment.interfaces.EquipmentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @RestController
 @RequestMapping(path="/api/equipment")
@@ -30,18 +30,18 @@ public class EquipmentController {
     @RequestMapping(value = "/deleteEquipment", method = RequestMethod.DELETE)
     @PreAuthorize("hasAuthority('BARTENDER')")
     public @ResponseBody ResponseEntity<?> deleteEquipment(@RequestParam int equipment_id){
-        if (equipmentService.deleteEquipment(equipment_id)){
-            return new ResponseEntity<>("Equipment deleted successfully", HttpStatus.OK);
-        }
-        else{
-            return new ResponseEntity<>("Equipment not deleted successfully", HttpStatus.BAD_REQUEST);
-        }
+        equipmentService.deleteEquipment(equipment_id);
+        return new ResponseEntity<>("Equipment deleted successfully", HttpStatus.OK);
+//        }
+//        else{
+//            return new ResponseEntity<>("Equipment not deleted successfully", HttpStatus.BAD_REQUEST);
+//        }
     }
 
     @RequestMapping(value = "/viewAll", method = RequestMethod.GET)
     @PreAuthorize("hasAuthority('BARTENDER')")
-    public @ResponseBody List<EquipmentDTO> viewAllEquipment(){
-        return equipmentService.getAllPublicEquipment();
+    public @ResponseBody Set<Map<String, Object>> viewAllEquipment() throws IOException {
+        return equipmentService.viewAllEquipment();
     }
 
     @RequestMapping(value = "/editEquipment", method = RequestMethod.POST)
