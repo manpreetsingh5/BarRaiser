@@ -1,14 +1,11 @@
 package com.aquamarine.barraiser.dto.model;
 
-import com.aquamarine.barraiser.model.Auditable;
+import com.aquamarine.barraiser.enums.MeasurementEnum;
 import com.aquamarine.barraiser.model.Step;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import lombok.experimental.Accessors;
-
-import java.util.Date;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -18,19 +15,14 @@ import java.util.Set;
 @ToString
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class DrinkDTO extends Auditable<String> {
-    private int id;
+public class StepEquipmentDTO {
 
-    private String name;
+    private Integer id;
 
-    private String image_path;
+    private Step step;
 
-    private boolean isPublic;
+    private Double quantity;
 
-    private String createdBy;
-
-    private Date createdDate;
-
-    private Set<Step> steps;
+    private MeasurementEnum unit;
 
 }

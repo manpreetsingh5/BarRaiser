@@ -44,7 +44,7 @@ public class DrinkController {
     // Will only return all public drinks
     @RequestMapping(value = "/viewAll", method = RequestMethod.GET)
     @PreAuthorize("hasAuthority('BARTENDER')")
-    public @ResponseBody List<DrinkDTO> viewAllDrinks(){
+    public @ResponseBody List<DrinkDTO> viewAllDrinks() throws IOException {
         return drinkService.viewAllDrinks();
     }
 
@@ -60,7 +60,7 @@ public class DrinkController {
         if (drinkService.editDrink(drink, multipartFile)){
             return new ResponseEntity<>("Equipment deleted successfully", HttpStatus.OK);
         }
-        return new ResponseEntity<>("Equipment not deleted successfully", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>("Drink not deleted successfully", HttpStatus.BAD_REQUEST);
     }
 
 
