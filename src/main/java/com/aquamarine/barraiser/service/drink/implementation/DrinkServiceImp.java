@@ -1,8 +1,6 @@
 package com.aquamarine.barraiser.service.drink.implementation;
 
-import com.aquamarine.barraiser.dto.mapper.CohortDTOMapper;
 import com.aquamarine.barraiser.dto.mapper.DrinkDTOMapper;
-import com.aquamarine.barraiser.dto.model.CohortDTO;
 import com.aquamarine.barraiser.dto.model.DrinkDTO;
 import com.aquamarine.barraiser.model.Drink;
 import com.aquamarine.barraiser.model.User;
@@ -18,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
@@ -37,13 +36,15 @@ public class DrinkServiceImp implements DrinkService {
     @Value("images/drinks/")
     private String sub_folder;
 
-    @Value("${app.awsServices.bucketName}")
-    private String bucketName;
 
     DrinkDTOMapper drinkDTOMapper = new DrinkDTOMapper();
 
     @Override
-    public Drink addDrink(DrinkDTO drinkDTO, MultipartFile multipartFile) {
+    public Drink addDrink(DrinkDTO drinkDTO, MultipartFile multipartFile) throws IOException {
+        String fileName = drinkDTO.getName();
+        File file = imageService.convertMultiPartToFile(multipartFile, fileName);
+        imageService.uploadFileToS3bucket(sub_folder+fileName, file);
+
         Drink drink = new Drink();
         drink.setImage_path(drinkDTO.getImage_path());
         drink.setName(drinkDTO.getName());
@@ -66,14 +67,17 @@ public class DrinkServiceImp implements DrinkService {
     }
 
     @Override
-    public List<DrinkDTO> viewAllDrinks() {
+    public List<DrinkDTO> viewAllDrinks() throws IOException {
         List<Drink> drinks = drinkRepository.findAll();
         List<DrinkDTO> publicDrinks = new ArrayList<>();
+
+        Set<Map<String, Object>> res = new HashSet<>();
 
         for (Drink drink: drinks){
             if (drink.isPublic()){
                 DrinkDTO drinkDTO = drinkDTOMapper.toDrinkDTO(drink);
                 publicDrinks.add(drinkDTO);
+                res.add(findDrinkById(drink.getId()));
             }
         }
 
@@ -82,18 +86,16 @@ public class DrinkServiceImp implements DrinkService {
     }
 
     @Override
-    public List<DrinkDTO> viewDrinksByUser(String email) {
-        List<Drink> drinks = drinkRepository.findAll();
-        List<DrinkDTO> drinksById = new ArrayList<>();
+    public Set<Map<String, Object>> viewDrinksByUser(String email) throws IOException {
 
-        for (Drink drink: drinks){
-            if (drink.getCreatedBy().equals(email)){
-                DrinkDTO drinkDTO = drinkDTOMapper.toDrinkDTO(drink);
-                drinksById.add(drinkDTO);
-            }
+        User user = userRepository.findByEmail(email).get();
+        Set<Map<String, Object>> res = new HashSet<>();
+        Set<Drink> drinks = drinkRepository.findAllByInstructor(user);
+        for (Drink d : drinks) {
+            res.add(findDrinkById(d.getId()));
         }
 
-        return drinksById;
+        return res;
     }
 
     @Override
@@ -107,19 +109,30 @@ public class DrinkServiceImp implements DrinkService {
         ImageIO.write(imageFromAWS, "png", baos );
         byte[] imageBytes = baos.toByteArray();
         in.close();
-        ret.put("file", Base64.getEncoder().encode(imageBytes));
+        ret.put("file", imageBytes);
         return ret;
     }
 
     @Override
-    public boolean editDrink(DrinkDTO drink) {
-        Optional<Drink> drink1 = drinkRepository.findById(drink.getId());
+    public boolean editDrink(DrinkDTO drinkDTO, MultipartFile multipartFile) throws IOException {
+        Optional<Drink> drinkOptional = drinkRepository.findById(drinkDTO.getId());
+        Drink drink;
+        if (drinkOptional.isPresent()){
+            drink = drinkOptional.get();
 
-        if (drink1.isPresent()){
-            drink1.get().setName(drink.getName());
-            drink1.get().setImage_path(drink.getImage_path());
-            drink1.get().setPublic(drink.isPublic());
-            drinkRepository.save(drink1.get());
+            drink.setName(drinkDTO.getName());
+            drink.setImage_path(drinkDTO.getImage_path());
+            drink.setPublic(drinkDTO.isPublic());
+
+            String filePath = drink.getImage_path();
+            File file = imageService.convertMultiPartToFile(multipartFile, drink.getName());
+            imageService.deleteFileFromS3bucket(filePath);
+            drink.setImage_path(sub_folder+drink.getName());
+            filePath = drink.getImage_path();
+            imageService.uploadFileToS3bucket(filePath, file);
+
+
+            drinkRepository.save(drink);
             return true;
         }
 

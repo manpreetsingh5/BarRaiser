@@ -42,10 +42,6 @@ public class CohortServiceImpl implements CohortService {
     @Value("images/cohorts/")
     private String sub_folder;
 
-    @Value("${app.awsServices.bucketName}")
-    private String bucketName;
-
-    private UserDTOMapper userDTOMapper = new UserDTOMapper();
 
     @Override
     public int createCohort(CohortDTO cohortdto, MultipartFile multipartFile) throws IOException {
@@ -107,9 +103,6 @@ public class CohortServiceImpl implements CohortService {
             cohort.setImage_path(sub_folder+cohort.getName());
             filePath = cohort.getImage_path();
             imageService.uploadFileToS3bucket(filePath, file);
-//            imageService.uploadFileToS3bucket(cohort.getImage_path(), file);
-
-            System.out.println("Made it here");
 
             cohortRepository.save(cohort);
         }
@@ -183,7 +176,6 @@ public class CohortServiceImpl implements CohortService {
         if (status.equals("BARTENDER")) {
             Set<Cohort> cohorts = cohortRepository.findAllByInstructor(userRepository.findById(user_id).get());
             for (Cohort c : cohorts) {
-                c.setUser(null);
                 res.add(findById(c.getId()));
             }
         }
@@ -191,7 +183,6 @@ public class CohortServiceImpl implements CohortService {
             Set<Cohort> cohorts = userRepository.findById(user_id).get().getCohort();
 
             for (Cohort c : cohorts) {
-                c.setUser(null);
                 res.add(findById(c.getId()));
             }
         }

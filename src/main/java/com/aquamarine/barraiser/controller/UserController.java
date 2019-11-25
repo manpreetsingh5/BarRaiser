@@ -45,8 +45,12 @@ public class UserController {
 
     @RequestMapping(path="/allUsers", method= RequestMethod.GET, headers = "Accept=application/json")
     public @ResponseBody List<UserDTO> getAllUsers() {
-
         return userService.findAll();
+    }
+
+    @RequestMapping(path = "/getUserByEmail", method = RequestMethod.GET)
+    public @ResponseBody UserDTO getUserByID(@RequestParam String email) {
+        return userService.findUserByEmail(email);
     }
 
     @RequestMapping(path="/uploadImage", method = RequestMethod.POST)

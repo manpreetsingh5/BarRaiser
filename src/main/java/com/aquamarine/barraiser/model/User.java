@@ -1,5 +1,6 @@
 package com.aquamarine.barraiser.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import javax.persistence.*;
 import java.util.Date;
@@ -37,7 +38,8 @@ public class User {
     @Column(nullable = false)
     private String status;
 
-    @ManyToMany(cascade = CascadeType.DETACH, mappedBy = "user")
+    @ManyToMany(cascade = CascadeType.DETACH, mappedBy = "user", fetch = FetchType.LAZY)
+    @JsonIgnore
     private Set<Cohort> cohort = new HashSet<>();
 
     public User(String email, String first_name, String last_name, String password, String status) {
