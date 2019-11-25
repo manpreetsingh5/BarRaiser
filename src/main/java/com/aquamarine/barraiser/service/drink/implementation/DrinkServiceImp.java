@@ -54,15 +54,12 @@ public class DrinkServiceImp implements DrinkService {
     }
 
     @Override
-    public boolean deleteDrink(int id) {
-        Optional <Drink> toDelete = drinkRepository.findById(id);
-        if (!toDelete.isPresent()){
-            return false;
+    public void deleteDrink(int id) {
+        if (drinkRepository.findById(id).isPresent()) {
+            Drink drink = drinkRepository.findById(id).get();
+            imageService.deleteFileFromS3bucket(drink.getImage_path());
+            drinkRepository.delete(drink);
         }
-        else{
-            drinkRepository.delete(toDelete.get());
-        }
-        return true;
 
     }
 
