@@ -85,7 +85,6 @@ public class CohortController {
 
     @RequestMapping(path="/getCohortForUser", method= RequestMethod.GET)
     @PreAuthorize("hasAnyAuthority('BARTENDER', 'TRAINEE')")
-
     public Set<Map<String, Object>> viewCohorts(@RequestParam int user_id) throws IOException {
         return cohortService.getUserCohorts(user_id);
     }
@@ -93,7 +92,6 @@ public class CohortController {
     @RequestMapping(path="/getCohortPicture", method = RequestMethod.GET)
     @PreAuthorize("hasAnyAuthority('BARTENDER', 'TRAINEE')")
     public ResponseEntity<byte[]> getCohortPicture(int cohort_id) throws IOException {
-        System.out.println("HERE");
         return cohortService.getCohortPicture(cohort_id);
     }
 

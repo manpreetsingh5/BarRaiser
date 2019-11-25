@@ -24,7 +24,7 @@ public class DrinkController {
 
     @RequestMapping(value = "/addDrink", method = RequestMethod.POST)
     @PreAuthorize("hasAuthority('BARTENDER')")
-    public @ResponseBody ResponseEntity<?> addNewDrink (@RequestPart(value = "file") MultipartFile multipartFile, @RequestPart DrinkDTO drink) {
+    public @ResponseBody ResponseEntity<?> addNewDrink (@RequestPart(value = "file") MultipartFile multipartFile, @RequestPart DrinkDTO drink) throws IOException {
         drinkService.addDrink(drink, multipartFile);
         return new ResponseEntity<>("Drink added successfully", HttpStatus.OK);
     }
@@ -44,7 +44,7 @@ public class DrinkController {
     // Will only return all public drinks
     @RequestMapping(value = "/viewAll", method = RequestMethod.GET)
     @PreAuthorize("hasAuthority('BARTENDER')")
-    public @ResponseBody List<DrinkDTO> viewAllDrinks(){
+    public @ResponseBody List<DrinkDTO> viewAllDrinks() throws IOException {
         return drinkService.viewAllDrinks();
     }
 
@@ -56,9 +56,9 @@ public class DrinkController {
 
     @RequestMapping(value = "/editDrink", method = RequestMethod.POST)
     @PreAuthorize("hasAuthority('BARTENDER')")
-    public @ResponseBody ResponseEntity<?> editDrink (@RequestBody DrinkDTO drink) {
-        if (drinkService.editDrink(drink)){
-            return new ResponseEntity<>("Drink deleted successfully", HttpStatus.OK);
+    public @ResponseBody ResponseEntity<?> editDrink (@RequestPart(value = "file") MultipartFile multipartFile, @RequestPart DrinkDTO drink) throws IOException {
+        if (drinkService.editDrink(drink, multipartFile)){
+            return new ResponseEntity<>("Equipment deleted successfully", HttpStatus.OK);
         }
         return new ResponseEntity<>("Drink not deleted successfully", HttpStatus.BAD_REQUEST);
     }

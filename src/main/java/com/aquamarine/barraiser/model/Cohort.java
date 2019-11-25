@@ -31,7 +31,7 @@ public class Cohort extends Auditable<String> {
     @Column(unique = true, nullable = false)
     private String image_path;
 
-    @ManyToMany(cascade = CascadeType.DETACH)
+    @ManyToMany(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     @JoinTable(name = "cohort_to_users",
             joinColumns = @JoinColumn(name = "cohort_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
