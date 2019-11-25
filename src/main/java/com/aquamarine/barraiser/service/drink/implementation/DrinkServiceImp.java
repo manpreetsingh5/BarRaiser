@@ -67,21 +67,18 @@ public class DrinkServiceImp implements DrinkService {
     }
 
     @Override
-    public List<DrinkDTO> viewAllDrinks() throws IOException {
+    public Set<Map<String, Object>> viewAllDrinks() throws IOException {
         List<Drink> drinks = drinkRepository.findAll();
-        List<DrinkDTO> publicDrinks = new ArrayList<>();
 
         Set<Map<String, Object>> res = new HashSet<>();
 
         for (Drink drink: drinks){
             if (drink.isPublic()){
-                DrinkDTO drinkDTO = drinkDTOMapper.toDrinkDTO(drink);
-                publicDrinks.add(drinkDTO);
                 res.add(findDrinkById(drink.getId()));
             }
         }
 
-        return publicDrinks;
+        return res;
 
     }
 
@@ -90,7 +87,7 @@ public class DrinkServiceImp implements DrinkService {
 
         User user = userRepository.findByEmail(email).get();
         Set<Map<String, Object>> res = new HashSet<>();
-        Set<Drink> drinks = drinkRepository.findAllByInstructor(user);
+        Set<Drink> drinks = drinkRepository.findAllByCreatedBy(user.getEmail());
         for (Drink d : drinks) {
             res.add(findDrinkById(d.getId()));
         }

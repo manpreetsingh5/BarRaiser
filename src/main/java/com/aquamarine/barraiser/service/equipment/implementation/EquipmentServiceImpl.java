@@ -1,6 +1,7 @@
 package com.aquamarine.barraiser.service.equipment.implementation;
 
 import com.aquamarine.barraiser.dto.mapper.EquipmentDTOMapper;
+import com.aquamarine.barraiser.dto.model.CohortDTO;
 import com.aquamarine.barraiser.dto.model.EquipmentDTO;
 import com.aquamarine.barraiser.model.Equipment;
 import com.aquamarine.barraiser.model.User;
@@ -14,12 +15,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.io.InputStream;
+import java.util.*;
 
 @Service
 public class EquipmentServiceImpl implements EquipmentService {
@@ -73,11 +75,12 @@ public class EquipmentServiceImpl implements EquipmentService {
     public List<EquipmentDTO> getAllPublicEquipment() {
         List<Equipment> equipmentList = equipmentRepository.findAll();
         List<EquipmentDTO> publicEquipment = new ArrayList<>();
-
+//        Set<Map<String, Object>> res = new
         for (Equipment e: equipmentList ){
             if (e.isPublic()){
                 EquipmentDTO equipmentDTO = equipmentDTOMapper.toEquipmentDTO(e);
                 publicEquipment.add(equipmentDTO);
+
             }
         }
 
@@ -91,19 +94,46 @@ public class EquipmentServiceImpl implements EquipmentService {
     }
 
     @Override
-    public boolean editEquipment(EquipmentDTO equipmentDTO) {
-        Optional<Equipment> equipment = equipmentRepository.findById(equipmentDTO.getId());
+    public boolean editEquipment(EquipmentDTO equipmentDTO, MultipartFile multipartFile) throws IOException {
+        Optional<Equipment> equipmentOptional = equipmentRepository.findById(equipmentDTO.getId());
 
-        if (equipment.isPresent() && equipmentDTO.getCreatedBy().equals(equipment.get().getCreatedBy())){
-            equipment.get().setDescription(equipmentDTO.getDescription());
-            equipment.get().setImage_path(equipmentDTO.getImage_path());
-            equipment.get().setPublic(equipmentDTO.isPublic());
-            equipment.get().setName(equipmentDTO.getName());
-            equipmentRepository.save(equipment.get());
+        if (equipmentOptional.isPresent() && equipmentDTO.getCreatedBy().equals(equipmentOptional.get().getCreatedBy())){
+            Equipment equipment = equipmentOptional.get();
+            equipment.setDescription(equipmentDTO.getDescription());
+            equipment.setImage_path(equipmentDTO.getImage_path());
+            equipment.setPublic(equipmentDTO.isPublic());
+            equipment.setName(equipmentDTO.getName());
+
+            String filePath = equipment.getImage_path();
+            File file = imageService.convertMultiPartToFile(multipartFile, equipment.getName());
+            imageService.deleteFileFromS3bucket(filePath);
+            equipment.setImage_path(sub_folder+equipment.getName());
+            filePath = equipment.getImage_path();
+            imageService.uploadFileToS3bucket(filePath, file);
+
+
+            equipmentRepository.save(equipment);
+
+
             return true;
         }
 
         return false;
+    }
+
+    @Override
+    public Map<String, Object> getEquipmentByID(int id) throws IOException {
+        HashMap<String, Object> ret = new HashMap<>();
+        EquipmentDTO equipmentDTO = equipmentDTOMapper.toEquipmentDTO(equipmentRepository.findById(id).get());
+        ret.put("cohort", equipmentDTO);
+        InputStream in = imageService.downloadFileFromS3bucket(equipmentDTO.getImage_path()).getObjectContent();
+        BufferedImage imageFromAWS = ImageIO.read(in);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(imageFromAWS, "png", baos );
+        byte[] imageBytes = baos.toByteArray();
+        in.close();
+        ret.put("file", imageBytes);
+        return ret;
     }
 
     @Override
@@ -120,4 +150,5 @@ public class EquipmentServiceImpl implements EquipmentService {
     public ResponseEntity<byte[]> getEquipmentPicture(EquipmentDTO equipmentDTO) throws IOException {
         return null;
     }
+
 }

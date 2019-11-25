@@ -20,7 +20,7 @@ public class EquipmentController {
     @Autowired
     private EquipmentService equipmentService;
 
-    @RequestMapping(value = "/addEquipment", method = RequestMethod.GET)
+    @RequestMapping(value = "/addEquipment", method = RequestMethod.POST)
     @PreAuthorize("hasAuthority('BARTENDER')")
     public @ResponseBody ResponseEntity<?> addEquipment (@RequestPart(value = "file") MultipartFile multipartFile, @RequestPart EquipmentDTO equipment) throws IOException {
         equipmentService.addEquipment(equipment, multipartFile);
@@ -44,16 +44,10 @@ public class EquipmentController {
         return equipmentService.getAllPublicEquipment();
     }
 
-//    @RequestMapping(value = "/viewDrink", method = RequestMethod.GET)
-//    @PreAuthorize("hasAuthority('BARTENDER')")
-//    public @ResponseBody List<EquipmentDTO> viewEquipmentByBartender(@RequestParam String email){
-//        return equipmentService.getEquipmentByAddedBy(email);
-//    }
-
     @RequestMapping(value = "/editEquipment", method = RequestMethod.POST)
     @PreAuthorize("hasAuthority('BARTENDER')")
-    public @ResponseBody ResponseEntity<?> editDrink (@RequestBody EquipmentDTO equipment) {
-        if (equipmentService.editEquipment(equipment)){
+    public @ResponseBody ResponseEntity<?> editDrink (@RequestPart(value = "file") MultipartFile multipartFile, @RequestPart EquipmentDTO equipment) throws IOException {
+        if (equipmentService.editEquipment(equipment, multipartFile)){
             return new ResponseEntity<>("Equipment edited successfully", HttpStatus.OK);
         }
         return new ResponseEntity<>("Equipment not edited successfully", HttpStatus.BAD_REQUEST);
