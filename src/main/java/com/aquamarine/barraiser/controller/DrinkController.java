@@ -1,9 +1,7 @@
 package com.aquamarine.barraiser.controller;
 
 import com.aquamarine.barraiser.dto.model.DrinkDTO;
-import com.aquamarine.barraiser.model.Drink;
 import com.aquamarine.barraiser.service.drink.interfaces.DrinkService;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,8 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @RestController
 @RequestMapping(path="/api/drink")
@@ -44,7 +42,7 @@ public class DrinkController {
     // Will only return all public drinks
     @RequestMapping(value = "/viewAll", method = RequestMethod.GET)
     @PreAuthorize("hasAuthority('BARTENDER')")
-    public @ResponseBody List<DrinkDTO> viewAllDrinks() throws IOException {
+    public @ResponseBody Set<Map<String, Object>> viewAllDrinks() throws IOException {
         return drinkService.viewAllDrinks();
     }
 

@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public interface EquipmentService {
@@ -14,7 +15,8 @@ public interface EquipmentService {
     EquipmentDTO getEquipmentById(int id);
     List<EquipmentDTO> getAllPublicEquipment();
     List<EquipmentDTO> getEquipmentByAddedBy(int user_id);
-    boolean editEquipment(EquipmentDTO equipmentDTO);
+    Map<String, Object> getEquipmentByID(int id) throws IOException;
+    boolean editEquipment(EquipmentDTO equipmentDTO, MultipartFile multipartFile) throws IOException;
     boolean deleteEquipment(int equipment_id);
     ResponseEntity<byte[]> getEquipmentPicture(EquipmentDTO equipmentDTO) throws IOException;
 }

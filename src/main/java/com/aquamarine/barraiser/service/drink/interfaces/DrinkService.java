@@ -5,7 +5,6 @@ import com.aquamarine.barraiser.model.Drink;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -15,7 +14,7 @@ public interface DrinkService {
 
     boolean deleteDrink(int id);
 
-    List<DrinkDTO> viewAllDrinks() throws IOException;
+    Set<Map<String, Object>> viewAllDrinks() throws IOException;
 
     Set<Map<String, Object>> viewDrinksByUser(String email) throws IOException;
 
