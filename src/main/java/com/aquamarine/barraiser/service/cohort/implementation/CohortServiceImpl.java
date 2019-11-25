@@ -64,7 +64,9 @@ public class CohortServiceImpl implements CohortService {
     @Override
     public void deleteCohort(int cohort_id) {
         if (cohortRepository.findById(cohort_id).isPresent()) {
-            cohortRepository.delete(cohortRepository.findById(cohort_id).get());
+            Cohort cohort = cohortRepository.findById(cohort_id).get();
+            imageService.deleteFileFromS3bucket(cohort.getImage_path());
+            cohortRepository.delete(cohort);
         }
     }
 

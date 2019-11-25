@@ -1,7 +1,6 @@
 package com.aquamarine.barraiser.service.equipment.implementation;
 
 import com.aquamarine.barraiser.dto.mapper.EquipmentDTOMapper;
-import com.aquamarine.barraiser.dto.model.CohortDTO;
 import com.aquamarine.barraiser.dto.model.EquipmentDTO;
 import com.aquamarine.barraiser.model.Equipment;
 import com.aquamarine.barraiser.model.User;
@@ -67,33 +66,6 @@ public class EquipmentServiceImpl implements EquipmentService {
     }
 
     @Override
-    public EquipmentDTO getEquipmentById(int id) {
-        return equipmentDTOMapper.toEquipmentDTO(equipmentRepository.findById(id).get());
-    }
-
-    @Override
-    public List<EquipmentDTO> getAllPublicEquipment() {
-        List<Equipment> equipmentList = equipmentRepository.findAll();
-        List<EquipmentDTO> publicEquipment = new ArrayList<>();
-//        Set<Map<String, Object>> res = new
-        for (Equipment e: equipmentList ){
-            if (e.isPublic()){
-                EquipmentDTO equipmentDTO = equipmentDTOMapper.toEquipmentDTO(e);
-                publicEquipment.add(equipmentDTO);
-
-            }
-        }
-
-        return publicEquipment;
-    }
-
-    @Override
-    public List<EquipmentDTO> getEquipmentByAddedBy(int user_id) {
-
-        return new ArrayList<EquipmentDTO>();
-    }
-
-    @Override
     public boolean editEquipment(EquipmentDTO equipmentDTO, MultipartFile multipartFile) throws IOException {
         Optional<Equipment> equipmentOptional = equipmentRepository.findById(equipmentDTO.getId());
 
@@ -121,8 +93,18 @@ public class EquipmentServiceImpl implements EquipmentService {
         return false;
     }
 
+
     @Override
-    public Map<String, Object> getEquipmentByID(int id) throws IOException {
+    public void deleteEquipment(int equipment_id) {
+        if (equipmentRepository.findById(equipment_id).isPresent()) {
+            Equipment equipment = equipmentRepository.findById(equipment_id).get();
+            imageService.deleteFileFromS3bucket(equipment.getImage_path());
+            equipmentRepository.delete(equipment);
+        }
+    }
+
+    @Override
+    public Map<String, Object> getEquipmentById(int id) throws IOException {
         HashMap<String, Object> ret = new HashMap<>();
         EquipmentDTO equipmentDTO = equipmentDTOMapper.toEquipmentDTO(equipmentRepository.findById(id).get());
         ret.put("cohort", equipmentDTO);
@@ -134,21 +116,40 @@ public class EquipmentServiceImpl implements EquipmentService {
         in.close();
         ret.put("file", imageBytes);
         return ret;
+
     }
 
+
     @Override
-    public boolean deleteEquipment(int equipment_id) {
-        if (equipmentRepository.findById(equipment_id).isPresent()) {
-            equipmentRepository.delete(equipmentRepository.findById(equipment_id).get());
-            return true;
+    public Set<Map<String, Object>> viewAllEquipment() throws IOException {
+        List<Equipment> drinks = equipmentRepository.findAll();
+
+        Set<Map<String, Object>> res = new HashSet<>();
+
+        for (Equipment e: drinks){
+            if (e.isPublic()){
+                res.add(getEquipmentById(e.getId()));
+            }
         }
 
-        return false;
+        return res;
+
     }
 
     @Override
-    public ResponseEntity<byte[]> getEquipmentPicture(EquipmentDTO equipmentDTO) throws IOException {
-        return null;
+    public Set<Map<String, Object>> viewEquipmentByUser(String email) throws IOException {
+
+        User user = userRepository.findByEmail(email).get();
+        Set<Map<String, Object>> res = new HashSet<>();
+        Set<Equipment> drinks = equipmentRepository.findAllByCreatedBy(user.getEmail());
+        for (Equipment e : drinks) {
+            res.add(getEquipmentById(e.getId()));
+        }
+
+        return res;
     }
+
+
+
 
 }

@@ -12,7 +12,7 @@ public interface DrinkService {
 
     Drink addDrink(DrinkDTO drinkDTO, MultipartFile multipartFile) throws IOException;
 
-    boolean deleteDrink(int id);
+    void deleteDrink(int id);
 
     Set<Map<String, Object>> viewAllDrinks() throws IOException;
 
