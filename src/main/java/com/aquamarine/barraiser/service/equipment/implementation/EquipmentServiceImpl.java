@@ -108,14 +108,19 @@ public class EquipmentServiceImpl implements EquipmentService {
     public Map<String, Object> getEquipmentById(int id) throws IOException {
         HashMap<String, Object> ret = new HashMap<>();
         EquipmentDTO equipmentDTO = equipmentDTOMapper.toEquipmentDTO(equipmentRepository.findById(id).get());
-        ret.put("cohort", equipmentDTO);
+        ret.put("equipment", equipmentDTO);
         InputStream in = imageService.downloadFileFromS3bucket(equipmentDTO.getImage_path()).getObjectContent();
         BufferedImage imageFromAWS = ImageIO.read(in);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ImageIO.write(imageFromAWS, "png", baos );
-        byte[] imageBytes = baos.toByteArray();
-        in.close();
-        ret.put("file", imageBytes);
+        if (imageFromAWS != null) {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(imageFromAWS, "png", baos);
+            byte[] imageBytes = baos.toByteArray();
+            in.close();
+            ret.put("file", imageBytes);
+        }
+        else {
+            ret.put("file", null);
+        }
         return ret;
 
     }

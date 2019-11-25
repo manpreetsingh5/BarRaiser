@@ -42,6 +42,7 @@ public class ActionServiceImpl implements ActionService {
             byte[] imageBytes = baos.toByteArray();
             in.close();
             action.put("file", imageBytes);
+            ret.add(action);
         }
         return ret;
     }
