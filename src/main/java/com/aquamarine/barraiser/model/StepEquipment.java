@@ -1,6 +1,7 @@
 package com.aquamarine.barraiser.model;
 
 import com.aquamarine.barraiser.enums.MeasurementEnum;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.experimental.Accessors;
 
@@ -22,6 +23,7 @@ public class StepEquipment {
 
     @ManyToOne
     @JoinColumn(name = "step_id", referencedColumnName = "id")
+    @JsonIgnore
     private Step step;
 
     @Column(nullable = false)

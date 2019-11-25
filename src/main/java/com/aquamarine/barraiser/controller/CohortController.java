@@ -64,14 +64,14 @@ public class CohortController {
     }
 
     @RequestMapping(path="/addTrainee", method= RequestMethod.GET)
-//    @PreAuthorize("hasAuthority('BARTENDER')")
+    @PreAuthorize("hasAuthority('BARTENDER')")
     public ResponseEntity addTraineeToCohort( @RequestParam  int cohort_id,  @RequestParam String traineeEmail) {
         cohortService.addUserToCohort(cohort_id, traineeEmail);
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @RequestMapping(path="/deleteTrainee", method= RequestMethod.GET)
-//    @PreAuthorize("hasAuthority('BARTENDER')")
+    @PreAuthorize("hasAuthority('BARTENDER')")
     public ResponseEntity deleteTraineeFromCohort( @RequestParam  int cohort_id,  @RequestParam int user_id) {
         cohortService.deleteStudentFromCohort(cohort_id, user_id);
         return new ResponseEntity(HttpStatus.OK);
@@ -84,14 +84,14 @@ public class CohortController {
     }
 
     @RequestMapping(path="/getCohortForUser", method= RequestMethod.GET)
-//    @PreAuthorize("hasAnyAuthority('BARTENDER', 'TRAINEE')")
+    @PreAuthorize("hasAnyAuthority('BARTENDER', 'TRAINEE')")
 
     public Set<Map<String, Object>> viewCohorts(@RequestParam int user_id) throws IOException {
         return cohortService.getUserCohorts(user_id);
     }
 
     @RequestMapping(path="/getCohortPicture", method = RequestMethod.GET)
-//    @PreAuthorize("hasAnyAuthority('BARTENDER', 'TRAINEE')")
+    @PreAuthorize("hasAnyAuthority('BARTENDER', 'TRAINEE')")
     public ResponseEntity<byte[]> getCohortPicture(int cohort_id) throws IOException {
         System.out.println("HERE");
         return cohortService.getCohortPicture(cohort_id);

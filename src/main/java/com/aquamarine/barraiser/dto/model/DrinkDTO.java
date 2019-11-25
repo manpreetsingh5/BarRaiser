@@ -1,12 +1,14 @@
 package com.aquamarine.barraiser.dto.model;
 
 import com.aquamarine.barraiser.model.Auditable;
+import com.aquamarine.barraiser.model.Step;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import lombok.experimental.Accessors;
 
 import java.util.Date;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -28,5 +30,7 @@ public class DrinkDTO extends Auditable<String> {
     private String createdBy;
 
     private Date createdDate;
+
+    private Set<Step> steps;
 
 }

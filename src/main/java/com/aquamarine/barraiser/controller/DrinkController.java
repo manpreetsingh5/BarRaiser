@@ -58,9 +58,9 @@ public class DrinkController {
     @PreAuthorize("hasAuthority('BARTENDER')")
     public @ResponseBody ResponseEntity<?> editDrink (@RequestBody DrinkDTO drink) {
         if (drinkService.editDrink(drink)){
-            return new ResponseEntity<>("Equipment deleted successfully", HttpStatus.OK);
+            return new ResponseEntity<>("Drink deleted successfully", HttpStatus.OK);
         }
-        return new ResponseEntity<>("Equipment not deleted successfully", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>("Drink not deleted successfully", HttpStatus.BAD_REQUEST);
     }
 
 

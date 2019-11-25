@@ -1,6 +1,7 @@
 package com.aquamarine.barraiser.model;
 
 import com.aquamarine.barraiser.enums.ActionsEnum;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.experimental.Accessors;
 
@@ -22,6 +23,7 @@ public class Step {
 
     @OneToOne
     @JoinColumn(name = "drink_id", referencedColumnName = "id")
+    @JsonIgnore
     private Drink drink;
 
     @Column(nullable = false)
