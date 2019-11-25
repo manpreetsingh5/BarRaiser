@@ -3,8 +3,10 @@ import { withRouter } from "react-router-dom";
 import Home from './Home';
 import Drinks from './Drinks';
 import Bars from './Bars';
-import Help from './Help';
+// import Help from './Help';
 import Load from './Load';
+import TraineeBars from './TraineeBars';
+import TraineeDrinks from './TraineeDrinks';
 import style from '../style/Dashboard.module.css';
 
 import Card from 'react-bootstrap/Card';
@@ -125,10 +127,10 @@ class Dashboard extends Component {
                                             <h6 className={style.linkTitle}>BARS</h6>
                                         </Button>
                                         
-                                        <Button className={style.btn} type="button" onClick={() => this.changePane("help")}>
+                                        {/* <Button className={style.btn} type="button" onClick={() => this.changePane("help")}>
                                             <h3 className={style.icon}><FaQuestionCircle/></h3>
                                             <h6 className={style.linkTitle}>HELP</h6>
-                                        </Button>
+                                        </Button> */}
                                         
                                         <Button className={style.btn} type="button" onClick={this.logout}>
                                             <h3 className={style.icon}><FaSignOutAlt/></h3>
@@ -139,9 +141,12 @@ class Dashboard extends Component {
                         </Col>
                         <Col sm={9} className={style.contentCol}>
                             {pane === "home" && <Home/>}
-                            {pane === "drinks" && <Drinks/>}
-                            {pane === "bars" && <Bars id={this.state.id}/>}
-                            {pane === "help" && <Help/>}
+                            {/* {pane === "drinks" && <Drinks/>} */}
+                            {pane === "bars" && this.state.status === "BARTENDER" && <Bars id={this.state.id}/>}
+                            {pane === "bars" && this.state.status === "TRAINEE" && <TraineeBars id={this.state.id}/>}
+                            {pane === "drinks" && this.state.status === "BARTENDER" && <Drinks id={this.state.id}/>}
+                            {pane === "drinks" && this.state.status === "TRAINEE" && <TraineeDrinks id={this.state.id}/>}
+                            {/* {pane === "help" && <Help/>} */}
                         </Col>
                     </Row>
                 </Fragment>

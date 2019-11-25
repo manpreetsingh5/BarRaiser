@@ -82,6 +82,10 @@
     margin-right: 10px;
 }
 
+.middleButton2 {
+    margin-left: 10px;
+}
+
 .deleteModal {
     width: 50% !important;
     max-width: none!important;
