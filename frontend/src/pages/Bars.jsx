@@ -1,6 +1,7 @@
 import React, { Fragment, Component } from 'react';
 import Empty from './Empty';
 import Load from './Load';
+import TraineeList from './TraineeList'
 import style from '../style/Bars.module.css';
 
 import Row from 'react-bootstrap/Row';
@@ -32,47 +33,33 @@ class Bars extends Component {
 
     componentDidMount() {
         let token = localStorage.getItem("accessToken");
+        console.log(token)
         fetch(`api/cohort/getCohortForUser?user_id=${this.props.id}`, {
             method: 'GET',
             headers: {
                 'Authorization': 'Bearer '+ token,
+                'Content-Type': 'application/json',
             }
         })
         .then(response => {
             if(response.status !== 200) {
                 return null;
             }
-            return response.json();
-        })
-        .then(data => {
-            // console.log(data);
-            if(data !== null) {
-                this.setState({
-                    bars: data
-                })
-                return this.state.bars;
-            }
-            return null;
-        })
-        .then(bars => {
-            if(bars !== null && bars.length) {
-                let processed = 0;
-                bars.forEach((bar) => 
-                    fetch(`api/cohort/getCohort?cohort_id=${bar.cohort.id}`, {
-                        method: 'GET',
-                        headers: {
-                            'Authorization': 'Bearer '+ token,
-                        }
-                    })
-                    .then(response => {
-                        if(response.status !== 200) {
-                            return null;
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        // console.log(data)
-                        bar.file = data.file;
+            return response.json().then(
+                data => {
+                    if(data !== null) {
+                        this.setState({
+                            bars: data
+                        })
+                        return data;
+                    }
+                    return null;
+                }
+            ).then(bars => {
+                if(bars !== null && bars.length) {
+                    let processed = 0;
+                    bars.forEach((bar) => {
+                        console.log(bar);
                         bar.createdDate = new Date(bar.cohort.createdDate);
                         let month = monthNames[bar.createdDate.getUTCMonth()];
                         let day = bar.createdDate.getUTCDate();
@@ -80,19 +67,20 @@ class Bars extends Component {
                         bar.displayDate = month + " " + day + ", " + year;
                         bar.showDelete = false;
                         bar.showEdit = false;
+                        bar.showAddTrainee = false;
                         bar.showViewTrainees = false;
                         processed++;
                         if(processed === bars.length) {
                             this.callback(bars);
                         }
                     })
-                )
-            }
-            else {
-                this.setState({
-                    isLoaded: true
-                })
-            }
+                }
+                else {
+                    this.setState({
+                        isLoaded: true
+                    })
+                }
+            })
         })
     }
 
@@ -151,6 +139,7 @@ class Bars extends Component {
                         bar.displayDate = month + " " + day + ", " + year;
                         bar.showDelete = false;
                         bar.showEdit = false;
+                        bar.showAddTrainee = false;
                         bar.showViewTrainees = false;
                         processed++;
                         if(processed === bars.length) {
@@ -183,37 +172,40 @@ class Bars extends Component {
         });
     }
 
+    handleAddTraineeShow = (id) => {
+        this.setState({
+            bars: this.state.bars.map(el => (el.cohort.id === id ? {...el, showAddTrainee: true} : el))
+        });
+    }
+
+    handleAddTraineeClose = (id) => {
+        this.setState({
+            bars: this.state.bars.map(el => (el.cohort.id === id ? {...el, showAddTrainee: false} : el))
+        });
+    }
+
     handleViewTraineesShow = (id, bar) => {
         let token = localStorage.getItem("accessToken");
-        // console.log(bar)
-        // console.log("trainees" in bar)
-        if("trainees" in bar) {
-            this.setState({
-                bars: this.state.bars.map(el => (el.cohort.id === id ? {...el, showViewTrainees: true} : el))
-            });
-        }
-        else {
-            fetch(`api/cohort/getTraineesInCohort?cohort_id=${id}`, {
-                method: 'GET',
-                headers: {
-                    'Authorization': 'Bearer '+ token,
-                }
-            })
-            .then(response => {
-                console.log(response)
-                if(response.status !== 200) {
-                    return null;
-                }
-                return response.json();
-            })
-            .then(data => {
-                if(data !== null) {
-                    this.setState({
-                        bars: this.state.bars.map(el => (el.cohort.id === id ? {...el, showViewTrainees: true, trainees: data} : el))
-                    });
-                }
-            })
-        }
+        fetch(`api/cohort/getTraineesInCohort?cohort_id=${id}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer '+ token,
+            }
+        })
+        .then(response => {
+            console.log(response)
+            if(response.status !== 200) {
+                return null;
+            }
+            return response.json();
+        })
+        .then(data => {
+            if(data !== null) {
+                this.setState({
+                    bars: this.state.bars.map(el => (el.cohort.id === id ? {...el, showViewTrainees: true, trainees: data} : el))
+                });
+            }
+        })
     }
 
     handleViewTraineesClose = (id) => {
@@ -313,6 +305,27 @@ class Bars extends Component {
         event.preventDefault();
     }
 
+    handleAddTrainee = (event) => {
+        let token = localStorage.getItem("accessToken");
+        let form = event.target;
+        let email = form.elements.email.value;
+        let id = form.elements.id.value;
+        console.log(email, id);
+        fetch(`api/cohort/addTrainee?cohort_id=${id}&traineeEmail=${email}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer '+ token,
+            }
+        })
+        .then(response => {
+            console.log(response)
+        })
+        .then(() => {
+            this.handleAddTraineeClose(id);
+        })
+        event.preventDefault();
+    }
+
     handleDelete = (id) => {
         let token = localStorage.getItem("accessToken");
         fetch(`api/cohort/deleteCohort?cohort_id=${id}`, {
@@ -341,6 +354,8 @@ class Bars extends Component {
         let barsList = []
         let isLoaded = this.state.isLoaded;
         let empty = null;
+
+        // console.log(isLoaded);
 
         if(bars.length) {
             if("file" in bars[0]) {
@@ -371,7 +386,7 @@ class Bars extends Component {
                                         </Col>
                                     </Row>
                                     <Row className={style.barButtonsRow}>
-                                        <Col sm={8}>
+                                        <Col sm={12}>
                                             <Button variant="dark" onClick={() => this.handleViewTraineesShow(el.cohort.id, el.cohort)}>
                                                 <div className={style.barButtonsDiv}>
                                                     <FaSearch/>
@@ -395,20 +410,52 @@ class Bars extends Component {
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <tr>
-                                                        <td>1</td>
-                                                        <td>Mark</td>
-                                                        <td>Otto</td>
-                                                        <td>@mdo</td>
-                                                        </tr>
-                                                        <tr>
-                                                        <td>2</td>
-                                                        <td>Jacob</td>
-                                                        <td>Thornton</td>
-                                                        <td>@fat</td>
-                                                        </tr>
+                                                        <TraineeList trainees={el.trainees}/>
                                                     </tbody>
                                                     </Table>
+                                                </Modal.Body>
+                                            </Modal>
+
+                                            <Button variant="dark" className={style.middleButton2} onClick={() => this.handleAddTraineeShow(el.cohort.id)}>
+                                                <div className={style.barButtonsDiv}>
+                                                    <FaSearch/>
+                                                    <span className={style.buttonText}>Add Trainee</span>
+                                                </div>
+                                            </Button>
+
+                                            <Modal show={el.showAddTrainee} onHide={() => this.handleAddTraineeClose(el.cohort.id)} centered>
+                                                <Modal.Header>
+                                                    <Modal.Title>Add Trainee</Modal.Title>
+                                                </Modal.Header>
+                
+                                                <Modal.Body>
+                                                <Form onSubmit={this.handleAddTrainee}>
+                                                        <Form.Group controlId="email">
+                                                            <Form.Label>Email</Form.Label>
+                
+                                                            <Form.Control 
+                                                                required
+                                                                type="email" 
+                                                                placeholder="Enter email" 
+                                                            />
+                                                        </Form.Group>
+
+                                                        <Form.Group controlId="id" className={style.hide}>
+                                                            <Form.Control 
+                                                                defaultValue={el.cohort.id}
+                                                            />
+                                                        </Form.Group>
+                
+                                                        <Modal.Footer>
+                                                            <Button variant="secondary" onClick={() => this.handleAddTraineeClose(el.cohort.id)}>
+                                                                Close
+                                                            </Button>
+                
+                                                            <Button variant="primary" type="submit">
+                                                                Add
+                                                            </Button>
+                                                        </Modal.Footer>
+                                                    </Form>
                                                 </Modal.Body>
                                             </Modal>
 

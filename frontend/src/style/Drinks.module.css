@@ -1,6 +1,11 @@
-.container {
-    height: 100vh;
+.titleContainer {
     background-color: white;
+}
+
+.contentContainer {
+    height: 100%;
+    background-color: white;
+    color: darkslategray;
 }
 
 .titleDiv {
@@ -10,4 +15,112 @@
     justify-content:center;
     align-items:center;
     box-shadow: 0 5px 5px rgba(0,0,0,0.1)
+}
+
+.contentDiv {
+    width: 100%;
+    padding-left: 5%;
+    padding-right: 5%;
+    margin-top: 5%;
+}
+
+.empty {
+    width: 100%;
+    height: 100px;
+}
+
+.emptyDiv {
+    text-align: center;
+    width: 100%;
+    margin-top: 5%;
+}
+
+.card {
+    border: 0 !important;
+    /* width: 40em; */
+    box-shadow: 2px 2px 7px rgba(0,0,0,0.7);
+    margin: 5% 0 5% 0;
+}
+
+.barTitle {
+    font-weight: 300
+}
+
+.barRow {
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.p {
+    margin: 0;
+}
+
+.span {
+    font-size: 14px;
+}
+
+.strong {
+    font-size: 14px;
+}
+
+.barButtonsRow {
+    margin-top: 10px;
+}
+
+.cohortButtonsDiv {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.buttonText {
+    margin-left: 5px;
+}
+
+.middleButton {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.middleButton2 {
+    margin-left: 10px;
+}
+
+.deleteModal {
+    width: 50% !important;
+    max-width: none!important;
+}
+
+.viewTraineesModal {
+    width: 65% !important;
+    max-width: none!important;
+}
+
+.modal {
+    width: 65% !important;
+    max-width: none!important;
+}
+
+.deleteModalButtons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.deleteButton {
+    margin-right: 5px;
+}
+
+.returnButton {
+    margin-left: 5px;
+}
+
+.deleteHeader {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
+
+.hide {
+    display: none;
 }
