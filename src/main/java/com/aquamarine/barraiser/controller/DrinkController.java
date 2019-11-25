@@ -31,12 +31,12 @@ public class DrinkController {
     @RequestMapping(value = "/deleteDrink", method = RequestMethod.DELETE)
     @PreAuthorize("hasAuthority('BARTENDER')")
     public @ResponseBody ResponseEntity<?> deleteDrink(@RequestParam int drinkID){
-        if (drinkService.deleteDrink(drinkID)){
-            return new ResponseEntity<>("Drink deleted successfully", HttpStatus.OK);
-        }
-        else{
-            return new ResponseEntity<>("Drink not deleted successfully", HttpStatus.BAD_REQUEST);
-        }
+        drinkService.deleteDrink(drinkID);
+        return new ResponseEntity<>("Drink deleted successfully", HttpStatus.OK);
+//        }
+//        else{
+//            return new ResponseEntity<>("Drink not deleted successfully", HttpStatus.BAD_REQUEST);
+//        }
     }
 
     // Will only return all public drinks

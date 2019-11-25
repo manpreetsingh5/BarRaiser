@@ -10,6 +10,7 @@ public class DrinkDTOMapper {
                 .setId(drink.getId())
                 .setImage_path(drink.getImage_path())
                 .setName(drink.getName())
+                .setDescription(drink.getDescription())
                 .setPublic(drink.isPublic())
                 .setCreatedBy(drink.getCreatedBy())
                 .setCreatedDate(drink.getCreatedDate());

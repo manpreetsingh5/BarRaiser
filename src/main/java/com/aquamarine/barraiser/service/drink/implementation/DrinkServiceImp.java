@@ -49,6 +49,7 @@ public class DrinkServiceImp implements DrinkService {
         drink.setImage_path(drinkDTO.getImage_path());
         drink.setName(drinkDTO.getName());
         drink.setPublic(drinkDTO.isPublic());
+        drink.setDescription(drinkDTO.getDescription());
 
         return drinkRepository.save(drink);
     }
@@ -117,6 +118,7 @@ public class DrinkServiceImp implements DrinkService {
             drink.setName(drinkDTO.getName());
             drink.setImage_path(drinkDTO.getImage_path());
             drink.setPublic(drinkDTO.isPublic());
+            drink.setDescription(drinkDTO.getDescription());
 
             String filePath = drink.getImage_path();
             File file = imageService.convertMultiPartToFile(multipartFile, drink.getName());
