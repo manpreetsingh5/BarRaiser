@@ -1,6 +1,12 @@
 package com.aquamarine.barraiser.controller;
 
 import com.aquamarine.barraiser.dto.model.DrinkDTO;
+import com.aquamarine.barraiser.enums.ActionsEnum;
+import com.aquamarine.barraiser.enums.MeasurementEnum;
+import com.aquamarine.barraiser.model.Drink;
+import com.aquamarine.barraiser.model.Step;
+import com.aquamarine.barraiser.model.StepEquipment;
+import com.aquamarine.barraiser.repository.EquipmentRepository;
 import com.aquamarine.barraiser.service.drink.interfaces.DrinkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,7 +15,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -19,6 +28,9 @@ public class DrinkController {
 
     @Autowired
     private DrinkService drinkService;
+
+    @Autowired
+    private EquipmentRepository equipmentRepository;
 
     @RequestMapping(value = "/addDrink", method = RequestMethod.POST)
     @PreAuthorize("hasAuthority('BARTENDER')")
@@ -60,6 +72,8 @@ public class DrinkController {
         }
         return new ResponseEntity<>("Drink not deleted successfully", HttpStatus.BAD_REQUEST);
     }
+
+
 
 
 }

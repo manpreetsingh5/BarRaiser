@@ -2,9 +2,15 @@ package com.aquamarine.barraiser.service.drink.implementation;
 
 import com.aquamarine.barraiser.dto.mapper.DrinkDTOMapper;
 import com.aquamarine.barraiser.dto.model.DrinkDTO;
+import com.aquamarine.barraiser.dto.model.StepDTO;
+import com.aquamarine.barraiser.dto.model.StepEquipmentDTO;
 import com.aquamarine.barraiser.model.Drink;
+import com.aquamarine.barraiser.model.Step;
+import com.aquamarine.barraiser.model.StepEquipment;
 import com.aquamarine.barraiser.model.User;
 import com.aquamarine.barraiser.repository.DrinkRepository;
+import com.aquamarine.barraiser.repository.StepEquipmentRepository;
+import com.aquamarine.barraiser.repository.StepRepository;
 import com.aquamarine.barraiser.repository.UserRepository;
 import com.aquamarine.barraiser.service.drink.interfaces.DrinkService;
 import com.aquamarine.barraiser.service.images.interfaces.ImageService;
@@ -31,6 +37,12 @@ public class DrinkServiceImp implements DrinkService {
     private DrinkRepository drinkRepository;
 
     @Autowired
+    private StepRepository stepRepository;
+
+    @Autowired
+    private StepEquipmentRepository stepEquipmentRepository;
+
+    @Autowired
     private ImageService imageService;
 
     @Value("images/drinks/")
@@ -40,17 +52,45 @@ public class DrinkServiceImp implements DrinkService {
     DrinkDTOMapper drinkDTOMapper = new DrinkDTOMapper();
 
     @Override
-    public Drink addDrink(DrinkDTO drinkDTO, MultipartFile multipartFile) throws IOException {
+    public Drink addDrink(DrinkDTO drinkDTO , MultipartFile multipartFile) throws IOException {
         String fileName = drinkDTO.getName();
         File file = imageService.convertMultiPartToFile(multipartFile, fileName);
         imageService.uploadFileToS3bucket(sub_folder+fileName, file);
 
         Drink drink = new Drink();
-        drink.setImage_path(drinkDTO.getImage_path());
-        drink.setName(drinkDTO.getName());
-        drink.setPublic(drinkDTO.isPublic());
-        drink.setDescription(drinkDTO.getDescription());
 
+        drink.setImage_path(drinkDTO.getImage_path())
+                .setName(drinkDTO.getName())
+                .setPublic(drinkDTO.isPublic())
+                .setDescription(drinkDTO.getDescription());
+        HashSet<Step> steps = new HashSet<>();
+        for (StepDTO stepdto: drinkDTO.getSteps()) {
+            Step step = new Step()
+                    .setDescription(stepdto.getDescription())
+                    .setDrink(stepdto.getDrink())
+                    .setAction(stepdto.getAction())
+                    .setSuccessAmount(stepdto.getSuccessAmount())
+                    .setStep_number(stepdto.getStep_number());
+
+            steps.add(step);
+
+            HashSet<StepEquipment> stepEquipments = new HashSet<>();
+            for (StepEquipmentDTO stepEquipmentDTO: stepdto.getEquipmentSet()) {
+                StepEquipment stepEquipment = new StepEquipment()
+                        .setEquipment(stepEquipmentDTO.getEquipment())
+                        .setStep(stepEquipmentDTO.getStep())
+                        .setQuantity(stepEquipmentDTO.getQuantity())
+                        .setUnit(stepEquipmentDTO.getUnit());
+
+                stepEquipments.add(stepEquipment);
+                stepEquipmentRepository.save(stepEquipment);
+            }
+            step.setEquipmentSet(stepEquipments);
+
+            stepRepository.save(step);
+
+        }
+        drink.setSteps(steps);
         return drinkRepository.save(drink);
     }
 
@@ -97,7 +137,7 @@ public class DrinkServiceImp implements DrinkService {
     public Map<String, Object> findDrinkById(int id) throws IOException {
         HashMap<String, Object> ret = new HashMap<>();
         DrinkDTO drinkDTO = DrinkDTOMapper.toDrinkDTO(drinkRepository.findById(id).get());
-        ret.put("cohort", drinkDTO);
+        ret.put("drink", drinkDTO);
         InputStream in = imageService.downloadFileFromS3bucket(drinkDTO.getImage_path()).getObjectContent();
         BufferedImage imageFromAWS = ImageIO.read(in);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();

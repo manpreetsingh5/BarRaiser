@@ -2,6 +2,7 @@ package com.aquamarine.barraiser.service.equipment.implementation;
 
 import com.aquamarine.barraiser.dto.mapper.EquipmentDTOMapper;
 import com.aquamarine.barraiser.dto.model.EquipmentDTO;
+import com.aquamarine.barraiser.enums.EquipmentEnum;
 import com.aquamarine.barraiser.model.Equipment;
 import com.aquamarine.barraiser.model.User;
 import com.aquamarine.barraiser.repository.EquipmentRepository;
@@ -107,14 +108,19 @@ public class EquipmentServiceImpl implements EquipmentService {
     public Map<String, Object> getEquipmentById(int id) throws IOException {
         HashMap<String, Object> ret = new HashMap<>();
         EquipmentDTO equipmentDTO = equipmentDTOMapper.toEquipmentDTO(equipmentRepository.findById(id).get());
-        ret.put("cohort", equipmentDTO);
+        ret.put("equipment", equipmentDTO);
         InputStream in = imageService.downloadFileFromS3bucket(equipmentDTO.getImage_path()).getObjectContent();
         BufferedImage imageFromAWS = ImageIO.read(in);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ImageIO.write(imageFromAWS, "png", baos );
-        byte[] imageBytes = baos.toByteArray();
-        in.close();
-        ret.put("file", imageBytes);
+        if (imageFromAWS != null) {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(imageFromAWS, "png", baos);
+            byte[] imageBytes = baos.toByteArray();
+            in.close();
+            ret.put("file", imageBytes);
+        }
+        else {
+            ret.put("file", null);
+        }
         return ret;
 
     }
@@ -127,13 +133,28 @@ public class EquipmentServiceImpl implements EquipmentService {
         Set<Map<String, Object>> res = new HashSet<>();
 
         for (Equipment e: drinks){
-            if (e.isPublic()){
+            if (e.isPublic() && e.getType() == EquipmentEnum.EQUIPMENT){
                 res.add(getEquipmentById(e.getId()));
             }
         }
 
         return res;
 
+    }
+
+    @Override
+    public Set<Map<String, Object>> viewAllIngredients() throws IOException {
+        List<Equipment> drinks = equipmentRepository.findAll();
+
+        Set<Map<String, Object>> res = new HashSet<>();
+
+        for (Equipment e: drinks){
+            if (e.isPublic() && e.getType() == EquipmentEnum.INGREDIENT){
+                res.add(getEquipmentById(e.getId()));
+            }
+        }
+
+        return res;
     }
 
     @Override

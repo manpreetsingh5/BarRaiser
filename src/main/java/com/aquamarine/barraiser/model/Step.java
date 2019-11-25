@@ -21,7 +21,7 @@ public class Step {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "drink_id", referencedColumnName = "id")
     @JsonIgnore
     private Drink drink;
@@ -36,6 +36,12 @@ public class Step {
     @Enumerated(EnumType.STRING)
     private ActionsEnum action;
 
-    @OneToMany(mappedBy="step")
+    @Column(nullable = false)
+    private Integer successAmount;
+
+    @OneToMany(cascade = CascadeType.DETACH)
+    @JoinTable(name = "steps_to_step_equipment",
+            joinColumns = @JoinColumn(name = "step_equipment_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "step_id", referencedColumnName = "id"))
     private Set<StepEquipment> equipmentSet;
 }

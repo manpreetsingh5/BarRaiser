@@ -38,10 +38,22 @@ public class EquipmentController {
 //        }
     }
 
-    @RequestMapping(value = "/viewAll", method = RequestMethod.GET)
+    @RequestMapping(value = "/viewEquipmentByID", method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('BARTENDER')")
+    public @ResponseBody Map<String, Object> viewAllEquipment(@RequestParam int equipment_id) throws IOException {
+        return equipmentService.getEquipmentById(equipment_id);
+    }
+
+    @RequestMapping(value = "/viewAllEquipment", method = RequestMethod.GET)
     @PreAuthorize("hasAuthority('BARTENDER')")
     public @ResponseBody Set<Map<String, Object>> viewAllEquipment() throws IOException {
         return equipmentService.viewAllEquipment();
+    }
+
+    @RequestMapping(value = "/viewAllIngredients", method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('BARTENDER')")
+    public @ResponseBody Set<Map<String, Object>> viewAllIngredients() throws IOException {
+        return equipmentService.viewAllIngredients();
     }
 
     @RequestMapping(value = "/editEquipment", method = RequestMethod.POST)

@@ -26,6 +26,10 @@ public class StepEquipment {
     @JsonIgnore
     private Step step;
 
+    @OneToOne
+    @JoinColumn(name = "equipment_id", referencedColumnName = "id")
+    private Equipment equipment;
+
     @Column(nullable = false)
     private double quantity;
 

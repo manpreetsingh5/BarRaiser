@@ -33,6 +33,6 @@ public class DrinkDTO extends Auditable<String> {
 
     private Date createdDate;
 
-    private Set<Step> steps;
+    private Set<StepDTO> steps;
 
 }
