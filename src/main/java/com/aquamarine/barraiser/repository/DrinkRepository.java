@@ -12,5 +12,5 @@ import java.util.Set;
 
 @Repository
 public interface DrinkRepository extends JpaRepository<Drink, Integer> {
-    Set<Drink> findAllByInstructor(User instructor);
+    Set<Drink> findAllByCreatedBy(String createdby);
 }
