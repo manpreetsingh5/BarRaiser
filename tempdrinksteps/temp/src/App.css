@@ -15,15 +15,6 @@ body{
   }
 }
 
-.marker{
-  height: 15px;
-  width: 10px;
-  background-color: crimson;
-  top: 0;
-  right: 28%;
-  position: absolute;
-}
-
 .front{
   z-index: 3;
 }
@@ -43,10 +34,18 @@ body{
 
 .filled_ingredient_row{
   position: absolute;
-  left: 0;
   top: 30px; 
-/* might have to change this */
+  width: 100%;
+  height: 100%;
   z-index: 2;
+}
+
+.glass_stir_row{
+  position: absolute;
+  top: 50px;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
 }
 
 #pour_liquid{
