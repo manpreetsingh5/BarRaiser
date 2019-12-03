@@ -1,6 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
-import { PourLiquidGame, ShakeGame, PourSolidGame, FillGame, StirGame, MatchingGame } from './Games';
+import { PourLiquidGame, ShakeGame, PourSolidGame, FillGame, StirGame, MatchingGame, RollGame} from './Games';
 import React from 'react';
 import './App.css';
 import {Container, Tabs, Tab} from 'react-bootstrap';
@@ -19,7 +19,10 @@ class App extends React.Component {
     return (
       <Container>
         {/* Tabs are used just to put examples in one App.js --> real app will not have tabs/tab */}
-        <Tabs defaultActiveKey="profile" id="uncontrolled-tab-example">
+        <Tabs defaultActiveKey="matching" id="uncontrolled-tab-example">
+          <Tab eventKey="matching" title="Matching Game">
+            <MatchingGame ingredients={[bottle_src, glass_src, shaker_src, salt_src, plate_src, ice_src, milk_src, spoon_src, cookie_src]} target={spoon_src} length={9} />
+          </Tab>
           <Tab eventKey="pourliquid" title="Pour Liquid">
             <PourLiquidGame target={25} unit={"oz"} ingredient_src={bottle_src} equipment_src={glass_src}/>
           </Tab>
@@ -35,8 +38,8 @@ class App extends React.Component {
           <Tab eventKey="stir" title="Stir">
             <StirGame target={40} equipment_src={milk_src}/>
           </Tab>
-          <Tab eventKey="memory" title="Matching Game">
-            <MatchingGame ingredients={[bottle_src, glass_src, shaker_src, salt_src, plate_src, ice_src, milk_src, spoon_src, cookie_src]} target={spoon_src} length={9} />
+          <Tab eventKey="roll" title="Roll">
+            <RollGame target={33} equipment_src={plate_src}/>
           </Tab>
         </Tabs>
       </Container>
