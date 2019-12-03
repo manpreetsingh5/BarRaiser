@@ -1,6 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
-import { PourLiquidGame, ShakeGame, PourSolidGame, FillGame, StirGame, MatchingGame, RollGame} from './Games';
+import { PourLiquidGame, ShakeGame, PourSolidGame, FillGame, StirGame, MatchingGame, RollGame, StrainGame} from './Games';
 import React from 'react';
 import './App.css';
 import {Container, Tabs, Tab} from 'react-bootstrap';
@@ -28,6 +28,9 @@ class App extends React.Component {
           </Tab>
           <Tab eventKey="shake" title="Shake">
             <ShakeGame target={10} equipment_src={shaker_src} />
+          </Tab>
+          <Tab eventKey="strain" title="Strain">
+            <StrainGame target={25} unit={"oz"} ingredient_src={shaker_src}  equipment_src={glass_src}/>
           </Tab>
           <Tab eventKey="poursolid" title="Pour Solid">
             <PourSolidGame target={30} unit={"g"} ingredient_src={salt_src}  equipment_src={plate_src}/>
