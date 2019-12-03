@@ -1,6 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
-import { PourLiquidGame, ShakeGame, PourSolidGame, FillGame, StirGame, MemoryGame } from './Games';
+import { PourLiquidGame, ShakeGame, PourSolidGame, FillGame, StirGame, MatchingGame } from './Games';
 import React from 'react';
 import './App.css';
 import {Container, Tabs, Tab} from 'react-bootstrap';
@@ -11,6 +11,8 @@ import salt_src from './img/salt.svg';
 import plate_src from './img/plate.svg';
 import ice_src from './img/ice.svg';
 import milk_src from './img/milk.svg';
+import cookie_src from './img/cookie.svg';
+import spoon_src from './img/spoon.svg';
 
 class App extends React.Component {
   render() {
@@ -33,8 +35,8 @@ class App extends React.Component {
           <Tab eventKey="stir" title="Stir">
             <StirGame target={40} equipment_src={milk_src}/>
           </Tab>
-          <Tab eventKey="memory" title="Recognition Game">
-            <MemoryGame />
+          <Tab eventKey="memory" title="Matching Game">
+            <MatchingGame ingredients={[bottle_src, glass_src, shaker_src, salt_src, plate_src, ice_src, milk_src, spoon_src, cookie_src]} target={spoon_src} length={9} />
           </Tab>
         </Tabs>
       </Container>

@@ -133,3 +133,7 @@ body{
 .progress{
   border: 1px solid rgba(0,0,0,0.3);
 }
+
+.test-img{
+  max-height: 100px;
+}

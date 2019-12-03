@@ -4,16 +4,8 @@ import 'bootstrap/dist/js/bootstrap.bundle.min';
 import React from 'react';
 import './App.css';
 import { Button, Container, Row, ProgressBar, Col, Tabs, Tab, Modal } from 'react-bootstrap';
-import bottle_src from './img/vodka.svg';
-import glass_src from './img/wine.svg';
-import shaker_src from './img/shaker.svg';
-import salt_src from './img/salt.svg';
-import plate_src from './img/plate.svg';
-import ice_src from './img/ice.svg';
-import milk_src from './img/milk.svg';
 import posed from 'react-pose';
 import spoon_src from './img/spoon.svg';
-// delete the other src from above since they're provided by the user
 
 const Bottle = posed.img({
   standing: { rotate: '0deg' },
@@ -194,7 +186,7 @@ export class PourLiquidGame extends React.Component {
                     })
                   }}
                 >
-                  POUR 
+                  POUR
                 </Repeatable>
               </Row>
               <Row className="my-3">
@@ -356,7 +348,7 @@ export class PourSolidGame extends React.Component {
                     })
                   }}
                 >
-                  POUR 
+                  POUR
                 </Repeatable>
               </Row>
               <Row className="my-3">
@@ -400,13 +392,13 @@ export class ShakeGame extends React.Component {
     }
   }
 
-  handleCloseModal(){
+  handleCloseModal() {
     this.setState({
       show_modal: false,
     })
   }
 
-  handleOpenModal(){
+  handleOpenModal() {
     var result = (this.state.progress === this.state.target);
     this.setState({
       completed: true,
@@ -451,7 +443,7 @@ export class ShakeGame extends React.Component {
   render() {
     return (
       <Container>
-         <Row className="mt-5">
+        <Row className="mt-5">
           <Col>
             <ProgressBar>
               <ProgressBar animated variant="info" now={this.state.progress} key={1} />
@@ -464,7 +456,7 @@ export class ShakeGame extends React.Component {
             <Col sm={8}>
               <Row>
                 <Col sm={3} className="mx-auto">
-                  <Shaker className="img-fluid" src={this.props.equipment_src} alt={'equipment'} pose={this.state.pressed ? 'up' : 'down'}/>
+                  <Shaker className="img-fluid" src={this.props.equipment_src} alt={'equipment'} pose={this.state.pressed ? 'up' : 'down'} />
                 </Col>
               </Row>
             </Col>
@@ -541,13 +533,13 @@ export class FillGame extends React.Component {
     }
   }
 
-  handleCloseModal(){
+  handleCloseModal() {
     this.setState({
       show_modal: false,
     })
   }
 
-  handleOpenModal(){
+  handleOpenModal() {
     var result = (this.state.progress === this.state.target);
     this.setState({
       completed: true,
@@ -592,7 +584,7 @@ export class FillGame extends React.Component {
   render() {
     return (
       <Container>
-         <Row className="mt-5">
+        <Row className="mt-5">
           <Col>
             <ProgressBar>
               <ProgressBar animated variant="info" now={this.state.progress} key={1} />
@@ -605,7 +597,7 @@ export class FillGame extends React.Component {
             <Col sm={8}>
               <Row>
                 <Col sm={2} className="mx-auto">
-                  <Ingredient className="front img-fluid" src={this.props.ingredient_src} alt={'ingredient'} pose={this.state.pressed ? 'down' : 'up'}/>
+                  <Ingredient className="front img-fluid" src={this.props.ingredient_src} alt={'ingredient'} pose={this.state.pressed ? 'down' : 'up'} />
                 </Col>
               </Row>
               <Row>
@@ -680,7 +672,7 @@ export class FillGame extends React.Component {
   }
 }
 
- export class StirGame extends React.Component {
+export class StirGame extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -797,7 +789,7 @@ export class FillGame extends React.Component {
                     })
                   }}
                 >
-                  STIR 
+                  STIR
                 </Repeatable>
               </Row>
               <Row className="my-3">
@@ -826,11 +818,100 @@ export class FillGame extends React.Component {
   }
 }
 
-export class MemoryGame extends React.Component {
+export class MatchingGame extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      ingredients: this.props.ingredients,
+      index: Math.floor(Math.random() * this.props.length),
+    }
+  }
+
+  handleCloseModal() {
+    this.setState({
+      show_modal: false,
+    })
+  }
+
+  handleOpenModal() {
+    var result = (this.props.target === this.state.ingredients[this.state.index]);
+    this.setState({
+      completed: true,
+      show_modal: true,
+      success: result,
+    })
+  }
+
+  getResult() {
+    var result = (this.state.success);
+    if (result) {
+      return (
+        <div>
+          <Modal.Header closeButton>
+            <Modal.Title>Success</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>Congratulations! You've successfully completed this step.</Modal.Body>
+          <Modal.Footer>
+            <Button variant="success" onClick={() => console.log("Continue to next step...")}>
+              Continue
+            </Button>
+          </Modal.Footer>
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <Modal.Header closeButton>
+            <Modal.Title>Failed</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>Unfortunately, you've failed this step.</Modal.Body>
+          <Modal.Footer>
+            <Button variant="success" onClick={() => console.log("Reload the page...")}>
+              Try Again
+            </Button>
+          </Modal.Footer>
+        </div>
+      );
+    }
+  }
+
   render() {
     return (
       <Container>
-
+        <Row className="mt-5">
+          <Col sm={8}>
+            <Row>
+              <Col sm={3} className="mx-auto">
+                <img className="img-fluid" src={this.props.target} alt={'target'} />
+              </Col>
+            </Row>
+            <Row className="mt-3">
+              <Col sm={3} className="mx-auto">
+                <img className="img-fluid" src={this.state.ingredients[this.state.index]} alt={'ingredients'} />
+              </Col>
+            </Row>
+          </Col>
+          <Col sm={2} className="mx-auto">
+            <Row className="my-3">
+              <Button variant="info"
+                onClick={() => {
+                  this.setState({
+                    index: (this.state.index + 1) % this.state.ingredients.length,
+                  });
+                }}
+                disabled={this.state.hint || this.state.completed}
+              >NEXT</Button>
+            </Row>
+            <Row className="my-3">
+                <Button variant="info"
+                  onClick={() => this.handleOpenModal()}
+                >COMPLETE</Button>
+                <Modal show={this.state.show_modal} onHide={() => this.handleCloseModal()}>
+                  <Modal.Body>{this.getResult()}</Modal.Body>
+                </Modal>
+              </Row>
+          </Col>
+        </Row>
       </Container>
     );
   }
