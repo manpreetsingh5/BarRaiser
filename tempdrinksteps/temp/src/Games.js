@@ -9,6 +9,22 @@ import spoon_src from './img/spoon.svg';
 import strainer_src from './img/strainer.svg';
 import circle_src from './img/circle.svg';
 
+
+function getCenterPosition(item){
+  var {top, left, width, height} = item.getBoundingClientRect();
+   return {
+     x: left + width / 2,
+     y: top + height / 2
+   };
+}
+
+function getItemDistance(a, b) {
+  const aPosition = getCenterPosition(a);
+  const bPosition = getCenterPosition(b);
+
+  return Math.hypot(aPosition.x - bPosition.x, aPosition.y - bPosition.y);  
+}
+
 const Bottle = posed.img({
   standing: { rotate: '0deg' },
   pouring: {
@@ -20,7 +36,7 @@ const Bottle = posed.img({
 const PourLiquid = posed.div({
   standing: { height: '0' },
   pouring: {
-    height: '150px',
+    height: '250px', 
     delay: 200,
   }
 });
@@ -28,7 +44,7 @@ const PourLiquid = posed.div({
 const StrainLiquid = posed.div({
   standing: { height: '0' },
   pouring: {
-    height: '350px',
+    height: '400px',
     delay: 200,
   }
 })
@@ -152,7 +168,7 @@ export class PourLiquidGame extends React.Component {
             <Col sm={8}>
               <Row>
                 <Col sm={3} className="mx-auto">
-                  <Bottle className="front img-fluid test" src={this.props.ingredient_src} alt={'ingredient'} pose={this.state.pressed ? 'pouring' : 'standing'} />
+                  <Bottle className="front img-fluid test" id="pour_liquid_top" src={this.props.ingredient_src} alt={'ingredient'} pose={this.state.pressed ? 'pouring' : 'standing'} />
                 </Col>
               </Row>
               <Row className="pour-row">
@@ -162,7 +178,7 @@ export class PourLiquidGame extends React.Component {
               </Row>
               <Row>
                 <Col sm={3} className="mx-auto">
-                  <img className="img-fluid" src={this.props.equipment_src} alt={'equipment'} />
+                  <img className="img-fluid" id="pour_liquid_bottom" src={this.props.equipment_src} alt={'equipment'} />
                 </Col>
               </Row>
             </Col>
