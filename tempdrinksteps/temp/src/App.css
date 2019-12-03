@@ -86,6 +86,20 @@ body{
 
 .bg-info{
   background-color: #7fffd4 !important;
+  border: 1px solid rgba(0,0,0,0.5);
+}
+
+.btn-success{
+  background-color: #5ceab3!important;
+  border-color: #53d3a0!important;
+  color: black;
+}
+
+.btn-success:hover{
+  background-color: #53d3a0!important;
+  border-color: #53d3a0!important;
+  transition: all 0.5s;
+  color: black;
 }
 
 .btn-info{
@@ -104,6 +118,11 @@ body{
   box-shadow: 0 3px 10px rgba(0,0,0,0.5);
   color: black;
   box-shadow: 0 3px 10px rgba(0,0,0,0.5);
+}
+
+.btn-info.disabled, .btn-info:disabled, .btn-info.disabled:hover{
+  background-color: lightslategray !important;
+  color: white !important;
 }
 
 .btn-info:active, .btn-info:focus{
