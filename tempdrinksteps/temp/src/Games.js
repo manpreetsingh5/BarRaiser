@@ -31,6 +31,37 @@ const PourLiquid = posed.div({
   }
 });
 
+const PourSolid = posed.div({
+  standing: { height: '0px' },
+  pouring: {
+    height: '200px',
+    delay: 200,
+  }
+});
+
+const Shaker = posed.img({
+  up: { y: 0 },
+  down: { y: 100 }
+});
+
+const Ingredient = posed.img({
+  up: { y: 0 },
+  down: {
+    y: 100,
+    transition: { duration: 50 },
+  }
+});
+
+const FilledIngredient = posed.img({
+  visible: { opacity: 1 },
+  hidden: { opacity: 0 },
+})
+
+const Spoon = posed.img({
+  left: { x: -30 },
+  right: { x: 30 }
+})
+
 const PosedH5 = posed.h5({
   visible: { opacity: 1 },
   hidden: { opacity: 0 },
@@ -51,7 +82,6 @@ export class PourLiquidGame extends React.Component {
       completed: false,
       success: false,
       hint: false,
-      drink_result: null,
       show_modal: false,
     }
   }
@@ -107,6 +137,14 @@ export class PourLiquidGame extends React.Component {
   render() {
     return (
       <Container>
+        <Row className="mt-5">
+          <Col>
+            <ProgressBar>
+              <ProgressBar animated variant="info" now={this.state.progress} key={1} />
+              <PosedProgressBar animated variant="danger" now={this.state.target - this.state.progress} key={2} pose={this.state.hint ? 'visible' : 'hidden'} />
+            </ProgressBar>
+          </Col>
+        </Row>
         <Container>
           <Row className="mt-5">
             <Col sm={8}>
@@ -156,7 +194,7 @@ export class PourLiquidGame extends React.Component {
                     })
                   }}
                 >
-                  POUR DRINK
+                  POUR 
                 </Repeatable>
               </Row>
               <Row className="my-3">
@@ -180,6 +218,87 @@ export class PourLiquidGame extends React.Component {
             </Col>
           </Row>
         </Container>
+      </Container>
+    );
+  }
+}
+
+export class PourSolidGame extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      progress: 0,
+      target: this.props.target,
+      pressed: false,
+      completed: false,
+      success: false,
+      hint: false,
+      show_modal: false,
+    }
+  }
+
+  handleCloseModal() {
+    this.setState({
+      show_modal: false,
+    })
+  }
+
+  handleOpenModal() {
+    var result = (this.state.progress === this.state.target);
+    this.setState({
+      completed: true,
+      show_modal: true,
+      success: result,
+    })
+  }
+
+  getResult() {
+    var result = (this.state.success);
+    if (result) {
+      return (
+        <div>
+          <Modal.Header closeButton>
+            <Modal.Title>Success</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>Congratulations! You've successfully completed this step.</Modal.Body>
+          <Modal.Footer>
+            <Button variant="success" onClick={() => console.log("Continue to next step...")}>
+              Continue
+            </Button>
+          </Modal.Footer>
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <Modal.Header closeButton>
+            <Modal.Title>Failed</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>Unfortunately, you've failed this step.</Modal.Body>
+          <Modal.Footer>
+            <Button variant="success" onClick={() => console.log("Reload the page...")}>
+              Try Again
+            </Button>
+          </Modal.Footer>
+        </div>
+      );
+    }
+  }
+
+  checkProgress() {
+    if (!this.state.completed && this.state.progress > (this.state.target)) {
+      this.setState({
+        completed: true,
+        drink_result: 'FAILED',
+        progress: 0,
+      })
+    }
+  }
+
+
+  render() {
+    return (
+      <Container>
         <Row className="mt-5">
           <Col>
             <ProgressBar>
@@ -188,475 +307,520 @@ export class PourLiquidGame extends React.Component {
             </ProgressBar>
           </Col>
         </Row>
+        <Container>
+          <Row className="mt-5">
+            <Col sm={8}>
+              <Row>
+                <Col sm={3} className="mx-auto">
+                  <Bottle className="front img-fluid test" src={this.props.ingredient_src} alt={'ingredient'} pose={this.state.pressed ? 'pouring' : 'standing'} />
+                </Col>
+              </Row>
+              <Row className="pour-row">
+                <Col sm={3} className="mx-auto">
+                  <PourSolid id="pour_solid" className="mx-auto" pose={this.state.pressed ? 'pouring' : 'standing'} />
+                </Col>
+              </Row>
+              <Row>
+                <Col sm={3} className="mx-auto">
+                  <img className="img-fluid" src={this.props.equipment_src} alt={'equipment'} />
+                </Col>
+              </Row>
+            </Col>
+            <Col sm={2} className="mx-auto">
+              <PosedH5 pose={this.state.hint ? 'visible' : 'hidden'}>Target: {this.state.target + " " + this.props.unit}</PosedH5>
+              <h5>Current: {this.state.progress + " " + this.props.unit}</h5>
+              <Row className="my-3 mt-5">
+                <Repeatable
+                  tag={Button}
+                  variant="info"
+                  disabled={this.state.completed}
+                  repeatDelay={0}
+                  repeatInterval={150}
+                  onPress={() => {
+                    this.setState({
+                      pressed: true,
+                    })
+                  }}
+                  onHoldStart={() => {
+                  }}
+                  onHold={() => {
+                    this.setState({
+                      progress: Math.min(this.state.progress + 1, 100)
+                    });
+                  }}
+                  onHoldEnd={() => {
+                  }}
+                  onRelease={() => {
+                    this.setState({
+                      pressed: false,
+                    })
+                  }}
+                >
+                  POUR 
+                </Repeatable>
+              </Row>
+              <Row className="my-3">
+                <Button variant="info"
+                  onClick={() => this.handleOpenModal()}
+                >COMPLETE</Button>
+                <Modal show={this.state.show_modal} onHide={() => this.handleCloseModal()}>
+                  <Modal.Body>{this.getResult()}</Modal.Body>
+                </Modal>
+              </Row>
+              <Row className="my-3">
+                <Button variant="info"
+                  onClick={() => {
+                    this.setState({
+                      hint: true,
+                    });
+                  }}
+                  disabled={this.state.hint || this.state.completed}
+                >GET HINT</Button>
+              </Row>
+            </Col>
+          </Row>
+        </Container>
       </Container>
     );
   }
 }
 
-const PourSolid = posed.div({
-  standing: { height: '0px' },
-  pouring: {
-    height: '200px',
-    delay: 200,
-  }
-});
-
-export class PourSolidGame extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      progress: 0,
-      target: 33,
-      pressed: false,
-      competed: false,
-      drink_result: null,
-    }
-  }
-
-  checkProgress() {
-    if (!this.state.completed && this.state.progress > (this.state.target)) {
-      this.setState({
-        completed: true,
-        drink_result: 'FAILED',
-        progress: 0,
-      })
-    }
-  }
-
-
-  render() {
-    return (
-      <Container>
-        <Row>
-          <Col>
-            <ProgressBar>
-              <ProgressBar animated now={this.state.progress} key={1} />
-              <ProgressBar animated variant="danger" now={this.state.target - this.state.progress} key={2} />
-            </ProgressBar>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <h4>Target: {this.state.target}</h4>
-          </Col>
-          <Col>
-            <h4>Current: {this.state.progress}</h4>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <Repeatable
-              tag={Button}
-              repeatDelay={0}
-              repeatInterval={150}
-              onPress={() => {
-                this.setState({
-                  pressed: true,
-                })
-              }}
-              onHoldStart={() => {
-              }}
-              onHold={() => {
-                this.setState({
-                  progress: Math.min(this.state.progress + 1, 100)
-                });
-                this.checkProgress();
-              }}
-              onHoldEnd={() => {
-              }}
-              onRelease={() => {
-                this.setState({
-                  pressed: false,
-                })
-              }}
-            >
-              Pour Drink
-          </Repeatable>
-          </Col>
-          <Col>
-            <Button variant="success"
-              onClick={() => {
-                this.setState({
-                  completed: true,
-                });
-                if (this.state.progress === this.state.target) {
-                  alert('Congratulations')
-                } else {
-                  this.setState({
-                    drink_result: 'FAILED',
-                    progress: 0,
-                  })
-                }
-              }}
-            >Complete</Button>
-          </Col>
-        </Row>
-        <Row>
-          <h5>{this.state.drink_result}</h5>
-        </Row>
-        <Row className="mt-5">
-          <Col sm={2} className="mx-auto">
-            <Bottle className="front img-fluid" src={salt_src} alt={'salt'} pose={this.state.pressed ? 'pouring' : 'standing'} />
-          </Col>
-        </Row>
-        <Row className="pour-row">
-          <Col sm={2} className="mx-auto">
-            <PourSolid id="pour_solid" className="mx-auto" pose={this.state.pressed ? 'pouring' : 'standing'} />
-          </Col>
-        </Row>
-        <Row>
-          <Col sm={2} className="mx-auto">
-            <img className="img-fluid" src={plate_src} alt={'plate'} />
-          </Col>
-        </Row>
-      </Container>
-    );
-  }
-}
-
-const Shaker = posed.img({
-  up: { y: 0 },
-  down: { y: 100 }
-});
-
+// for the shake game -- the limit is 10 
 export class ShakeGame extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       progress: 0,
-      target: 50,
+      target: (this.props.target * 10),
       pressed: false,
-      competed: false,
-      drink_result: null,
+      completed: false,
+      success: false,
+      hint: false,
+      show_modal: false,
     }
   }
 
-  checkProgress() {
-    if (!this.state.completed && this.state.progress > (this.state.target)) {
-      this.setState({
-        completed: true,
-        drink_result: 'FAILED',
-        progress: 0,
-      })
+  handleCloseModal(){
+    this.setState({
+      show_modal: false,
+    })
+  }
+
+  handleOpenModal(){
+    var result = (this.state.progress === this.state.target);
+    this.setState({
+      completed: true,
+      show_modal: true,
+      success: result,
+    })
+  }
+
+  getResult() {
+    var result = (this.state.success);
+    if (result) {
+      return (
+        <div>
+          <Modal.Header closeButton>
+            <Modal.Title>Success</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>Congratulations! You've successfully completed this step.</Modal.Body>
+          <Modal.Footer>
+            <Button variant="success" onClick={() => console.log("Continue to next step...")}>
+              Continue
+            </Button>
+          </Modal.Footer>
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <Modal.Header closeButton>
+            <Modal.Title>Failed</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>Unfortunately, you've failed this step.</Modal.Body>
+          <Modal.Footer>
+            <Button variant="success" onClick={() => console.log("Reload the page...")}>
+              Try Again
+            </Button>
+          </Modal.Footer>
+        </div>
+      );
     }
   }
 
   render() {
     return (
       <Container>
-        <Row>
+         <Row className="mt-5">
           <Col>
             <ProgressBar>
-              <ProgressBar animated now={this.state.progress} key={1} />
-              <ProgressBar animated variant="danger" now={this.state.target - this.state.progress} key={2} />
+              <ProgressBar animated variant="info" now={this.state.progress} key={1} />
+              <PosedProgressBar animated variant="danger" now={this.state.target - this.state.progress} key={2} pose={this.state.hint ? 'visible' : 'hidden'} />
             </ProgressBar>
           </Col>
         </Row>
-        <Row>
-          <Col>
-            <h4>Target: {this.state.target}</h4>
-          </Col>
-          <Col>
-            <h4>Current: {this.state.progress}</h4>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <Repeatable
-              tag={Button}
-              repeatDelay={0}
-              repeatInterval={150}
-              onPress={() => {
-                this.setState({
-                  pressed: true,
-                  progress: Math.min(this.state.progress + 5, 100)
-                })
-                this.checkProgress();
-              }}
-              onHoldStart={() => {
-              }}
-              onHold={() => {
-              }}
-              onHoldEnd={() => {
-              }}
-              onRelease={() => {
-                this.setState({
-                  pressed: false,
-                })
-              }}
-            >
-              Shake
-          </Repeatable>
-          </Col>
-          <Col>
-            <Button variant="success"
-              onClick={() => {
-                this.setState({
-                  completed: true,
-                });
-                if (this.state.progress === this.state.target) {
-                  alert('Congratulations')
-                } else {
-                  this.setState({
-                    drink_result: 'FAILED',
-                    progress: 0,
-                  })
-                }
-              }}
-            >Complete</Button>
-          </Col>
-        </Row>
-        <Row>
-          <h5>{this.state.drink_result}</h5>
-        </Row>
-        <Row className="mt-5">
-          <Col sm={2} className="mx-auto">
-            <Shaker className="front img-fluid" src={shaker_src} alt={'shaker'} pose={this.state.pressed ? 'up' : 'down'} />
-          </Col>
-        </Row>
+        <Container>
+          <Row className="mt-5">
+            <Col sm={8}>
+              <Row>
+                <Col sm={3} className="mx-auto">
+                  <Shaker className="img-fluid" src={this.props.equipment_src} alt={'equipment'} pose={this.state.pressed ? 'up' : 'down'}/>
+                </Col>
+              </Row>
+            </Col>
+            <Col sm={2} className="mx-auto">
+              <PosedH5 pose={this.state.hint ? 'visible' : 'hidden'}>Target: {this.state.target / 10}</PosedH5>
+              <h5>Current: {this.state.progress / 10}</h5>
+              <Row className="my-3 mt-5">
+                <Repeatable
+                  tag={Button}
+                  variant="info"
+                  disabled={this.state.completed}
+                  repeatDelay={0}
+                  repeatInterval={150}
+                  onPress={() => {
+                    this.setState({
+                      pressed: true,
+                      progress: Math.min(this.state.progress + 10, 100),
+                    })
+                  }}
+                  onHoldStart={() => {
+                  }}
+                  onHold={() => {
+                  }}
+                  onHoldEnd={() => {
+                  }}
+                  onRelease={() => {
+                    this.setState({
+                      pressed: false,
+                    })
+                  }}
+                >
+                  SHAKE
+                </Repeatable>
+              </Row>
+              <Row className="my-3">
+                <Button variant="info"
+                  onClick={() => this.handleOpenModal()}
+                >COMPLETE</Button>
+                <Modal show={this.state.show_modal} onHide={() => this.handleCloseModal()}>
+                  <Modal.Body>{this.getResult()}</Modal.Body>
+                </Modal>
+              </Row>
+              <Row className="my-3">
+                <Button variant="info"
+                  onClick={() => {
+                    this.setState({
+                      hint: true,
+                    });
+                  }}
+                  disabled={this.state.hint || this.state.completed}
+                >GET HINT</Button>
+              </Row>
+            </Col>
+          </Row>
+        </Container>
       </Container>
     );
   }
 }
 
-const Ingredient = posed.img({
-  up: { y: 0 },
-  down: {
-    y: 100,
-    transition: { duration: 50 },
-  }
-});
 
-const FilledIngredient = posed.img({
-  visible: { opacity: 1 },
-  hidden: { opacity: 0 },
-})
-
+// for the fill game -- the limit is 10 
 export class FillGame extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       progress: 0,
-      target: 20,
+      target: (this.props.target * 10),
       pressed: false,
-      competed: false,
-      drink_result: null,
+      completed: false,
+      success: false,
+      hint: false,
+      show_modal: false,
     }
   }
 
-  checkProgress() {
-    if (!this.state.completed && this.state.progress > (this.state.target)) {
-      this.setState({
-        completed: true,
-        drink_result: 'FAILED',
-        progress: 0,
-      })
+  handleCloseModal(){
+    this.setState({
+      show_modal: false,
+    })
+  }
+
+  handleOpenModal(){
+    var result = (this.state.progress === this.state.target);
+    this.setState({
+      completed: true,
+      show_modal: true,
+      success: result,
+    })
+  }
+
+  getResult() {
+    var result = (this.state.success);
+    if (result) {
+      return (
+        <div>
+          <Modal.Header closeButton>
+            <Modal.Title>Success</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>Congratulations! You've successfully completed this step.</Modal.Body>
+          <Modal.Footer>
+            <Button variant="success" onClick={() => console.log("Continue to next step...")}>
+              Continue
+            </Button>
+          </Modal.Footer>
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <Modal.Header closeButton>
+            <Modal.Title>Failed</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>Unfortunately, you've failed this step.</Modal.Body>
+          <Modal.Footer>
+            <Button variant="success" onClick={() => console.log("Reload the page...")}>
+              Try Again
+            </Button>
+          </Modal.Footer>
+        </div>
+      );
     }
   }
 
   render() {
     return (
       <Container>
-        <Row>
+         <Row className="mt-5">
           <Col>
             <ProgressBar>
-              <ProgressBar animated now={this.state.progress} key={1} />
-              <ProgressBar animated variant="danger" now={this.state.target - this.state.progress} key={2} />
+              <ProgressBar animated variant="info" now={this.state.progress} key={1} />
+              <PosedProgressBar animated variant="danger" now={this.state.target - this.state.progress} key={2} pose={this.state.hint ? 'visible' : 'hidden'} />
             </ProgressBar>
           </Col>
         </Row>
-        <Row>
-          <Col>
-            <h4>Target: {this.state.target}</h4>
-          </Col>
-          <Col>
-            <h4>Current: {this.state.progress}</h4>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <Repeatable
-              tag={Button}
-              repeatDelay={0}
-              repeatInterval={150}
-              onPress={() => {
-                this.setState({
-                  pressed: true,
-                  progress: Math.min(this.state.progress + 5, 100)
-                })
-                this.checkProgress()
-              }}
-              onHoldStart={() => {
-              }}
-              onHold={() => {
-              }}
-              onHoldEnd={() => {
-              }}
-              onRelease={() => {
-                this.setState({
-                  pressed: false,
-                })
-              }}
-            >
-              Fill
-          </Repeatable>
-          </Col>
-          <Col>
-            <Button variant="success"
-              onClick={() => {
-                this.setState({
-                  completed: true,
-                });
-                if (this.state.progress === this.state.target) {
-                  alert('Congratulations')
-                } else {
-                  this.setState({
-                    drink_result: 'FAILED',
-                    progress: 0,
-                  })
-                }
-              }}
-            >Complete</Button>
-          </Col>
-        </Row>
-        <Row>
-          <h5>{this.state.drink_result}</h5>
-        </Row>
-        <Row className="mt-5">
-          <Col sm={1} className="mx-auto">
-            <Ingredient className="front img-fluid" src={ice_src} alt={'ice'} pose={this.state.pressed ? 'down' : 'up'} />
-          </Col>
-        </Row>
-        <Row>
-          <Col sm={3} className="mx-auto">
-            <Row>
-              <Col sm={12} className="mx-auto">
-                <img className="img-fluid" src={glass_src} alt={'glass'} />
-              </Col>
-            </Row>
-            <Row className="filled_ingredient_row">
-              <Col sm={4} className="mx-auto">
-                <FilledIngredient className="img-fluid" src={ice_src} alt={'ice'} pose={this.state.progress > 0 ? 'visible' : 'hidden'} />
-              </Col>
-            </Row>
-          </Col>
-        </Row>
+        <Container>
+          <Row className="mt-5">
+            <Col sm={8}>
+              <Row>
+                <Col sm={2} className="mx-auto">
+                  <Ingredient className="front img-fluid" src={this.props.ingredient_src} alt={'ingredient'} pose={this.state.pressed ? 'down' : 'up'}/>
+                </Col>
+              </Row>
+              <Row>
+                <Col sm={6} className="mx-auto">
+                  <Row>
+                    <Col sm={10} className="mx-auto">
+                      <img className="img-fluid" src={this.props.equipment_src} alt={'equipment'} />
+                    </Col>
+                  </Row>
+                  <Row className="filled_ingredient_row">
+                    <Col sm={4} className="mx-auto">
+                      <FilledIngredient className="img-fluid" src={this.props.ingredient_src} alt={'ingredient'} pose={this.state.progress > 0 ? 'visible' : 'hidden'} />
+                    </Col>
+                  </Row>
+                </Col>
+              </Row>
+            </Col>
+            <Col sm={2} className="mx-auto">
+              <PosedH5 pose={this.state.hint ? 'visible' : 'hidden'}>Target: {this.state.target / 10}</PosedH5>
+              <h5>Current: {this.state.progress / 10}</h5>
+              <Row className="my-3 mt-5">
+                <Repeatable
+                  tag={Button}
+                  variant="info"
+                  disabled={this.state.completed}
+                  repeatDelay={0}
+                  repeatInterval={150}
+                  onPress={() => {
+                    this.setState({
+                      pressed: true,
+                      progress: Math.min(this.state.progress + 10, 100),
+                    })
+                  }}
+                  onHoldStart={() => {
+                  }}
+                  onHold={() => {
+                  }}
+                  onHoldEnd={() => {
+                  }}
+                  onRelease={() => {
+                    this.setState({
+                      pressed: false,
+                    })
+                  }}
+                >
+                  FILL
+                </Repeatable>
+              </Row>
+              <Row className="my-3">
+                <Button variant="info"
+                  onClick={() => this.handleOpenModal()}
+                >COMPLETE</Button>
+                <Modal show={this.state.show_modal} onHide={() => this.handleCloseModal()}>
+                  <Modal.Body>{this.getResult()}</Modal.Body>
+                </Modal>
+              </Row>
+              <Row className="my-3">
+                <Button variant="info"
+                  onClick={() => {
+                    this.setState({
+                      hint: true,
+                    });
+                  }}
+                  disabled={this.state.hint || this.state.completed}
+                >GET HINT</Button>
+              </Row>
+            </Col>
+          </Row>
+        </Container>
       </Container>
     );
   }
 }
-
-const Spoon = posed.img({
-  left: { x: -30 },
-  right: { x: 30 }
-})
 
  export class StirGame extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       progress: 0,
-      target: 50,
+      target: this.props.target,
       pressed: false,
-      competed: false,
-      drink_result: null,
+      completed: false,
+      success: false,
+      hint: false,
+      show_modal: false,
     }
   }
 
-  checkProgress() {
-    if (!this.state.completed && this.state.progress > (this.state.target)) {
-      this.setState({
-        completed: true,
-        drink_result: 'FAILED',
-        progress: 0,
-      })
+  handleCloseModal() {
+    this.setState({
+      show_modal: false,
+    })
+  }
+
+  handleOpenModal() {
+    var result = (this.state.progress === this.state.target);
+    this.setState({
+      completed: true,
+      show_modal: true,
+      success: result,
+    })
+  }
+
+  getResult() {
+    var result = (this.state.success);
+    if (result) {
+      return (
+        <div>
+          <Modal.Header closeButton>
+            <Modal.Title>Success</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>Congratulations! You've successfully completed this step.</Modal.Body>
+          <Modal.Footer>
+            <Button variant="success" onClick={() => console.log("Continue to next step...")}>
+              Continue
+            </Button>
+          </Modal.Footer>
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <Modal.Header closeButton>
+            <Modal.Title>Failed</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>Unfortunately, you've failed this step.</Modal.Body>
+          <Modal.Footer>
+            <Button variant="success" onClick={() => console.log("Reload the page...")}>
+              Try Again
+            </Button>
+          </Modal.Footer>
+        </div>
+      );
     }
   }
 
   render() {
     return (
       <Container>
-        <Row>
+        <Row className="mt-5">
           <Col>
             <ProgressBar>
-              <ProgressBar animated now={this.state.progress} key={1} />
-              <ProgressBar animated variant="danger" now={this.state.target - this.state.progress} key={2} />
+              <ProgressBar animated variant="info" now={this.state.progress} key={1} />
+              <PosedProgressBar animated variant="danger" now={this.state.target - this.state.progress} key={2} pose={this.state.hint ? 'visible' : 'hidden'} />
             </ProgressBar>
           </Col>
         </Row>
-        <Row>
-          <Col>
-            <h4>Target: {this.state.target}</h4>
-          </Col>
-          <Col>
-            <h4>Current: {this.state.progress}</h4>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <Repeatable
-              tag={Button}
-              repeatDelay={0}
-              repeatInterval={150}
-              onPress={() => {
-                this.setState({
-                  pressed: true,
-                })
-              }}
-              onHoldStart={() => {
-              }}
-              onHold={() => {
-                this.setState({
-                  progress: Math.min(this.state.progress + 1, 100)
-                });
-                this.checkProgress();
-              }}
-              onHoldEnd={() => {
-              }}
-              onRelease={() => {
-                this.setState({
-                  pressed: false,
-                })
-              }}
-            >
-              Stir
-          </Repeatable>
-          </Col>
-          <Col>
-            <Button variant="success"
-              onClick={() => {
-                this.setState({
-                  completed: true,
-                });
-                if (this.state.progress === this.state.target) {
-                  alert('Congratulations')
-                } else {
-                  this.setState({
-                    drink_result: 'FAILED',
-                    progress: 0,
-                  })
-                }
-              }}
-            >Complete</Button>
-          </Col>
-        </Row>
-        <Row>
-          <h5>{this.state.drink_result}</h5>
-        </Row>
-        <Row className="mt-5">
-          <Col sm={3} className="mx-auto">
-            <Row>
-              <Col sm={8} className="mx-auto front">
-                <Spoon className="img-fluid" src={spoon_src} alt={'spoon'} pose={this.state.progress % 2 === 0 ? 'left' : 'right'} />
-              </Col>
-            </Row>
-            <Row className="glass_stir_row">
-              <Col sm={12} className="mx-auto">
-                <img className="img-fluid" src={milk_src} alt={'glass'} />
-              </Col>
-            </Row>
-          </Col>
-        </Row>
+        <Container>
+          <Row className="mt-5">
+            <Col sm={8}>
+              <Row>
+                <Col sm={3} className="mx-auto front">
+                  <Spoon className="front img-fluid test" src={spoon_src} alt={'spoon'} pose={this.state.progress % 2 === 0 ? 'left' : 'right'} />
+                </Col>
+              </Row>
+              <Row className="glass_stir_row">
+                <Col sm={4} className="mx-auto">
+                  <img className="img-fluid" src={this.props.equipment_src} alt={'equipment'} />
+                </Col>
+              </Row>
+            </Col>
+            <Col sm={2} className="mx-auto">
+              <PosedH5 pose={this.state.hint ? 'visible' : 'hidden'}>Target: {this.state.target}</PosedH5>
+              <h5>Current: {this.state.progress}</h5>
+              <Row className="my-3 mt-5">
+                <Repeatable
+                  tag={Button}
+                  variant="info"
+                  disabled={this.state.completed}
+                  repeatDelay={0}
+                  repeatInterval={150}
+                  onPress={() => {
+                    this.setState({
+                      pressed: true,
+                    })
+                  }}
+                  onHoldStart={() => {
+                  }}
+                  onHold={() => {
+                    this.setState({
+                      progress: Math.min(this.state.progress + 1, 100)
+                    });
+                  }}
+                  onHoldEnd={() => {
+                  }}
+                  onRelease={() => {
+                    this.setState({
+                      pressed: false,
+                    })
+                  }}
+                >
+                  STIR 
+                </Repeatable>
+              </Row>
+              <Row className="my-3">
+                <Button variant="info"
+                  onClick={() => this.handleOpenModal()}
+                >COMPLETE</Button>
+                <Modal show={this.state.show_modal} onHide={() => this.handleCloseModal()}>
+                  <Modal.Body>{this.getResult()}</Modal.Body>
+                </Modal>
+              </Row>
+              <Row className="my-3">
+                <Button variant="info"
+                  onClick={() => {
+                    this.setState({
+                      hint: true,
+                    });
+                  }}
+                  disabled={this.state.hint || this.state.completed}
+                >GET HINT</Button>
+              </Row>
+            </Col>
+          </Row>
+        </Container>
       </Container>
     );
   }
@@ -671,35 +835,3 @@ export class MemoryGame extends React.Component {
     );
   }
 }
-
-class App extends React.Component {
-  render() {
-    return (
-      <Container>
-        {/* Tabs are used just to put examples in one App.js --> real app will not have tabs/tab */}
-        <Tabs defaultActiveKey="profile" id="uncontrolled-tab-example">
-          <Tab eventKey="pourliquid" title="Pour Liquid">
-            <PourLiquidGame target={25} unit={"oz"} ingredient_src={bottle_src} equipment_src={glass_src}/>
-          </Tab>
-          <Tab eventKey="shake" title="Shake">
-            <ShakeGame />
-          </Tab>
-          <Tab eventKey="poursolid" title="Pour Solid">
-            <PourSolidGame />
-          </Tab>
-          <Tab eventKey="fill" title="Fill with Ingredient">
-            <FillGame />
-          </Tab>
-          <Tab eventKey="stir" title="Stir">
-            <StirGame />
-          </Tab>
-          <Tab eventKey="memory" title="Recognition Game">
-            <MemoryGame />
-          </Tab>
-        </Tabs>
-      </Container>
-    );
-  }
-}
-
-export default App;
