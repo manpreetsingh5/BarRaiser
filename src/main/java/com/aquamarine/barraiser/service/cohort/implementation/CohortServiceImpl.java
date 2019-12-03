@@ -9,11 +9,23 @@ import com.aquamarine.barraiser.model.User;
 import com.aquamarine.barraiser.repository.CohortRepository;
 import com.aquamarine.barraiser.repository.UserRepository;
 import com.aquamarine.barraiser.service.cohort.interfaces.CohortService;
+import com.aquamarine.barraiser.service.images.interfaces.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.HashSet;
-import java.util.Set;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.*;
 
 @Service
 public class CohortServiceImpl implements CohortService {
@@ -24,13 +36,25 @@ public class CohortServiceImpl implements CohortService {
     @Autowired
     private CohortRepository cohortRepository;
 
-    private UserDTOMapper userDTOMapper = new UserDTOMapper();
+    @Autowired
+    private ImageService imageService;
+
+    @Value("images/cohorts/")
+    private String sub_folder;
+
 
     @Override
-    public int createCohort(CohortDTO cohortdto) {
+    public int createCohort(CohortDTO cohortdto, MultipartFile multipartFile) throws IOException {
+        String fileName = cohortdto.getName();
+        File file = imageService.convertMultiPartToFile(multipartFile, fileName);
+        imageService.uploadFileToS3bucket(sub_folder+fileName, file);
+
         Cohort cohort = new Cohort()
+                .setName(cohortdto.getName())
                 .setDescription(cohortdto.getDescription())
-                .setInstructor(userRepository.findById(cohortdto.getInstructor()).get());
+                .setInstructor(userRepository.findById(cohortdto.getInstructor()).get())
+                .setImage_path(sub_folder+fileName);
+
 
         cohortRepository.save(cohort);
 
@@ -38,43 +62,89 @@ public class CohortServiceImpl implements CohortService {
     }
 
     @Override
-    public void deleteCohort(CohortDTO cohortDTO) {
-        int cohortID = cohortDTO.getId();
-        if (cohortRepository.findById(cohortID).isPresent()) {
-            cohortRepository.delete(cohortRepository.findById(cohortID).get());
+    public void deleteCohort(int cohort_id) {
+        if (cohortRepository.findById(cohort_id).isPresent()) {
+            Cohort cohort = cohortRepository.findById(cohort_id).get();
+            imageService.deleteFileFromS3bucket(cohort.getImage_path());
+            cohortRepository.delete(cohort);
         }
     }
 
     @Override
-    public void addUserToCohort(CohortDTO cohortDTO, UserDTO userDTO) {
-        int cohortID = cohortDTO.getId();
-        System.out.println("ID is" + cohortID);
-        if (cohortRepository.findById(1).isPresent()) {
-            Cohort cohort = cohortRepository.findById(1).get();
+    public ResponseEntity<byte[]> getCohortPicture(int cohort_id) throws IOException {
+        Cohort cohort = cohortRepository.findById(cohort_id).get();
+        InputStream in = imageService.downloadFileFromS3bucket(cohort.getImage_path()).getObjectContent();
+        BufferedImage imageFromAWS = ImageIO.read(in);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(imageFromAWS, "png", baos );
+        byte[] imageBytes = baos.toByteArray();
+        in.close();
 
-            Set<User> users = cohort.getUser();
-            users.add(userRepository.findById(userDTO.getId()).get());
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.IMAGE_PNG);
+        httpHeaders.setContentLength(imageBytes.length);
+        httpHeaders.setContentDispositionFormData("attachment", cohort.getDescription());
 
-            cohort.setUser(users);
-            System.out.println(users.size());
+        return new ResponseEntity<>(imageBytes, httpHeaders, HttpStatus.OK);
+    }
+
+    @Override
+    public void editCohort(CohortDTO cohortDTO, MultipartFile multipartFile) throws IOException {
+        int cohort_id = cohortDTO.getId();
+        System.out.println("Here" + cohort_id);
+        if (cohortRepository.findById(cohort_id).isPresent()) {
+            Cohort cohort = cohortRepository.findById(cohort_id).get();
+            cohort.setName(cohortDTO.getName());
+            cohort.setDescription(cohortDTO.getDescription());
+            cohort.setInstructor(userRepository.findById(cohortDTO.getInstructor()).get());
+
+
+            String filePath = cohort.getImage_path();
+            File file = imageService.convertMultiPartToFile(multipartFile, cohort.getName());
+            imageService.deleteFileFromS3bucket(filePath);
+            cohort.setImage_path(sub_folder+cohort.getName());
+            filePath = cohort.getImage_path();
+            imageService.uploadFileToS3bucket(filePath, file);
+
             cohortRepository.save(cohort);
         }
     }
 
     @Override
-    public CohortDTO findById(int id) {
-        System.out.println(id);
-        return CohortDTOMapper.toCohortDTO(cohortRepository.findById(id).get());
+    public void addUserToCohort(int cohort_id, String traineeEmail) {
+        if (cohortRepository.findById(cohort_id).isPresent()) {
+            Cohort cohort = cohortRepository.findById(cohort_id).get();
+
+            Set<User> users = cohort.getUser();
+            users.add(userRepository.findByEmail(traineeEmail).get());
+
+            cohort.setUser(users);
+            cohortRepository.save(cohort);
+        }
     }
 
     @Override
-    public UserDTO deleteStudentFromCohort(CohortDTO cohortDTO, UserDTO userDTO) {
-        int cohortID = cohortDTO.getId();
-        if (cohortRepository.findById(cohortID).isPresent()) {
-            Cohort cohort = cohortRepository.findById(cohortID).get();
+    public Map<String, Object> findById(int id) throws IOException {
+        HashMap<String, Object> ret = new HashMap<>();
+        CohortDTO cohortDTO = CohortDTOMapper.toCohortDTO(cohortRepository.findById(id).get());
+        ret.put("cohort", cohortDTO);
+        InputStream in = imageService.downloadFileFromS3bucket(cohortDTO.getImage_path()).getObjectContent();
+        BufferedImage imageFromAWS = ImageIO.read(in);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(imageFromAWS, "png", baos );
+        byte[] imageBytes = baos.toByteArray();
+        in.close();
+        ret.put("file", imageBytes);
+        return ret;
+    }
+
+    @Override
+    public UserDTO deleteStudentFromCohort(int cohort_id, int user_id) {
+        if (cohortRepository.findById(cohort_id).isPresent()) {
+            Cohort cohort = cohortRepository.findById(cohort_id).get();
 
             Set<User> users = cohort.getUser();
-            User user = userRepository.findById(userDTO.getId()).get();
+            User user = userRepository.findById(user_id).get();
 
             users.remove(user);
 
@@ -85,13 +155,11 @@ public class CohortServiceImpl implements CohortService {
         else {
             return null;
         }
-
-
     }
 
     @Override
-    public Set<UserDTO> getCohortUsers(CohortDTO cohortDTO) {
-        Set<User> users = cohortRepository.findById(cohortDTO.getId()).get().getUser();
+    public Set<UserDTO> getCohortUsers(int cohort_id) {
+        Set<User> users = cohortRepository.findById(cohort_id).get().getUser();
         Set<UserDTO> res = new HashSet<>();
 
         for (User user : users) {
@@ -102,27 +170,31 @@ public class CohortServiceImpl implements CohortService {
     }
 
     @Override
-    public Set<CohortDTO> getUserCohorts(UserDTO userDTO) {
-        String status = userDTO.getStatus();
-        Set<CohortDTO> res = new HashSet<>();
+    public Set<Map<String, Object>> getUserCohorts(int user_id) throws IOException {
+        User user = userRepository.findById(user_id).get();
+        String status = user.getStatus();
+        Set<Map<String, Object>> res = new HashSet<>();
 
-        if (status == "BARTENDER") {
-            Set<Cohort> cohorts = cohortRepository.findAllByInstructor(userRepository.findById(userDTO.getId()).get());
+        if (status.equals("BARTENDER")) {
+            Set<Cohort> cohorts = cohortRepository.findAllByInstructor(userRepository.findById(user_id).get());
             for (Cohort c : cohorts) {
-                res.add(CohortDTOMapper.toCohortDTO(c));
+                res.add(findById(c.getId()));
             }
         }
-        else if (status == "TRAINEE") {
-            Set<Cohort> cohorts = userRepository.findById(userDTO.getId()).get().getCohort();
+        else if (status.equals("TRAINEE")) {
+            Set<Cohort> cohorts = userRepository.findById(user_id).get().getCohort();
 
             for (Cohort c : cohorts) {
-                res.add(CohortDTOMapper.toCohortDTO(c));
+                res.add(findById(c.getId()));
             }
         }
 
         return res;
 
     }
+
+
+
 
 
 }

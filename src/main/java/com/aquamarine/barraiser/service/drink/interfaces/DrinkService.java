@@ -1,20 +1,24 @@
 package com.aquamarine.barraiser.service.drink.interfaces;
 
-import com.aquamarine.barraiser.controller.DrinkController;
 import com.aquamarine.barraiser.dto.model.DrinkDTO;
-import org.springframework.stereotype.Service;
+import com.aquamarine.barraiser.model.Drink;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
+import java.io.IOException;
+import java.util.Map;
+import java.util.Set;
 
 public interface DrinkService {
 
-    void addDrink(DrinkDTO drinkDTO);
+    Drink addDrink(DrinkDTO drinkDTO, MultipartFile multipartFile) throws IOException;
 
-    boolean deleteDrink(int id);
+    void deleteDrink(int id);
 
-    Iterable<DrinkDTO> viewAllDrinks();
+    Set<Map<String, Object>> viewAllDrinks() throws IOException;
 
-    Iterable<DrinkDTO> viewDrinksByUser(int id);
+    Set<Map<String, Object>> viewDrinksByUser(String email) throws IOException;
 
-    void editDrink(DrinkDTO drink);
+    Map<String, Object> findDrinkById(int id) throws IOException;
+
+    boolean editDrink(DrinkDTO drink, MultipartFile multipartFile) throws IOException;
 }

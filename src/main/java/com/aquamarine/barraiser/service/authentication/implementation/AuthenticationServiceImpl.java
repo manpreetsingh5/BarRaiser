@@ -6,6 +6,7 @@ import com.aquamarine.barraiser.network.response.JWTAuthenticationResponse;
 import com.aquamarine.barraiser.repository.UserRepository;
 import com.aquamarine.barraiser.security.JWTTokenProvider;
 import com.aquamarine.barraiser.service.authentication.interfaces.AuthenticationService;
+import com.aquamarine.barraiser.service.user.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +35,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Autowired
     AuthenticationManager authenticationManager;
 
+    @Autowired
+    UserService userService;
+
     @Override
     public ResponseEntity authenticateUserLogin(UserDTO userDTO) {
         Authentication authentication = authenticationManager.authenticate(
@@ -45,10 +49,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        System.out.println(SecurityContextHolder.getContext().getAuthentication().isAuthenticated());
 
         String jwt = tokenProvider.generateToken(authentication);
-        return ResponseEntity.ok(new JWTAuthenticationResponse(jwt));
+        UserDTO res = userService.findUserByEmail(userDTO.getEmail());
+        res.setAccessToken(jwt);
+        return ResponseEntity.ok(res);
     }
 
     @Override
@@ -57,9 +62,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
 
-
-        // Creating user's account
-        System.out.println(userDTO.getPassword());
         User user = new User(userDTO.getEmail(), userDTO.getFirst_name(),
                 userDTO.getLast_name(),userDTO.getPassword(), userDTO.getStatus());
 

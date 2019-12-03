@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import lombok.experimental.Accessors;
 
+import java.util.Date;
 import java.util.Set;
 
 @Getter
@@ -14,15 +15,22 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Builder
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class CohortDTO {
+public class CohortDTO  {
     private int id;
+
+    private String name;
 
     private String description;
 
     private int instructor;
 
+    private String image_path;
+
     private Set<User> user;
+
+    private String createdBy;
+
+    private Date createdDate;
 }

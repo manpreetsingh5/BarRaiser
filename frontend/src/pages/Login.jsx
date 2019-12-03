@@ -1,6 +1,5 @@
 import React, { Fragment, Component } from 'react';
-import { BrowserRouter as Router, Route, Link, Switch, Redirect } from "react-router-dom";
-import AuthenticationService from '../AuthenticationService';
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import style from '../style/Login.module.css';
 
 import Card from 'react-bootstrap/Card';
@@ -15,51 +14,54 @@ class Login extends Component {
         super(props);
     
         this.state = {
-          showSuccessMessage: false,
-          hasLoginFailed: false,
+            showSuccessMessage: false,
+            hasLoginFailed: false,
+            validCredentials: true
         };
     }
 
-    componentDidMount() {
-        // fetch('api/hello', {
-        //     method: 'GET',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     }
-        // })
-        // .then(response => {
-        //     if(response.status !== 200) {
-        //         return null;
-        //     }
-        //     return response.json();
-        // })
-        // .then(data => {
-        //     console.log(data);
-        // })
-    }
-
     handleSubmit = event => {
-        let form = event.target
+        let form = event.target;
         
         const acc = {
             email: form.elements.email.value,
-            password: form.elements.password.value
+            password: form.elements.password.value,
         }
+        console.log(JSON.stringify(acc));
 
-        console.log(acc)
+        fetch('api/auth/signin', {
+            method: 'POST',
+            body: JSON.stringify(acc),
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => {
+            if(response.status !== 200) {
+                return null;
+            }
+            return response.json();
+        })
+        .then(data => {
+            if(data === null) {
+                this.setState({
+                    validCredentials: false
+                });
+            }
+            else {
+                console.log(data)
+                this.props.authorize(data);
+            }
+        })
 
-        // AuthenticationService.registerSuccessfulLogin(acc.email, acc.password)
-        // .then(() => {
-        //     this.props.history.push(`/courses`)
-        // }).catch(() => {
-        //     this.setState({ showSuccessMessage: false })
-        //     this.setState({ hasLoginFailed: true })
-        // })
         event.preventDefault();
     }
 
     render() {
-        console.log(this.state.showSuccessMessage, this.state.hasLoginFailed)
+        let validCredentials = this.state.validCredentials;
+        let invalidMessage = "";
+        if(!validCredentials) invalidMessage = "Invalid credentials.";
+
         return (
             <Fragment>
                 <Row className={style.cardWrapper}>
@@ -73,6 +75,7 @@ class Login extends Component {
                                         <div className={style.titleDiv}>
                                             <h1>BarRaiser</h1>
                                             <p className={style.subtitle}>raising the bar of bartending, one click at a time</p>
+                                            <h6 className={style.invalid}>{invalidMessage}</h6>
                                         </div>
 
                                         {this.state.hasLoginFailed && <div className="alert alert-warning">Invalid Credentials</div>}
@@ -108,7 +111,7 @@ class Login extends Component {
                                                 </Button>
 
                                                 <Link to="/register">
-                                                    <p className={style.register} onClick={this.test}>Register</p>
+                                                    <p className={style.register}>Register</p>
                                                 </Link>
                                             </div>
                                         </Form>

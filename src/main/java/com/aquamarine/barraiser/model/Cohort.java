@@ -12,21 +12,26 @@ import java.util.Set;
 @Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Entity
-public class Cohort {
+public class Cohort extends Auditable<String> {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer id;
 
     @Column(unique = true, nullable = false)
+    private String name;
+
+    @Column(nullable = false)
     private String description;
 
     @OneToOne
     @JoinColumn(name = "instructor_id", referencedColumnName = "id")
     private User instructor;
 
-    @ManyToMany(cascade = CascadeType.DETACH)
+    @Column(unique = true, nullable = false)
+    private String image_path;
+
+    @ManyToMany(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     @JoinTable(name = "cohort_to_users",
             joinColumns = @JoinColumn(name = "cohort_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))

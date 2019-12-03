@@ -2,17 +2,21 @@ package com.aquamarine.barraiser.service.cohort.interfaces;
 
 import com.aquamarine.barraiser.dto.model.CohortDTO;
 import com.aquamarine.barraiser.dto.model.UserDTO;
-import com.aquamarine.barraiser.model.Cohort;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.Map;
 import java.util.Set;
 
 public interface CohortService {
-    int createCohort(CohortDTO cohortdto);
-    void addUserToCohort(CohortDTO cohortDTO, UserDTO userdto);
-    Set<UserDTO> getCohortUsers(CohortDTO cohortDTO);
-    Set<CohortDTO> getUserCohorts(UserDTO userDTO);
-    CohortDTO findById(int id);
-    UserDTO deleteStudentFromCohort(CohortDTO cohortDTO, UserDTO userDTO);
-    void deleteCohort(CohortDTO cohortDTO);
-
+    int createCohort(CohortDTO cohortdto, MultipartFile multipartFile) throws IOException;
+    void addUserToCohort(int cohort_id, String traineeEmail);
+    Set<UserDTO> getCohortUsers(int cohort_id);
+    Set<Map<String, Object>> getUserCohorts(int user_id) throws IOException;
+    Map<String, Object> findById(int id) throws IOException;
+    UserDTO deleteStudentFromCohort(int cohort_id, int user_id);
+    void deleteCohort(int cohort_id);
+    ResponseEntity<byte[]> getCohortPicture(int cohort_id) throws IOException;
+    void editCohort(CohortDTO cohortDTO, MultipartFile multipartFile) throws IOException;
 }

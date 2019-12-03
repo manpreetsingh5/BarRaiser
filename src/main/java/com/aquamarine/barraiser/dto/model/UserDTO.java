@@ -11,7 +11,6 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-@Builder
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserDTO {
@@ -26,4 +25,6 @@ public class UserDTO {
     private String email;
 
     private String status;
+
+    private String accessToken;
 }

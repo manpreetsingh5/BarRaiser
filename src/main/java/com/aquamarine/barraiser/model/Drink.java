@@ -4,22 +4,26 @@ import lombok.*;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
 @Accessors(chain = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @Entity
-public class Drink {
+public class Drink extends Auditable<String>{
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Integer id;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String name;
+
+    @Column(nullable = false)
+    private String description;
 
     @Column(unique = true, nullable = false)
     private String image_path;
@@ -27,8 +31,11 @@ public class Drink {
     @Column(nullable = false)
     private boolean isPublic;
 
-    @OneToOne
-    @JoinColumn(name = "added_by", referencedColumnName = "id")
-    private User added_by;
+    @OneToMany(cascade = CascadeType.DETACH)
+    @JoinTable(name = "drink_to_steps",
+            joinColumns = @JoinColumn(name = "step_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "drink_id", referencedColumnName = "id"))
+    private Set<Step> steps = new HashSet<>();
+
 
 }

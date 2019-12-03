@@ -1,11 +1,26 @@
 package com.aquamarine.barraiser.controller;
 
 import com.aquamarine.barraiser.dto.model.DrinkDTO;
+import com.aquamarine.barraiser.enums.ActionsEnum;
+import com.aquamarine.barraiser.enums.MeasurementEnum;
+import com.aquamarine.barraiser.model.Drink;
+import com.aquamarine.barraiser.model.Step;
+import com.aquamarine.barraiser.model.StepEquipment;
+import com.aquamarine.barraiser.repository.EquipmentRepository;
 import com.aquamarine.barraiser.service.drink.interfaces.DrinkService;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 @RestController
 @RequestMapping(path="/api/drink")
@@ -14,47 +29,51 @@ public class DrinkController {
     @Autowired
     private DrinkService drinkService;
 
+    @Autowired
+    private EquipmentRepository equipmentRepository;
+
     @RequestMapping(value = "/addDrink", method = RequestMethod.POST)
     @PreAuthorize("hasAuthority('BARTENDER')")
-    public @ResponseBody String addNewDrink (@RequestBody DrinkDTO drink) {
-        drinkService.addDrink(drink);
-
-        return "Success\n";
+    public @ResponseBody ResponseEntity<?> addNewDrink (@RequestPart(value = "file") MultipartFile multipartFile, @RequestPart DrinkDTO drink) throws IOException {
+        drinkService.addDrink(drink, multipartFile);
+        return new ResponseEntity<>("Drink added successfully", HttpStatus.OK);
     }
 
 
     @RequestMapping(value = "/deleteDrink", method = RequestMethod.DELETE)
     @PreAuthorize("hasAuthority('BARTENDER')")
-    public @ResponseBody String deleteDrink(@RequestBody DrinkDTO drinkDTO){
-        if (drinkService.deleteDrink(drinkDTO.getId())){
-            return "Success\n";
-        }
-        else{
-            return "You can't delete a drink that has not been added";
-        }
+    public @ResponseBody ResponseEntity<?> deleteDrink(@RequestParam int drinkID){
+        drinkService.deleteDrink(drinkID);
+        return new ResponseEntity<>("Drink deleted successfully", HttpStatus.OK);
+//        }
+//        else{
+//            return new ResponseEntity<>("Drink not deleted successfully", HttpStatus.BAD_REQUEST);
+//        }
     }
 
     // Will only return all public drinks
     @RequestMapping(value = "/viewAll", method = RequestMethod.GET)
     @PreAuthorize("hasAuthority('BARTENDER')")
-    public @ResponseBody Iterable<DrinkDTO> viewAllDrinks(){
+    public @ResponseBody Set<Map<String, Object>> viewAllDrinks() throws IOException {
         return drinkService.viewAllDrinks();
     }
 
-    @RequestMapping(value = "/view", method = RequestMethod.GET)
+    @RequestMapping(value = "/viewDrink", method = RequestMethod.GET)
     @PreAuthorize("hasAuthority('BARTENDER')")
-    public @ResponseBody Iterable<DrinkDTO> viewDrinksByBartender(@RequestBody DrinkDTO drinkDTO){
-        return drinkService.viewDrinksByUser(drinkDTO.getAdded_by());
-
+    public @ResponseBody Map<String, Object> viewDrinksByBartender(@RequestParam int id) throws IOException {
+        return drinkService.findDrinkById(id);
     }
 
     @RequestMapping(value = "/editDrink", method = RequestMethod.POST)
     @PreAuthorize("hasAuthority('BARTENDER')")
-    public @ResponseBody String editDrink (@RequestBody DrinkDTO drink) {
-        drinkService.editDrink(drink);
-
-        return "Success\n";
+    public @ResponseBody ResponseEntity<?> editDrink (@RequestPart(value = "file") MultipartFile multipartFile, @RequestPart DrinkDTO drink) throws IOException {
+        if (drinkService.editDrink(drink, multipartFile)){
+            return new ResponseEntity<>("Equipment deleted successfully", HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Drink not deleted successfully", HttpStatus.BAD_REQUEST);
     }
+
+
 
 
 }

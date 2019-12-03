@@ -6,9 +6,7 @@ import com.aquamarine.barraiser.model.User;
 import java.util.List;
 
 public interface UserService {
-    void signUp(UserDTO userdto);
+    UserDTO findById(int id);
     UserDTO findUserByEmail(String email);
-    User findUserById(int id);
     List<UserDTO> findAll();
-    int verify(String email, String password);
 }

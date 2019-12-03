@@ -20,29 +20,13 @@ public class UserServiceImp implements UserService {
 
     UserDTOMapper userDtOMapper = new UserDTOMapper();
 
-    @Override
-    public void signUp(UserDTO userdto) {
-
-        User user = User.builder().email(userdto.getEmail()).first_name(userdto.getFirst_name())
-                .last_name(userdto.getLast_name())
-                .password(userdto.getPassword()).build();
-
-        userRepository.save(user);
-    }
 
 
     @Override
     public UserDTO findUserByEmail(String email) {
-        User user = userRepository.findByEmail(email);
-        return userDtOMapper.toUserDTO(user);
+        User user = userRepository.findByEmail(email).get();
+        return UserDTOMapper.toUserDTO(user);
 
-    }
-
-    @Override
-    public User findUserById(int id){
-
-        User user = userRepository.findById(id).get();
-        return user;
     }
 
     @Override
@@ -60,17 +44,8 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public int verify(String email, String password) {
-
-        int areCredentialsValid = -1;
-
-        User u = userRepository.findByEmail(email);
-
-        if (u != null && (password.equals(u.getPassword()))){
-            return u.getId();
-
-        }
-        return areCredentialsValid;
+    public UserDTO findById(int id) {
+        return UserDTOMapper.toUserDTO(userRepository.findById(id).get());
     }
 
 }
