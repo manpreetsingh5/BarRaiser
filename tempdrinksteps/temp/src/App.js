@@ -21,7 +21,7 @@ class App extends React.Component {
         {/* Tabs are used just to put examples in one App.js --> real app will not have tabs/tab */}
         <Tabs defaultActiveKey="matching" id="uncontrolled-tab-example">
           <Tab eventKey="matching" title="Matching Game">
-            <MatchingGame ingredients={[bottle_src, glass_src, shaker_src, salt_src, plate_src, ice_src, milk_src, spoon_src, cookie_src]} target={spoon_src} length={9} />
+            <MatchingGame ingredients={[bottle_src, glass_src, shaker_src, salt_src, plate_src, ice_src, milk_src, spoon_src, cookie_src]} target={bottle_src} length={9} />
           </Tab>
           <Tab eventKey="pourliquid" title="Pour Liquid">
             <PourLiquidGame target={25} unit={"oz"} ingredient_src={bottle_src} equipment_src={glass_src}/>
