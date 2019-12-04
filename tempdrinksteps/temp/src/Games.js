@@ -3,27 +3,11 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 import React from 'react';
 import './App.css';
-import { Button, Container, Row, ProgressBar, Col, Tabs, Tab, Modal } from 'react-bootstrap';
+import { Button, Container, Row, ProgressBar, Col, Modal } from 'react-bootstrap';
 import posed from 'react-pose';
 import spoon_src from './img/spoon.svg';
 import strainer_src from './img/strainer.svg';
 import circle_src from './img/circle.svg';
-
-
-function getCenterPosition(item){
-  var {top, left, width, height} = item.getBoundingClientRect();
-   return {
-     x: left + width / 2,
-     y: top + height / 2
-   };
-}
-
-function getItemDistance(a, b) {
-  const aPosition = getCenterPosition(a);
-  const bPosition = getCenterPosition(b);
-
-  return Math.hypot(aPosition.x - bPosition.x, aPosition.y - bPosition.y);  
-}
 
 const Bottle = posed.img({
   standing: { rotate: '0deg' },
