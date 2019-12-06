@@ -6,6 +6,7 @@ import com.aquamarine.barraiser.enums.EquipmentEnum;
 import com.aquamarine.barraiser.model.Equipment;
 import com.aquamarine.barraiser.model.User;
 import com.aquamarine.barraiser.repository.EquipmentRepository;
+import com.aquamarine.barraiser.repository.StepEquipmentRepository;
 import com.aquamarine.barraiser.repository.UserRepository;
 import com.aquamarine.barraiser.service.equipment.interfaces.EquipmentService;
 import com.aquamarine.barraiser.service.images.interfaces.ImageService;
@@ -30,6 +31,9 @@ public class EquipmentServiceImpl implements EquipmentService {
 
     @Autowired
     private EquipmentRepository equipmentRepository;
+
+    @Autowired
+    private StepEquipmentRepository stepEquipmentRepository;
 
 
     private EquipmentDTOMapper equipmentDTOMapper = new EquipmentDTOMapper();
@@ -98,9 +102,11 @@ public class EquipmentServiceImpl implements EquipmentService {
     @Override
     public void deleteEquipment(int equipment_id) {
         if (equipmentRepository.findById(equipment_id).isPresent()) {
-            Equipment equipment = equipmentRepository.findById(equipment_id).get();
-            imageService.deleteFileFromS3bucket(equipment.getImage_path());
-            equipmentRepository.delete(equipment);
+            if (stepEquipmentRepository.findByEquipment(equipmentRepository.findById(equipment_id).get()) == null) {
+                Equipment equipment = equipmentRepository.findById(equipment_id).get();
+                imageService.deleteFileFromS3bucket(equipment.getImage_path());
+                equipmentRepository.delete(equipment);
+            }
         }
     }
 
@@ -139,7 +145,6 @@ public class EquipmentServiceImpl implements EquipmentService {
         }
 
         return res;
-
     }
 
     @Override
