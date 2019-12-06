@@ -16,6 +16,7 @@ import com.aquamarine.barraiser.service.drink.interfaces.DrinkService;
 import com.aquamarine.barraiser.service.images.interfaces.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -52,7 +53,7 @@ public class DrinkServiceImp implements DrinkService {
     DrinkDTOMapper drinkDTOMapper = new DrinkDTOMapper();
 
     @Override
-    public Drink addDrink(DrinkDTO drinkDTO , MultipartFile multipartFile) throws IOException {
+    public boolean addDrink(DrinkDTO drinkDTO , MultipartFile multipartFile) throws IOException {
         String fileName = drinkDTO.getName();
         File file = imageService.convertMultiPartToFile(multipartFile, fileName);
         imageService.uploadFileToS3bucket(sub_folder+fileName, file);
@@ -91,17 +92,19 @@ public class DrinkServiceImp implements DrinkService {
 
         }
         drink.setSteps(steps);
-        return drinkRepository.save(drink);
+
+        return drinkRepository.save(drink) == drink;
     }
 
     @Override
-    public void deleteDrink(int id) {
+    public boolean deleteDrink(int id) {
         if (drinkRepository.findById(id).isPresent()) {
             Drink drink = drinkRepository.findById(id).get();
             imageService.deleteFileFromS3bucket(drink.getImage_path());
             drinkRepository.delete(drink);
+            return true;
         }
-
+        return false;
     }
 
     @Override
@@ -111,7 +114,7 @@ public class DrinkServiceImp implements DrinkService {
         Set<Map<String, Object>> res = new HashSet<>();
 
         for (Drink drink: drinks){
-            if (drink.isPublic()){
+            if (drink.isPublic() || drink.getCreatedBy().equals(SecurityContextHolder.getContext().getAuthentication().getName())){
                 res.add(findDrinkById(drink.getId()));
             }
         }
@@ -121,22 +124,26 @@ public class DrinkServiceImp implements DrinkService {
     }
 
     @Override
-    public Set<Map<String, Object>> viewDrinksByUser(String email) throws IOException {
-
-        User user = userRepository.findByEmail(email).get();
+    public Set<Map<String, Object>> viewDrinksByUser() throws IOException {
         Set<Map<String, Object>> res = new HashSet<>();
-        Set<Drink> drinks = drinkRepository.findAllByCreatedBy(user.getEmail());
-        for (Drink d : drinks) {
-            res.add(findDrinkById(d.getId()));
-        }
+        List<Drink> drinks = drinkRepository.findAll();
 
+        for (Drink d : drinks) {
+            if (d.getCreatedBy().equals(SecurityContextHolder.getContext().getAuthentication().getName())){
+                res.add(findDrinkById(d.getId()));
+            }
+        }
         return res;
     }
 
     @Override
     public Map<String, Object> findDrinkById(int id) throws IOException {
         HashMap<String, Object> ret = new HashMap<>();
-        DrinkDTO drinkDTO = DrinkDTOMapper.toDrinkDTO(drinkRepository.findById(id).get());
+        Optional<Drink> drinks = drinkRepository.findById(id);
+        if (!drinks.isPresent()){
+            return null;
+        }
+        DrinkDTO drinkDTO = DrinkDTOMapper.toDrinkDTO(drinks.get());
         ret.put("drink", drinkDTO);
         InputStream in = imageService.downloadFileFromS3bucket(drinkDTO.getImage_path()).getObjectContent();
         BufferedImage imageFromAWS = ImageIO.read(in);
