@@ -5,8 +5,10 @@ import com.aquamarine.barraiser.dto.mapper.UserDTOMapper;
 import com.aquamarine.barraiser.dto.model.CohortDTO;
 import com.aquamarine.barraiser.dto.model.UserDTO;
 import com.aquamarine.barraiser.model.Cohort;
+import com.aquamarine.barraiser.model.Drink;
 import com.aquamarine.barraiser.model.User;
 import com.aquamarine.barraiser.repository.CohortRepository;
+import com.aquamarine.barraiser.repository.DrinkRepository;
 import com.aquamarine.barraiser.repository.UserRepository;
 import com.aquamarine.barraiser.service.cohort.interfaces.CohortService;
 import com.aquamarine.barraiser.service.images.interfaces.ImageService;
@@ -35,6 +37,9 @@ public class CohortServiceImpl implements CohortService {
 
     @Autowired
     private CohortRepository cohortRepository;
+
+    @Autowired
+    private DrinkRepository drinkRepository;
 
     @Autowired
     private ImageService imageService;
@@ -154,6 +159,35 @@ public class CohortServiceImpl implements CohortService {
         }
         else {
             return null;
+        }
+    }
+
+    @Override
+    public void addDrinkToCohort(int cohort_id, int drink_id) {
+        if (cohortRepository.findById(cohort_id).isPresent()) {
+            if (drinkRepository.findById(drink_id).isPresent()) {
+                Cohort cohort = cohortRepository.findById(cohort_id).get();
+                Set<Drink> drinks = cohort.getDrinks();
+                drinks.add(drinkRepository.findById(drink_id).get());
+
+                cohort.setDrinks(drinks);
+                cohortRepository.save(cohort);
+            }
+        }
+    }
+
+    @Override
+    public void deleteDrinkFromCohort(int cohort_id, int drink_id) {
+        if (cohortRepository.findById(cohort_id).isPresent()) {
+            if (drinkRepository.findById(drink_id).isPresent()) {
+                Cohort cohort = cohortRepository.findById(cohort_id).get();
+                Set<Drink> drinks = cohort.getDrinks();
+                if (drinks.contains(drinkRepository.findById(drink_id).get())) {
+                    drinks.remove(drinkRepository.findById(drink_id).get());
+                }
+                cohort.setDrinks(drinks);
+                cohortRepository.save(cohort);
+            }
         }
     }
 

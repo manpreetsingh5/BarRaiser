@@ -36,4 +36,10 @@ public class Cohort extends Auditable<String> {
             joinColumns = @JoinColumn(name = "cohort_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
     private Set<User> user = new HashSet<>();
+
+    @ManyToMany(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+    @JoinTable(name = "cohort_to_drink",
+            joinColumns = @JoinColumn(name = "cohort_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "drink_id", referencedColumnName = "id"))
+    private Set<Drink> drinks = new HashSet<>();
 }

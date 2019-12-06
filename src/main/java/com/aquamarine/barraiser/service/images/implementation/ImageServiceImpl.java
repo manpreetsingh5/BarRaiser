@@ -2,9 +2,7 @@ package com.aquamarine.barraiser.service.images.implementation;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
-import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
-import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.amazonaws.services.s3.model.S3Object;
+import com.amazonaws.services.s3.model.*;
 import com.aquamarine.barraiser.service.images.interfaces.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,7 +26,9 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public void uploadFileToS3bucket(String filePath, File file) {
-        amazonS3Client.putObject(new PutObjectRequest(bucketName, filePath, file));
+        PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, filePath, file);
+        amazonS3Client.putObject(putObjectRequest);
+
     }
 
     @Override
