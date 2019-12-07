@@ -16,6 +16,7 @@ public interface EquipmentService {
     boolean deleteEquipment(int equipment_id);
     Map<String, Object> getEquipmentById(int id) throws IOException;
     Set<Map<String, Object>> viewEquipmentByUser(String email) throws IOException;
+    Set<Map<String, Object>> viewIngredientsByUser(String email) throws IOException;
     Set<Map<String, Object>> viewAllEquipment() throws IOException;
     Set<Map<String, Object>> viewAllIngredients() throws IOException;
 

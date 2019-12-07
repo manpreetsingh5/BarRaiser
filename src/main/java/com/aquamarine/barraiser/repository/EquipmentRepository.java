@@ -1,6 +1,7 @@
 package com.aquamarine.barraiser.repository;
 
 
+import com.aquamarine.barraiser.enums.EquipmentEnum;
 import com.aquamarine.barraiser.model.Drink;
 import com.aquamarine.barraiser.model.Equipment;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,5 +11,5 @@ import java.util.Set;
 
 @Repository
 public interface EquipmentRepository extends JpaRepository<Equipment, Integer> {
-    Set<Equipment> findAllByCreatedBy(String email);
+    Set<Equipment> findAllByCreatedByAndType(String email, EquipmentEnum type);
 }
