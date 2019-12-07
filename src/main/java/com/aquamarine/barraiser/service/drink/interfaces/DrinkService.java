@@ -10,13 +10,13 @@ import java.util.Set;
 
 public interface DrinkService {
 
-    Drink addDrink(DrinkDTO drinkDTO, MultipartFile multipartFile) throws IOException;
+    boolean addDrink(DrinkDTO drinkDTO, MultipartFile multipartFile) throws IOException;
 
-    void deleteDrink(int id);
+    boolean deleteDrink(int id);
 
     Set<Map<String, Object>> viewAllDrinks() throws IOException;
 
-    Set<Map<String, Object>> viewDrinksByUser(String email) throws IOException;
+    Set<Map<String, Object>> viewDrinksByUser() throws IOException;
 
     Map<String, Object> findDrinkById(int id) throws IOException;
 
