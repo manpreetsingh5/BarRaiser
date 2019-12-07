@@ -49,7 +49,7 @@ public class EquipmentServiceImpl implements EquipmentService {
     private String bucketName;
 
     @Override
-    public int addEquipment(EquipmentDTO equipmentDTO, MultipartFile multipartFile) throws IOException{
+    public boolean addEquipment(EquipmentDTO equipmentDTO, MultipartFile multipartFile) throws IOException{
         String fileName = equipmentDTO.getName();
         File file = imageService.convertMultiPartToFile(multipartFile, fileName);
         imageService.uploadFileToS3bucket(sub_folder+fileName, file);
@@ -64,10 +64,9 @@ public class EquipmentServiceImpl implements EquipmentService {
                     .setName(equipmentDTO.getName())
                     .setType(equipmentDTO.getType());
 
-            equipmentRepository.save(equipment);
-            return equipment.getId();
+            return true;
         }
-        return -1;
+        return false;
     }
 
     @Override
@@ -87,11 +86,7 @@ public class EquipmentServiceImpl implements EquipmentService {
             equipment.setImage_path(sub_folder+equipment.getName());
             filePath = equipment.getImage_path();
             imageService.uploadFileToS3bucket(filePath, file);
-
-
             equipmentRepository.save(equipment);
-
-
             return true;
         }
 
@@ -100,20 +95,26 @@ public class EquipmentServiceImpl implements EquipmentService {
 
 
     @Override
-    public void deleteEquipment(int equipment_id) {
+    public boolean deleteEquipment(int equipment_id) {
         if (equipmentRepository.findById(equipment_id).isPresent()) {
             if (stepEquipmentRepository.findByEquipment(equipmentRepository.findById(equipment_id).get()) == null) {
                 Equipment equipment = equipmentRepository.findById(equipment_id).get();
                 imageService.deleteFileFromS3bucket(equipment.getImage_path());
                 equipmentRepository.delete(equipment);
+                return true;
             }
         }
+        return false;
     }
 
     @Override
     public Map<String, Object> getEquipmentById(int id) throws IOException {
         HashMap<String, Object> ret = new HashMap<>();
-        EquipmentDTO equipmentDTO = equipmentDTOMapper.toEquipmentDTO(equipmentRepository.findById(id).get());
+        Optional <Equipment> equipments = equipmentRepository.findById(id);
+        if (!equipments.isPresent()){
+            return null;
+        }
+        EquipmentDTO equipmentDTO = equipmentDTOMapper.toEquipmentDTO(equipments.get());
         ret.put("equipment", equipmentDTO);
         InputStream in = imageService.downloadFileFromS3bucket(equipmentDTO.getImage_path()).getObjectContent();
         BufferedImage imageFromAWS = ImageIO.read(in);

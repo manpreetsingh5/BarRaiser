@@ -1,18 +1,18 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
-import { PourLiquidGame, ShakeGame, PourSolidGame, FillGame, StirGame, MatchingGame, RollGame, StrainGame} from './Games';
+import { PourLiquidGame, ShakeGame, PourSolidGame, FillGame, StirGame, MatchingGame, RollGame, StrainGame, BlendGame} from './Games';
 import React from 'react';
 import './App.css';
 import {Container, Tabs, Tab} from 'react-bootstrap';
-import bottle_src from './img/vodka.svg';
-import glass_src from './img/wine.svg';
-import shaker_src from './img/shaker.svg';
-import salt_src from './img/salt.svg';
-import plate_src from './img/plate.svg';
-import ice_src from './img/ice.svg';
-import milk_src from './img/milk.svg';
-import cookie_src from './img/cookie.svg';
-import spoon_src from './img/spoon.svg';
+import bottle_src from './img/vodka.png';
+import glass_src from './img/wine.png';
+import shaker_src from './img/shaker.png';
+import salt_src from './img/salt.png';
+import plate_src from './img/plate.png';
+import ice_src from './img/ice.png';
+import milk_src from './img/milk.png';
+import cookie_src from './img/cookie.png';
+import spoon_src from './img/spoon.png';
 
 class App extends React.Component {
   render() {
@@ -43,6 +43,9 @@ class App extends React.Component {
           </Tab>
           <Tab eventKey="roll" title="Roll">
             <RollGame target={33} equipment_src={plate_src}/>
+          </Tab>
+          <Tab eventKey="blend" title="Blend">
+            <BlendGame target={45}/>
           </Tab>
         </Tabs>
       </Container>

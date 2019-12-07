@@ -11,9 +11,9 @@ import java.util.Map;
 import java.util.Set;
 
 public interface EquipmentService {
-    int addEquipment(EquipmentDTO equipmentDTO, MultipartFile multipartFile) throws IOException;
+    boolean addEquipment(EquipmentDTO equipmentDTO, MultipartFile multipartFile) throws IOException;
     boolean editEquipment(EquipmentDTO equipmentDTO, MultipartFile multipartFile) throws IOException;
-    void deleteEquipment(int equipment_id);
+    boolean deleteEquipment(int equipment_id);
     Map<String, Object> getEquipmentById(int id) throws IOException;
     Set<Map<String, Object>> viewEquipmentByUser(String email) throws IOException;
     Set<Map<String, Object>> viewAllEquipment() throws IOException;

@@ -3,27 +3,12 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 import React from 'react';
 import './App.css';
-import { Button, Container, Row, ProgressBar, Col, Tabs, Tab, Modal } from 'react-bootstrap';
+import { Button, Container, Row, ProgressBar, Col, Modal } from 'react-bootstrap';
 import posed from 'react-pose';
-import spoon_src from './img/spoon.svg';
-import strainer_src from './img/strainer.svg';
-import circle_src from './img/circle.svg';
-
-
-function getCenterPosition(item){
-  var {top, left, width, height} = item.getBoundingClientRect();
-   return {
-     x: left + width / 2,
-     y: top + height / 2
-   };
-}
-
-function getItemDistance(a, b) {
-  const aPosition = getCenterPosition(a);
-  const bPosition = getCenterPosition(b);
-
-  return Math.hypot(aPosition.x - bPosition.x, aPosition.y - bPosition.y);  
-}
+import spoon_src from './img/spoon.png';
+import strainer_src from './img/strainer.png';
+import circle_src from './img/circle.png';
+import blender_src from './img/blender.png';
 
 const Bottle = posed.img({
   standing: { rotate: '0deg' },
@@ -78,6 +63,24 @@ const FilledIngredient = posed.img({
 const Spoon = posed.img({
   left: { x: -30 },
   right: { x: 30 }
+})
+
+const Blender = posed.img({
+  one: {
+    x: 0,
+    y: 0,
+    rotate: '0deg',
+  },
+  two: {
+    x: -30,
+    y: -20,
+    rotate: '-10deg',
+  },
+  three: {
+    x: 30,
+    y: -20,
+    rotate: '10deg',
+  },
 })
 
 const PosedH5 = posed.h5({
@@ -1118,6 +1121,147 @@ export class RollGame extends React.Component {
                   }}
                 >
                   ROLL
+                </Repeatable>
+              </Row>
+              <Row className="my-3">
+                <Button variant="info"
+                  onClick={() => this.handleOpenModal()}
+                >COMPLETE</Button>
+                <Modal show={this.state.show_modal} onHide={() => this.handleCloseModal()}>
+                  <Modal.Body>{this.getResult()}</Modal.Body>
+                </Modal>
+              </Row>
+              <Row className="my-3">
+                <Button variant="info"
+                  onClick={() => {
+                    this.setState({
+                      hint: true,
+                    });
+                  }}
+                  disabled={this.state.hint || this.state.completed}
+                >GET HINT</Button>
+              </Row>
+            </Col>
+          </Row>
+        </Container>
+      </Container>
+    );
+  }
+}
+
+export class BlendGame extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      progress: 0,
+      target: this.props.target,
+      pressed: false,
+      completed: false,
+      success: false,
+      hint: false,
+      show_modal: false,
+    }
+  }
+
+  handleCloseModal() {
+    this.setState({
+      show_modal: false,
+    })
+  }
+
+  handleOpenModal() {
+    var result = (this.state.progress === this.state.target);
+    this.setState({
+      completed: true,
+      show_modal: true,
+      success: result,
+    })
+  }
+
+  getResult() {
+    var result = (this.state.success);
+    if (result) {
+      return (
+        <div>
+          <Modal.Header closeButton>
+            <Modal.Title>Success</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>Congratulations! You've successfully completed this step.</Modal.Body>
+          <Modal.Footer>
+            <Button variant="success" onClick={() => console.log("Continue to next step...")}>
+              Continue
+            </Button>
+          </Modal.Footer>
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <Modal.Header closeButton>
+            <Modal.Title>Failed</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>Unfortunately, you've failed this step.</Modal.Body>
+          <Modal.Footer>
+            <Button variant="success" onClick={() => console.log("Reload the page...")}>
+              Try Again
+            </Button>
+          </Modal.Footer>
+        </div>
+      );
+    }
+  }
+
+  render() {
+    return (
+      <Container>
+        <Row className="mt-5">
+          <Col>
+            <ProgressBar>
+              <ProgressBar animated variant="info" now={this.state.progress} key={1} />
+              <PosedProgressBar animated variant="danger" now={this.state.target - this.state.progress} key={2} pose={this.state.hint ? 'visible' : 'hidden'} />
+            </ProgressBar>
+          </Col>
+        </Row>
+        <Container>
+          <Row className="mt-5">
+            <Col sm={8}>
+              <Row>
+                <Col sm={4} className="mx-auto front">
+                  <Blender className="front img-fluid test" src={blender_src} alt={'blender'} pose={ this.state.progress % 3 === 0 ? 'one' : (this.state.progress % 3 === 1 ? 'two' : 'three') } />
+                </Col>
+              </Row>
+            </Col>
+            <Col sm={2} className="mx-auto">
+              <PosedH5 pose={this.state.hint ? 'visible' : 'hidden'}>Target: {this.state.target}</PosedH5>
+              <h5>Current: {this.state.progress}</h5>
+              <Row className="my-3 mt-5">
+                <Repeatable
+                  tag={Button}
+                  variant="info"
+                  disabled={this.state.completed}
+                  repeatDelay={0}
+                  repeatInterval={150}
+                  onPress={() => {
+                    this.setState({
+                      pressed: true,
+                    })
+                  }}
+                  onHoldStart={() => {
+                  }}
+                  onHold={() => {
+                    this.setState({
+                      progress: Math.min(this.state.progress + 1, 100)
+                    });
+                  }}
+                  onHoldEnd={() => {
+                  }}
+                  onRelease={() => {
+                    this.setState({
+                      pressed: false,
+                    })
+                  }}
+                >
+                  BLEND
                 </Repeatable>
               </Row>
               <Row className="my-3">
