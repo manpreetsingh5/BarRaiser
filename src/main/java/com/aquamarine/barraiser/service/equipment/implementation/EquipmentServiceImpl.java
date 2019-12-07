@@ -165,10 +165,19 @@ public class EquipmentServiceImpl implements EquipmentService {
 
     @Override
     public Set<Map<String, Object>> viewEquipmentByUser(String email) throws IOException {
-
-        User user = userRepository.findByEmail(email).get();
         Set<Map<String, Object>> res = new HashSet<>();
-        Set<Equipment> drinks = equipmentRepository.findAllByCreatedBy(user.getEmail());
+        Set<Equipment> drinks = equipmentRepository.findAllByCreatedByAndType(email, EquipmentEnum.EQUIPMENT);
+        for (Equipment e : drinks) {
+            res.add(getEquipmentById(e.getId()));
+        }
+
+        return res;
+    }
+
+    @Override
+    public Set<Map<String, Object>> viewIngredientsByUser(String email) throws IOException {
+        Set<Map<String, Object>> res = new HashSet<>();
+        Set<Equipment> drinks = equipmentRepository.findAllByCreatedByAndType(email, EquipmentEnum.INGREDIENT);
         for (Equipment e : drinks) {
             res.add(getEquipmentById(e.getId()));
         }

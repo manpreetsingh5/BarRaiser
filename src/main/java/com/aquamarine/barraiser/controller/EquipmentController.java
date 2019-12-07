@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -58,7 +59,20 @@ public class EquipmentController {
     @RequestMapping(value = "/viewAllIngredients", method = RequestMethod.GET)
     @PreAuthorize("hasAuthority('BARTENDER')")
     public @ResponseBody Set<Map<String, Object>> viewAllIngredients() throws IOException {
+        System.out.println(SecurityContextHolder.getContext().getAuthentication().getName());
         return equipmentService.viewAllIngredients();
+    }
+
+    @RequestMapping(value = "/viewUserEquipment", method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('BARTENDER')")
+    public @ResponseBody Set<Map<String, Object>> viewEquipmentByUser() throws IOException {
+        return equipmentService.viewEquipmentByUser(SecurityContextHolder.getContext().getAuthentication().getName());
+    }
+
+    @RequestMapping(value = "/viewUserIngredients", method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('BARTENDER')")
+    public @ResponseBody Set<Map<String, Object>> viewIngredientsByUser() throws IOException {
+        return equipmentService.viewIngredientsByUser(SecurityContextHolder.getContext().getAuthentication().getName());
     }
 
     @RequestMapping(value = "/editEquipment", method = RequestMethod.POST)
