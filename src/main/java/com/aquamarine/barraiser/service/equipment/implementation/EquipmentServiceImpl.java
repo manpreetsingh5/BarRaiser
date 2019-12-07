@@ -13,6 +13,8 @@ import com.aquamarine.barraiser.service.images.interfaces.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -54,7 +56,8 @@ public class EquipmentServiceImpl implements EquipmentService {
         File file = imageService.convertMultiPartToFile(multipartFile, fileName);
         imageService.uploadFileToS3bucket(sub_folder+fileName, file);
 
-        Optional<User> user = userRepository.findByEmail(equipmentDTO.getCreatedBy());
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        Optional<User> user = userRepository.findByEmail(email);
 
         if (user.isPresent()){
             Equipment equipment = new Equipment()
@@ -64,6 +67,7 @@ public class EquipmentServiceImpl implements EquipmentService {
                     .setName(equipmentDTO.getName())
                     .setType(equipmentDTO.getType());
 
+            equipmentRepository.save(equipment);
             return true;
         }
         return false;
