@@ -66,8 +66,13 @@ public class EquipmentController {
     @RequestMapping(value = "/viewUserEquipment", method = RequestMethod.GET)
     @PreAuthorize("hasAuthority('BARTENDER')")
     public @ResponseBody Set<Map<String, Object>> viewEquipmentByUser() throws IOException {
-
         return equipmentService.viewEquipmentByUser(SecurityContextHolder.getContext().getAuthentication().getName());
+    }
+
+    @RequestMapping(value = "/viewUserIngredients", method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('BARTENDER')")
+    public @ResponseBody Set<Map<String, Object>> viewIngredientsByUser() throws IOException {
+        return equipmentService.viewIngredientsByUser(SecurityContextHolder.getContext().getAuthentication().getName());
     }
 
     @RequestMapping(value = "/editEquipment", method = RequestMethod.POST)
