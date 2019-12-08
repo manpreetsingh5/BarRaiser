@@ -1,6 +1,7 @@
 package com.aquamarine.barraiser.controller;
 
 import com.aquamarine.barraiser.dto.model.EquipmentDTO;
+import com.aquamarine.barraiser.enums.MeasurementEnum;
 import com.aquamarine.barraiser.service.equipment.interfaces.EquipmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
@@ -82,6 +84,12 @@ public class EquipmentController {
             return new ResponseEntity<>("Equipment edited successfully", HttpStatus.OK);
         }
         return new ResponseEntity<>("Equipment not edited successfully", HttpStatus.BAD_REQUEST);
+    }
+
+    @RequestMapping(value = "/viewUnits", method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('BARTENDER')")
+    public @ResponseBody MeasurementEnum[] getUnits() {
+        return MeasurementEnum.values();
     }
 
 }
