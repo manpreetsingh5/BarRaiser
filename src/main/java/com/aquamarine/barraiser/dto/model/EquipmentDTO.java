@@ -3,6 +3,7 @@ package com.aquamarine.barraiser.dto.model;
 import com.aquamarine.barraiser.enums.EquipmentEnum;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import lombok.experimental.Accessors;
 
@@ -25,6 +26,7 @@ public class EquipmentDTO {
 
     private String image_path;
 
+    @JsonProperty
     private boolean isPublic;
 
     private EquipmentEnum type;

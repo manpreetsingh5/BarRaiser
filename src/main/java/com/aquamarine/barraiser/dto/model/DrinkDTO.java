@@ -4,6 +4,7 @@ import com.aquamarine.barraiser.model.Auditable;
 import com.aquamarine.barraiser.model.Step;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import lombok.experimental.Accessors;
 
@@ -27,6 +28,7 @@ public class DrinkDTO extends Auditable<String> {
 
     private String image_path;
 
+    @JsonProperty
     private boolean isPublic;
 
     private String createdBy;
