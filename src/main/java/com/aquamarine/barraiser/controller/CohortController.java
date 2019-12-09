@@ -116,7 +116,7 @@ public class CohortController {
     }
 
     @RequestMapping(path="/getDrinks", method= RequestMethod.GET)
-    @PreAuthorize("hasAuthority('BARTENDER')")
+    @PreAuthorize("hasAnyAuthority('BARTENDER', 'TRAINEE')")
     public ResponseEntity getDrinksFromCohort( @RequestParam  int cohort_id) throws IOException {
         cohortService.getDrinksFromCohort(cohort_id);
         return new ResponseEntity(HttpStatus.OK);
