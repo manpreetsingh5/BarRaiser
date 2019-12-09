@@ -16,96 +16,187 @@ class StepCards extends Component {
     constructor(props) {
         super(props);
 
+        this.props.games.sort((a, b) => (a.action.name > b.action.name) ? 1 : -1)
+        this.props.ingredients.sort((a, b) => (a.equipment.name > b.equipment.name) ? 1 : -1)
+        this.props.equipment.sort((a, b) => (a.equipment.name > b.equipment.name) ? 1 : -1)
+
         this.state = {
-            actionPic: null,
-            selectedAction: null,
-            selectedIngredient: null,
-            selectedEquipment: null
+            actionPic: this.props.games[0].file,
+            ingredientPic: null,
+            equipmentPic: null,
+            selectedAction: this.props.games[0].action.name,
         };
     }
 
-    handleSelectAction = (action) => {
+    handleSelectIngredient = (event) => {
+        if(event.target.value != -1) {
+            let ingredient = this.props.ingredients[event.target.value];
+            this.setState({
+                ingredientPic: ingredient.file,
+            })
+        }
+        else {
+            this.setState({
+                ingredientPic: null,
+            })
+        }
+    }
+
+    handleSelectEquipment = (event) => {
+        if(event.target.value != -1) {
+            let equipment = this.props.equipment[event.target.value]
+            this.setState({
+                equipmentPic: equipment.file,
+            })
+        }
+        else {
+            this.setState({
+                equipmentPic: null,
+            })
+        }
+    }
+
+    handleSelectAction = (event) => {
+        let action = this.props.games[event.target.value];
         this.setState({
             actionPic: action.file,
             selectedAction: action.action.name
         })
     }
 
-    handleSelectIngredient = (ingredient) => {
-        this.setState({
-            selectedIngredient: ingredient.equipment.name
-        })
-    }
-
-    handleSelectEquipment = (equipment) => {
-        this.setState({
-            selectedEquipment: equipment.equipment.name
-        })
-    }
-
     render() {
         let actionList = [];
-        let ingredientList = [];
-        let equipmentList = [];
+        let ingredientList = [
+            <option key={`None`} value={-1} id={-1}>None</option>
+        ];
+        let equipmentList = [
+            <option key={`None`} value={-1} id={-1}>None</option>
+        ];
         let actions = this.props.games;
+        let units = this.props.units
         let ingredients = this.props.ingredients;
         let equipment = this.props.equipment;
+        let actionPic = this.state.actionPic;
+        let ingredientPic = this.state.ingredientPic;
+        let equipmentPic = this.state.equipmentPic;
+        let image, ingredientImage, equipmentImage;
+        let unitList = []
+
+        if(actionPic) {
+            image = (
+                <Row className={style.centerContent}>
+                    <Col sm={8}>
+                        <Image src={`data:image/png;base64,${actionPic}`} fluid />
+                    </Col>
+                </Row>
+            )
+        }
+        else {
+            image = null;
+        }
+
+        if(ingredientPic) {
+            ingredientImage = (
+                <Row className={style.centerContent}>
+                    <Col sm={2} className={style.centerContent}>
+                        <Image src={`data:image/png;base64,${ingredientPic}`} fluid />
+                    </Col>
+                </Row>
+            )
+        }
+        else {
+            ingredientImage = null;
+        }
+
+        if(equipmentPic) {
+            equipmentImage = (
+                <Row className={style.centerContent}>
+                    <Col sm={2} className={style.centerContent}>
+                        <Image src={`data:image/png;base64,${equipmentPic}`} fluid />
+                    </Col>
+                </Row>
+            )
+        }
+        else {
+            equipmentImage = null;
+        }
 
         actions.forEach((el, index) => {
             actionList.push(
-                <Dropdown.Item key={`${el.action.name}${index}`} onClick={() => this.handleSelectAction(el)}>{el.action.name}</Dropdown.Item>
+                <option key={`${el.action.name}${index}`} value={index}>{el.action.name}</option>
+            )
+        })
+
+        units.forEach((el, index) => {
+            unitList.push(
+                <option key={`${el}${index}`}>{el}</option>
             )
         })
 
         ingredients.forEach((el, index) => {
             ingredientList.push(
-                <Dropdown.Item key={`${el.equipment.name}${index}`} onClick={() => this.handleSelectIngredient(el)}>{el.equipment.name}</Dropdown.Item>
+                <option key={`${el.equipment.name}${index}`} value={index} id={el.equipment.id}>{el.equipment.name}</option>
             )
         })
 
         equipment.forEach((el, index) => {
             equipmentList.push(
-                <Dropdown.Item key={`${el.equipment.name}${index}`} onClick={() => this.handleSelectEquipment(el)}>{el.equipment.name}</Dropdown.Item>
+                <option key={`${el.equipment.name}${index}`} value={index} id={el.equipment.id}>{el.equipment.name}</option>
             )
         })
 
-
-        console.log(this.props)
         return (
             <Fragment>
                 <Card className={style.card}>
                     <Card.Body>
-                        <Dropdown>
-                            <Dropdown.Toggle variant="success" id="dropdown-basic">
-                                Select Action
-                            </Dropdown.Toggle>
+                        <Form.Group controlId={`stepDescription${this.props.id}`}>
+                            <Form.Label>Step Description</Form.Label>
+                            <Form.Control 
+                                required
+                                as="textarea"
+                                placeholder="Enter description" 
+                            />
+                        </Form.Group>
+                        
+                        <Form.Group controlId={`action${this.props.id}`}>
+                            <Form.Label>Action</Form.Label>
+                            <Form.Control as="select" onChange={this.handleSelectAction}>
+                            {actionList}
+                            </Form.Control>
+                        </Form.Group>
+                        {image}
 
-                            <Dropdown.Menu>
-                                {actionList}
-                            </Dropdown.Menu>
-                        </Dropdown>
-                        <h5>{this.state.selectedAction}</h5>
-                        <Image src={`data:image/png;base64,${this.state.actionPic}`} fluid />
-                        <Dropdown>
-                            <Dropdown.Toggle variant="success" id="dropdown-basic">
-                                Select Ingredient
-                            </Dropdown.Toggle>
+                        <Form.Group controlId={`ingredient${this.props.id}`}>
+                            <Form.Label>Ingredient</Form.Label>
+                            <Form.Control as="select" onChange={this.handleSelectIngredient}>
+                            {ingredientList}
+                            </Form.Control>
+                        </Form.Group>
+                        {ingredientImage}
 
-                            <Dropdown.Menu>
-                                {ingredientList}
-                            </Dropdown.Menu>
-                        </Dropdown>
-                        <h6>{this.state.selectedIngredient}</h6>
-                        <Dropdown>
-                            <Dropdown.Toggle variant="success" id="dropdown-basic">
-                                Select equipment
-                            </Dropdown.Toggle>
+                        <Form.Group controlId={`equipment${this.props.id}`}>
+                            <Form.Label>Equipment</Form.Label>
+                            <Form.Control as="select" onChange={this.handleSelectEquipment}>
+                            {equipmentList}
+                            </Form.Control>
+                        </Form.Group>
+                        {equipmentImage}
 
-                            <Dropdown.Menu>
-                                {equipmentList}
-                            </Dropdown.Menu>
-                        </Dropdown>
-                        <h6>{this.state.selectedEquipment}</h6>
+                        <Form.Group controlId={`amount${this.props.id}`}>
+                            <Form.Label>Amount</Form.Label>
+
+                            <Form.Control 
+                                required
+                                type="amount" 
+                                placeholder="Enter amount" 
+                            />
+                        </Form.Group>
+                        <Form.Group controlId={`unit${this.props.id}`}>
+                            <Form.Label>Unit</Form.Label>
+                            <Form.Control as="select">
+                            {unitList}
+                            </Form.Control>
+                        </Form.Group>
                     </Card.Body>
                 </Card>
             </Fragment>

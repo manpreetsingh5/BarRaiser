@@ -37,9 +37,14 @@
 
 .card {
     border: 0 !important;
-    /* width: 40em; */
+    padding: 0.5em;
     box-shadow: 2px 2px 7px rgba(0,0,0,0.7);
     margin: 5% 0 5% 0;
+}
+
+.cardContentDiv {
+    text-align: center;
+    padding-top: 0.5em;
 }
 
 .barTitle {
@@ -97,7 +102,7 @@
 }
 
 .modal {
-    width: 65% !important;
+    width: 50% !important;
     max-width: none!important;
 }
 
