@@ -115,4 +115,10 @@ public class CohortController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    @RequestMapping(path="/getDrinks", method= RequestMethod.GET)
+    @PreAuthorize("hasAuthority('BARTENDER')")
+    public ResponseEntity getDrinksFromCohort( @RequestParam  int cohort_id) throws IOException {
+        cohortService.getDrinksFromCohort(cohort_id);
+        return new ResponseEntity(HttpStatus.OK);
+    }
 }

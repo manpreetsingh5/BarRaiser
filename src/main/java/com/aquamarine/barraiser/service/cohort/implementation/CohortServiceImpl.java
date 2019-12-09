@@ -11,6 +11,7 @@ import com.aquamarine.barraiser.repository.CohortRepository;
 import com.aquamarine.barraiser.repository.DrinkRepository;
 import com.aquamarine.barraiser.repository.UserRepository;
 import com.aquamarine.barraiser.service.cohort.interfaces.CohortService;
+import com.aquamarine.barraiser.service.drink.interfaces.DrinkService;
 import com.aquamarine.barraiser.service.images.interfaces.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,6 +41,9 @@ public class CohortServiceImpl implements CohortService {
 
     @Autowired
     private DrinkRepository drinkRepository;
+
+    @Autowired
+    private DrinkService drinkService;
 
     @Autowired
     private ImageService imageService;
@@ -189,6 +193,22 @@ public class CohortServiceImpl implements CohortService {
                 cohortRepository.save(cohort);
             }
         }
+    }
+
+    @Override
+    public Set<Map<String, Object>> getDrinksFromCohort(int cohort_id) throws IOException {
+        if (cohortRepository.findById(cohort_id).isPresent()) {
+            Cohort cohort = cohortRepository.findById(cohort_id).get();
+            Set<Drink> drinks = cohort.getDrinks();
+
+            Set<Map<String, Object>> res = new HashSet<>();
+
+            for (Drink d: drinks) {
+                res.add(drinkService.findDrinkById(d.getId()));
+            }
+            return res;
+        }
+        return null;
     }
 
     @Override
