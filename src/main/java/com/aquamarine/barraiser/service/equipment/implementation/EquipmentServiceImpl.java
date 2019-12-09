@@ -3,6 +3,7 @@ package com.aquamarine.barraiser.service.equipment.implementation;
 import com.aquamarine.barraiser.dto.mapper.EquipmentDTOMapper;
 import com.aquamarine.barraiser.dto.model.EquipmentDTO;
 import com.aquamarine.barraiser.enums.EquipmentEnum;
+import com.aquamarine.barraiser.enums.MeasurementEnum;
 import com.aquamarine.barraiser.model.Equipment;
 import com.aquamarine.barraiser.model.User;
 import com.aquamarine.barraiser.repository.EquipmentRepository;
@@ -12,8 +13,6 @@ import com.aquamarine.barraiser.service.equipment.interfaces.EquipmentService;
 import com.aquamarine.barraiser.service.images.interfaces.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -139,11 +138,11 @@ public class EquipmentServiceImpl implements EquipmentService {
 
     @Override
     public Set<Map<String, Object>> viewAllEquipment() throws IOException {
-        List<Equipment> drinks = equipmentRepository.findAll();
+        List<Equipment> equipmentList = equipmentRepository.findAll();
 
         Set<Map<String, Object>> res = new HashSet<>();
 
-        for (Equipment e: drinks){
+        for (Equipment e: equipmentList){
             if (e.isPublic() && e.getType() == EquipmentEnum.EQUIPMENT){
                 res.add(getEquipmentById(e.getId()));
             }
@@ -154,11 +153,11 @@ public class EquipmentServiceImpl implements EquipmentService {
 
     @Override
     public Set<Map<String, Object>> viewAllIngredients() throws IOException {
-        List<Equipment> drinks = equipmentRepository.findAll();
+        List<Equipment> equipmentList = equipmentRepository.findAll();
 
         Set<Map<String, Object>> res = new HashSet<>();
 
-        for (Equipment e: drinks){
+        for (Equipment e: equipmentList){
             if (e.isPublic() && e.getType() == EquipmentEnum.INGREDIENT){
                 res.add(getEquipmentById(e.getId()));
             }

@@ -2,11 +2,10 @@ package com.aquamarine.barraiser.service.equipment.interfaces;
 
 
 import com.aquamarine.barraiser.dto.model.EquipmentDTO;
-import org.springframework.http.ResponseEntity;
+import com.aquamarine.barraiser.enums.MeasurementEnum;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
