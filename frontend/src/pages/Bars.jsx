@@ -1,6 +1,7 @@
 import React, { Fragment, Component } from 'react';
 import Empty from './Empty';
 import Load from './Load';
+import DrinkList from'./DrinkList';
 import TraineeList from './TraineeList'
 import style from '../style/Bars.module.css';
 
@@ -16,6 +17,7 @@ import Table from 'react-bootstrap/Table';
 import { FaSearch } from 'react-icons/fa';
 import { FaPencilAlt } from 'react-icons/fa';
 import { FaTrashAlt } from 'react-icons/fa';
+import { FaPlus } from 'react-icons/fa';
 
 const monthNames = ["Jan.", "Feb.", "Mar.", "Apr.", "May", "Jun.",
                     "Jul.", "Aug.", "Sep.", "Oct.", "Nov.", "Dec."];
@@ -27,6 +29,7 @@ class Bars extends Component {
         this.state = {
             show: false,
             bars: [],
+            drinks: [],
             isLoaded: false
         };
     }
@@ -34,6 +37,28 @@ class Bars extends Component {
     componentDidMount() {
         let token = localStorage.getItem("accessToken");
         console.log(token)
+        fetch(`api/drink/viewUserDrinks`, {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer '+ token,
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => {
+            if(response.status !== 200) {
+                return null;
+            }
+            return response.json()
+            .then(
+                data => {
+                    if(data !== null) {
+                        this.setState({
+                            drinks: data
+                        })
+                    }
+                }
+            )
+        })
         fetch(`api/cohort/getCohortForUser?user_id=${this.props.id}`, {
             method: 'GET',
             headers: {
@@ -140,6 +165,7 @@ class Bars extends Component {
                         bar.showDelete = false;
                         bar.showEdit = false;
                         bar.showAddTrainee = false;
+                        bar.showAddDrink = false;
                         bar.showViewTrainees = false;
                         processed++;
                         if(processed === bars.length) {
@@ -181,6 +207,18 @@ class Bars extends Component {
     handleAddTraineeClose = (id) => {
         this.setState({
             bars: this.state.bars.map(el => (el.cohort.id === id ? {...el, showAddTrainee: false} : el))
+        });
+    }
+
+    handleAddDrinkShow = (id) => {
+        this.setState({
+            bars: this.state.bars.map(el => (el.cohort.id === id ? {...el, showAddDrink: true} : el))
+        });
+    }
+
+    handleAddDrinkClose = (id) => {
+        this.setState({
+            bars: this.state.bars.map(el => (el.cohort.id === id ? {...el, showAddDrink: false} : el))
         });
     }
 
@@ -298,7 +336,7 @@ class Bars extends Component {
         })
         .then(() => {
             this.setState({isLoaded: false});
-            this.handleDeleteClose(bar.id);
+            this.handleEditClose(bar.id);
             this.updateView();
         })
 
@@ -344,6 +382,24 @@ class Bars extends Component {
         })
     }
 
+    handleAddDrink = (drinkId, cohortId) => {
+        let token = localStorage.getItem("accessToken");
+        fetch(`api/cohort/addDrink?cohort_id=${cohortId}&drink_id=${drinkId}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer '+ token,
+            }
+        })
+        .then(response => {
+            console.log(response)
+        })
+        .then(() => {
+            // this.setState({isLoaded: false});
+            // this.updateView();
+            this.handleAddDrinkClose(cohortId);
+        })
+    }
+
     test = () => {
         console.log("nice");
     }
@@ -355,12 +411,11 @@ class Bars extends Component {
         let isLoaded = this.state.isLoaded;
         let empty = null;
 
-        // console.log(isLoaded);
+        // console.log(this.state.drinks);
 
         if(bars.length) {
             if("file" in bars[0]) {
                 bars.sort((a, b) => (a.name > b.name) ? 1 : -1)
-                console.log(bars)
                 bars.forEach(el => 
                     barsList.push(
                         <Row key={el.cohort.id}>
@@ -387,7 +442,42 @@ class Bars extends Component {
                                     </Row>
                                     <Row className={style.barButtonsRow}>
                                         <Col sm={12}>
-                                            <Button variant="dark" onClick={() => this.handleViewTraineesShow(el.cohort.id, el.cohort)}>
+                                            <Button variant="dark" onClick={() => this.handleAddDrinkShow(el.cohort.id)}>
+                                                <div className={style.barButtonsDiv}>
+                                                    <FaPlus/>
+                                                    <span className={style.buttonText}>Add Drink</span>
+                                                </div>
+                                            </Button>
+
+                                            <Modal show={el.showAddDrink} onHide={() => this.handleAddDrinkClose(el.cohort.id)} centered dialogClassName={style.addDrinkModal}>
+                                                <Modal.Header>
+                                                    <Modal.Title>Add Drink</Modal.Title>
+                                                </Modal.Header>
+                
+                                                <Modal.Body>
+                                                <Table striped bordered hover size="sm">
+                                                    <thead>
+                                                        <tr>
+                                                        <th>#</th>
+                                                        <th>Drink</th>
+                                                        <th></th>
+                                                        <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <DrinkList drinks={this.state.drinks} id={el.cohort.id} addDrink={this.handleAddDrink}/>
+                                                    </tbody>
+                                                    </Table>
+                                                </Modal.Body>
+
+                                                <Modal.Footer>
+                                                    <Button variant="secondary" onClick={() => this.handleAddDrinkClose(el.cohort.id)}>
+                                                        Close
+                                                    </Button>
+                                                </Modal.Footer>
+                                            </Modal>
+
+                                            <Button variant="dark" className={style.middleButton2} onClick={() => this.handleViewTraineesShow(el.cohort.id, el.cohort)}>
                                                 <div className={style.barButtonsDiv}>
                                                     <FaSearch/>
                                                     <span className={style.buttonText}>View Trainees</span>
@@ -414,11 +504,17 @@ class Bars extends Component {
                                                     </tbody>
                                                     </Table>
                                                 </Modal.Body>
+
+                                                <Modal.Footer>
+                                                    <Button variant="secondary" onClick={() => this.handleViewTraineesClose(el.cohort.id)}>
+                                                        Close
+                                                    </Button>
+                                                </Modal.Footer>
                                             </Modal>
 
                                             <Button variant="dark" className={style.middleButton2} onClick={() => this.handleAddTraineeShow(el.cohort.id)}>
                                                 <div className={style.barButtonsDiv}>
-                                                    <FaSearch/>
+                                                    <FaPlus/>
                                                     <span className={style.buttonText}>Add Trainee</span>
                                                 </div>
                                             </Button>

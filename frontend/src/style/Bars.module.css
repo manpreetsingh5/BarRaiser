@@ -96,6 +96,11 @@
     max-width: none!important;
 }
 
+.addDrinkModal {
+    width: 50% !important;
+    max-width: none!important;
+}
+
 .deleteModalButtons {
     display: flex;
     justify-content: center;
