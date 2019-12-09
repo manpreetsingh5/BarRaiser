@@ -101,4 +101,18 @@ public class CohortController {
         return cohortService.findById(cohort_id);
     }
 
+    @RequestMapping(path="/addDrink", method= RequestMethod.GET)
+    @PreAuthorize("hasAuthority('BARTENDER')")
+    public ResponseEntity addDrinkToCohort( @RequestParam  int cohort_id,  @RequestParam int drink_id) {
+        cohortService.addDrinkToCohort(cohort_id, drink_id);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @RequestMapping(path="/deleteDrink", method= RequestMethod.GET)
+    @PreAuthorize("hasAuthority('BARTENDER')")
+    public ResponseEntity deleteDrinkFromCohort( @RequestParam  int cohort_id,  @RequestParam int drink_id) {
+        cohortService.deleteDrinkFromCohort(cohort_id, drink_id);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
 }
