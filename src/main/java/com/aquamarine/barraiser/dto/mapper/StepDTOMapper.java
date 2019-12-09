@@ -19,7 +19,6 @@ public class StepDTOMapper {
                     .setAction(step.getAction())
                     .setDescription(step.getDescription())
                     .setDrink(step.getDrink())
-                    .setSuccessAmount(step.getSuccessAmount())
                     .setStep_number(step.getStep_number());
 
             for (StepEquipment s : step.getEquipmentSet()) {
