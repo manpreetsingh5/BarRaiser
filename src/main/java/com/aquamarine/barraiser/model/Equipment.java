@@ -1,6 +1,7 @@
 package com.aquamarine.barraiser.model;
 
 import com.aquamarine.barraiser.enums.EquipmentEnum;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import lombok.experimental.Accessors;
 import org.joda.time.DateTime;
@@ -21,19 +22,20 @@ import java.util.Set;
 @EntityListeners(AuditingEntityListener.class)
 public class Equipment extends Auditable<String> {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
 
     @Column(nullable = false)
     private String name;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String description;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String image_path;
 
     @Column(nullable = false)
+    @JsonProperty
     private boolean isPublic;
 
     @Column(nullable = false)

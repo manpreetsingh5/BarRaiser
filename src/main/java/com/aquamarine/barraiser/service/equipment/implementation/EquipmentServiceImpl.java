@@ -61,7 +61,7 @@ public class EquipmentServiceImpl implements EquipmentService {
 
         if (user.isPresent()){
             Equipment equipment = new Equipment()
-                    .setImage_path(equipmentDTO.getImage_path())
+                    .setImage_path(sub_folder+fileName)
                     .setDescription(equipmentDTO.getDescription())
                     .setPublic(equipmentDTO.isPublic())
                     .setName(equipmentDTO.getName())

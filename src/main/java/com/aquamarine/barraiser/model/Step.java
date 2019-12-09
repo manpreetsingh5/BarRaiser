@@ -18,7 +18,7 @@ import java.util.Set;
 @Entity
 public class Step {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
 
     @ManyToOne
@@ -35,9 +35,6 @@ public class Step {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private ActionsEnum action;
-
-    @Column(nullable = false)
-    private Integer successAmount;
 
     @OneToMany(cascade = CascadeType.DETACH)
     @JoinTable(name = "steps_to_step_equipment",

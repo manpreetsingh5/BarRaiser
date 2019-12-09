@@ -1,0 +1,9 @@
+.centerContent {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.addMargin {
+    margin: 0.5em;
+}

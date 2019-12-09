@@ -1,6 +1,7 @@
 package com.aquamarine.barraiser.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import lombok.experimental.Accessors;
 
@@ -17,7 +18,7 @@ import java.util.Set;
 public class Drink extends Auditable<String>{
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
 
     @Column(nullable = false)
@@ -29,6 +30,7 @@ public class Drink extends Auditable<String>{
     @Column(unique = true, nullable = false)
     private String image_path;
 
+    @JsonProperty
     @Column(nullable = false)
     private boolean isPublic;
 

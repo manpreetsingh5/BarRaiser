@@ -60,7 +60,7 @@ public class DrinkServiceImp implements DrinkService {
 
         Drink drink = new Drink();
 
-        drink.setImage_path(drinkDTO.getImage_path())
+        drink.setImage_path(sub_folder+fileName)
                 .setName(drinkDTO.getName())
                 .setPublic(drinkDTO.isPublic())
                 .setDescription(drinkDTO.getDescription());
@@ -70,7 +70,6 @@ public class DrinkServiceImp implements DrinkService {
                     .setDescription(stepdto.getDescription())
                     .setDrink(stepdto.getDrink())
                     .setAction(stepdto.getAction())
-                    .setSuccessAmount(stepdto.getSuccessAmount())
                     .setStep_number(stepdto.getStep_number());
 
             steps.add(step);
