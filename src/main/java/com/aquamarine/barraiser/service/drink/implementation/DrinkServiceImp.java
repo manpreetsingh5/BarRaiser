@@ -60,7 +60,7 @@ public class DrinkServiceImp implements DrinkService {
 
         Drink drink = new Drink();
 
-        drink.setImage_path(drinkDTO.getImage_path())
+        drink.setImage_path(sub_folder+fileName)
                 .setName(drinkDTO.getName())
                 .setPublic(drinkDTO.isPublic())
                 .setDescription(drinkDTO.getDescription());
