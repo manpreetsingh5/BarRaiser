@@ -24,28 +24,28 @@ class App extends React.Component {
             <MatchingGame ingredients={[bottle_src, glass_src, shaker_src, salt_src, plate_src, ice_src, milk_src, spoon_src, cookie_src]} target={bottle_src} length={9} />
           </Tab>
           <Tab eventKey="pourliquid" title="Pour Liquid">
-            <PourLiquidGame target={25} unit={"oz"} ingredient_src={bottle_src} equipment_src={glass_src}/>
+            <PourLiquidGame target={2.5} unit={"oz"} ingredient_src={bottle_src} equipment_src={glass_src}/>
           </Tab>
           <Tab eventKey="shake" title="Shake">
-            <ShakeGame target={10} equipment_src={shaker_src} />
+            <ShakeGame target={10} unit={"x"} equipment_src={shaker_src} />
           </Tab>
           <Tab eventKey="strain" title="Strain">
-            <StrainGame target={25} unit={"oz"} ingredient_src={shaker_src}  equipment_src={glass_src}/>
+            <StrainGame target={2.5} unit={"oz"} ingredient_src={shaker_src}  equipment_src={glass_src}/>
           </Tab>
           <Tab eventKey="poursolid" title="Pour Solid">
-            <PourSolidGame target={30} unit={"g"} ingredient_src={salt_src}  equipment_src={plate_src}/>
+            <PourSolidGame target={3.0} unit={"g"} ingredient_src={salt_src}  equipment_src={plate_src}/>
           </Tab>
           <Tab eventKey="fill" title="Fill with Ingredient">
-            <FillGame target={5} ingredient_src={ice_src} equipment_src={glass_src}/>
+            <FillGame target={5} unit={"x"} ingredient_src={ice_src} equipment_src={glass_src}/>
           </Tab>
           <Tab eventKey="stir" title="Stir">
-            <StirGame target={40} equipment_src={milk_src}/>
+            <StirGame target={40} unit={"x"} equipment_src={milk_src}/>
           </Tab>
           <Tab eventKey="roll" title="Roll">
-            <RollGame target={33} equipment_src={plate_src}/>
+            <RollGame target={33} unit={"x"} equipment_src={plate_src}/>
           </Tab>
           <Tab eventKey="blend" title="Blend">
-            <BlendGame target={45}/>
+            <BlendGame target={45} unit={"x"}/>
           </Tab>
         </Tabs>
       </Container>

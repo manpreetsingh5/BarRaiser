@@ -161,8 +161,8 @@ export class PourLiquidGame extends React.Component {
         <Row className="mt-5">
           <Col>
             <ProgressBar>
-              <ProgressBar animated variant="info" now={this.state.progress} key={1} />
-              <PosedProgressBar animated variant="danger" now={this.state.target - this.state.progress} key={2} pose={this.state.hint ? 'visible' : 'hidden'} />
+              <ProgressBar animated variant="info" now={(this.state.progress * 10)} key={1} />
+              <PosedProgressBar animated variant="danger" now={(this.state.target * 10) - (this.state.progress * 10)} key={2} pose={this.state.hint ? 'visible' : 'hidden'} />
             </ProgressBar>
           </Col>
         </Row>
@@ -204,7 +204,7 @@ export class PourLiquidGame extends React.Component {
                   }}
                   onHold={() => {
                     this.setState({
-                      progress: Math.min(this.state.progress + 1, 100)
+                      progress: Math.min((this.state.progress + 0.1).toFixed(2), 100)
                     });
                   }}
                   onHoldEnd={() => {
@@ -312,8 +312,8 @@ export class StrainGame extends React.Component {
         <Row className="mt-5">
           <Col>
             <ProgressBar>
-              <ProgressBar animated variant="info" now={this.state.progress} key={1} />
-              <PosedProgressBar animated variant="danger" now={this.state.target - this.state.progress} key={2} pose={this.state.hint ? 'visible' : 'hidden'} />
+              <ProgressBar animated variant="info" now={(this.state.progress * 10)} key={1} />
+              <PosedProgressBar animated variant="danger" now={(this.state.target * 10) - (this.state.progress * 10)} key={2} pose={this.state.hint ? 'visible' : 'hidden'} />
             </ProgressBar>
           </Col>
         </Row>
@@ -360,7 +360,7 @@ export class StrainGame extends React.Component {
                   }}
                   onHold={() => {
                     this.setState({
-                      progress: Math.min(this.state.progress + 1, 100)
+                      progress: Math.min((this.state.progress + 0.1).toFixed(2), 100)
                     });
                   }}
                   onHoldEnd={() => {
@@ -479,8 +479,8 @@ export class PourSolidGame extends React.Component {
         <Row className="mt-5">
           <Col>
             <ProgressBar>
-              <ProgressBar animated variant="info" now={this.state.progress} key={1} />
-              <PosedProgressBar animated variant="danger" now={this.state.target - this.state.progress} key={2} pose={this.state.hint ? 'visible' : 'hidden'} />
+              <ProgressBar animated variant="info" now={(this.state.progress * 10)} key={1} />
+              <PosedProgressBar animated variant="danger" now={(this.state.target * 10) - (this.state.progress * 10)} key={2} pose={this.state.hint ? 'visible' : 'hidden'} />
             </ProgressBar>
           </Col>
         </Row>
@@ -522,7 +522,7 @@ export class PourSolidGame extends React.Component {
                   }}
                   onHold={() => {
                     this.setState({
-                      progress: Math.min(this.state.progress + 1, 100)
+                      progress: Math.min((this.state.progress + 0.1).toFixed(2), 100)
                     });
                   }}
                   onHoldEnd={() => {
@@ -646,8 +646,8 @@ export class ShakeGame extends React.Component {
               </Row>
             </Col>
             <Col sm={2} className="mx-auto">
-              <PosedH5 pose={this.state.hint ? 'visible' : 'hidden'}>Target: {this.state.target / 10}</PosedH5>
-              <h5>Current: {this.state.progress / 10}</h5>
+              <PosedH5 pose={this.state.hint ? 'visible' : 'hidden'}>Target: {(this.state.target / 10)+ " " + this.props.unit}</PosedH5>
+              <h5>Current: {(this.state.progress / 10) + " " + this.props.unit}</h5>
               <Row className="my-3 mt-5">
                 <Repeatable
                   tag={Button}
@@ -801,8 +801,8 @@ export class FillGame extends React.Component {
               </Row>
             </Col>
             <Col sm={2} className="mx-auto">
-              <PosedH5 pose={this.state.hint ? 'visible' : 'hidden'}>Target: {this.state.target / 10}</PosedH5>
-              <h5>Current: {this.state.progress / 10}</h5>
+              <PosedH5 pose={this.state.hint ? 'visible' : 'hidden'}>Target: {(this.state.target / 10)+ " " + this.props.unit}</PosedH5>
+              <h5>Current: {(this.state.progress / 10) + " " + this.props.unit}</h5>
               <Row className="my-3 mt-5">
                 <Repeatable
                   tag={Button}
@@ -945,8 +945,8 @@ export class StirGame extends React.Component {
               </Row>
             </Col>
             <Col sm={2} className="mx-auto">
-              <PosedH5 pose={this.state.hint ? 'visible' : 'hidden'}>Target: {this.state.target}</PosedH5>
-              <h5>Current: {this.state.progress}</h5>
+              <PosedH5 pose={this.state.hint ? 'visible' : 'hidden'}>Target: {this.state.target + " " + this.props.unit}</PosedH5>
+              <h5>Current: {this.state.progress + " " + this.props.unit}</h5>
               <Row className="my-3 mt-5">
                 <Repeatable
                   tag={Button}
@@ -1091,8 +1091,8 @@ export class RollGame extends React.Component {
               </Row>
             </Col>
             <Col sm={2} className="mx-auto">
-              <PosedH5 pose={this.state.hint ? 'visible' : 'hidden'}>Target: {this.state.target}</PosedH5>
-              <h5>Current: {this.state.progress}</h5>
+              <PosedH5 pose={this.state.hint ? 'visible' : 'hidden'}>Target: {this.state.target + " " + this.props.unit}</PosedH5>
+              <h5>Current: {this.state.progress + " " + this.props.unit}</h5>
               <Row className="my-3 mt-5">
                 <Repeatable
                   tag={Button}
@@ -1232,8 +1232,8 @@ export class BlendGame extends React.Component {
               </Row>
             </Col>
             <Col sm={2} className="mx-auto">
-              <PosedH5 pose={this.state.hint ? 'visible' : 'hidden'}>Target: {this.state.target}</PosedH5>
-              <h5>Current: {this.state.progress}</h5>
+              <PosedH5 pose={this.state.hint ? 'visible' : 'hidden'}>Target: {this.state.target + " " + this.props.unit}</PosedH5>
+              <h5>Current: {this.state.progress + " " + this.props.unit}</h5>
               <Row className="my-3 mt-5">
                 <Repeatable
                   tag={Button}
