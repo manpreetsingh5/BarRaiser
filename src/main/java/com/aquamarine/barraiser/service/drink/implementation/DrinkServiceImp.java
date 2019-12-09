@@ -70,7 +70,6 @@ public class DrinkServiceImp implements DrinkService {
                     .setDescription(stepdto.getDescription())
                     .setDrink(stepdto.getDrink())
                     .setAction(stepdto.getAction())
-                    .setSuccessAmount(stepdto.getSuccessAmount())
                     .setStep_number(stepdto.getStep_number());
 
             steps.add(step);
