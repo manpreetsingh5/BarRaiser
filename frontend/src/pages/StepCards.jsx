@@ -145,6 +145,92 @@ class StepCards extends Component {
             )
         })
 
+        if(this.props.action != null && this.props.description != null && this.props.equipmentSet != null) {
+            let ingredient = null;
+            let equipment = null;
+            this.props.equipmentSet.forEach((el, index) => {
+                if(el.equipment.type === "INGREDIENT") {
+                    ingredient = el;
+                }
+                else if(el.equipment.type === "EQUIPMENT") {
+                    equipment = el;
+                }
+            })
+            if(ingredient === null) ingredient = "None"
+            console.log(this.props.action)
+            console.log(ingredient)
+            console.log(equipment)
+            return (
+                <Fragment>
+                    <Card className={style.card}>
+                        <Card.Body>
+                            <Form.Group controlId={`stepDescription${this.props.id}`}>
+                                <Form.Label>Step Description</Form.Label>
+                                <Form.Control 
+                                    required
+                                    as="textarea"
+                                    defaultValue={this.props.description}
+                                    placeholder="Enter description" 
+                                />
+                            </Form.Group>
+                            
+                            <Form.Group controlId={`action${this.props.id}`}>
+                                <Form.Label>Action</Form.Label>
+                                <Form.Control 
+                                    as="select" 
+                                    onChange={this.handleSelectAction}
+                                    defaultValue={this.props.action}
+                                >
+                                {actionList}
+                                </Form.Control>
+                            </Form.Group>
+                            {image}
+    
+                            <Form.Group controlId={`ingredient${this.props.id}`}>
+                                <Form.Label>Ingredient</Form.Label>
+                                <Form.Control 
+                                    as="select" 
+                                    onChange={this.handleSelectIngredient}
+                                    defaultValue={ingredient}
+                                >
+                                {ingredientList}
+                                </Form.Control>
+                            </Form.Group>
+                            {ingredientImage}
+    
+                            <Form.Group controlId={`equipment${this.props.id}`}>
+                                <Form.Label>Equipment</Form.Label>
+                                <Form.Control 
+                                    as="select" 
+                                    onChange={this.handleSelectEquipment}
+                                    defaultValue={equipment}
+                                >
+                                {equipmentList}
+                                </Form.Control>
+                            </Form.Group>
+                            {equipmentImage}
+    
+                            <Form.Group controlId={`amount${this.props.id}`}>
+                                <Form.Label>Amount</Form.Label>
+    
+                                <Form.Control 
+                                    required
+                                    type="amount" 
+                                    placeholder="Enter amount" 
+                                />
+                            </Form.Group>
+                            <Form.Group controlId={`unit${this.props.id}`}>
+                                <Form.Label>Unit</Form.Label>
+                                <Form.Control as="select">
+                                {unitList}
+                                </Form.Control>
+                            </Form.Group>
+                        </Card.Body>
+                    </Card>
+                </Fragment>
+            );
+        }
+
         return (
             <Fragment>
                 <Card className={style.card}>
