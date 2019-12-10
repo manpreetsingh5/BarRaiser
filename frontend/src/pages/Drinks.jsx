@@ -13,6 +13,7 @@ import Card from 'react-bootstrap/Card';
 import Image from 'react-bootstrap/Image';
 import Table from 'react-bootstrap/Table';
 
+import { FaPencilAlt } from 'react-icons/fa';
 import { FaTrashAlt } from 'react-icons/fa';
 
 let step = 0
@@ -59,11 +60,24 @@ class Drinks extends Component {
                         this.setState({
                             drinks: data
                         })
-                        // return data;
+                        return data;
                     }
-                    // return null;
+                    return null;
                 }
             )
+            .then(drinks => {
+                if(drinks !== null && drinks.length) {
+                    let processed = 0;
+                    drinks.forEach((drink) => {
+                        drink.showEdit = false
+                        drink.showDelete = false;
+                        processed++;
+                        if(processed === drinks.length) {
+                            this.callbackDrinks(drinks);
+                        }
+                    })
+                }
+            })
         })
         .then(() => {
             fetch(`api/equipment/viewAllEquipment`, {
@@ -244,6 +258,12 @@ class Drinks extends Component {
         })
     }
 
+    callbackDrinks = (drinks) => {
+        this.setState({
+            drinks: drinks,
+        })
+    }
+
     callbackEquipment = (equipment) => {
         this.setState({
             equipment: equipment,
@@ -271,17 +291,29 @@ class Drinks extends Component {
                 return null;
             }
             return response.json()
-            .then(
-                data => {
+            .then( data => {
                     if(data !== null) {
                         this.setState({
                             drinks: data
                         })
-                        // return data;
+                        return data;
                     }
-                    // return null;
+                    return null;
                 }
             )
+            .then(drinks => {
+                if(drinks !== null && drinks.length) {
+                    let processed = 0;
+                    drinks.forEach((drink) => {
+                        drink.showEdit = false
+                        drink.showDelete = false;
+                        processed++;
+                        if(processed === drinks.length) {
+                            this.callbackDrinks(drinks);
+                        }
+                    })
+                }
+            })
         })
         .then(() => {
             fetch(`api/equipment/viewAllEquipment`, {
@@ -583,9 +615,81 @@ class Drinks extends Component {
         event.preventDefault();
     }
 
+    handleEditDrink = (event) => {
+        console.log("hello")
+    }
+
+    handleDeleteDrink = (id) => {
+        let token = localStorage.getItem("accessToken");
+        fetch(`api/drink/deleteDrink?drinkID=${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': 'Bearer '+ token,
+            }
+        })
+        .then(response => {
+            console.log(response)
+        })
+        .then(() => {
+            this.setState({isLoaded: false});
+            this.updateView();
+            this.handleDeleteClose(id);
+        })
+    }
+
     handleShow = () => {this.setState({show: true})}
 
     handleClose = () => {this.setState({show: false})}
+
+    handleEditDrinkShow = (id, drink) => {
+        let steps = drink.steps;
+        let stepList = [];
+        steps.sort((a, b) => (a.step_number > b.step_number) ? 1 : -1);
+        // console.log(steps);
+        steps.forEach((el, index) => {
+            stepList.push(
+                <StepCards key={el.step_number} id={el.step_number} ingredients={this.state.ingredients} 
+                equipment={this.state.equipment} games={this.state.games} 
+                add={this.addToStepObjects} units={this.state.units}
+                action={el.action} description={el.description}
+                equipmentSet={el.equipmentSet}/>
+            )
+        })
+        this.setState({
+            drinks: this.state.drinks.map(el => (el.drink.id === id ? {...el, showEdit: true} : el)),
+            steps: stepList,
+        });
+    }
+
+    handleEditDrinkClose = (id) => {
+        this.setState({
+            drinks: this.state.drinks.map(el => (el.drink.id === id ? {...el, showEdit: false} : el))
+        });
+    }
+
+    handleDeleteDrinkShow = (id) => {
+        this.setState({
+            drinks: this.state.drinks.map(el => (el.drink.id === id ? {...el, showDelete: true} : el))
+        });
+    }
+
+    handleDeleteDrinkClose = (id) => {
+        this.setState({
+            drinks: this.state.drinks.map(el => (el.drink.id === id ? {...el, showDelete: false} : el))
+        });
+    }
+
+    handleDeleteIngredientShow = (id) => {
+        this.setState({
+            userIngredients: this.state.userIngredients.map(el => (el.equipment.id === id ? {...el, showDelete: true} : el))
+        });
+    }
+
+    handleDeleteIngredientClose = (id) => {
+        this.setState({
+            userIngredients: this.state.userIngredients.map(el => (el.equipment.id === id ? {...el, showDelete: false} : el))
+        });
+    }
 
     handleDeleteIngredientShow = (id) => {
         this.setState({
@@ -755,9 +859,7 @@ class Drinks extends Component {
     deleteStep = () => {
         if(this.state.steps.length > 0) {
             let arr = [...this.state.steps];
-            console.log(arr)
             arr.pop();
-            console.log(arr)
             step--;
             this.setState({
                 steps: arr,
@@ -787,8 +889,6 @@ class Drinks extends Component {
         let userEquipment = this.state.userEquipment;
         let games = this.state.games
 
-        console.log(this.state.drinks)
-
         if(drinks.length) {
             drinks.sort((a, b) => (a.drink.name > b.drink.name) ? 1 : -1);
             drinks.forEach(el =>
@@ -799,27 +899,95 @@ class Drinks extends Component {
                             <div className={style.cardContentDiv}>
                                 <h5>{el.drink.name[0].toUpperCase() + el.drink.name.slice(1)}</h5>
                             </div>
-                            {/* <Button variant="dark" onClick={() => this.handleDeleteIngredientShow(el.equipment.id)}>
+
+                            <Button variant="dark" onClick={() => this.handleEditDrinkShow(el.drink.id, el.drink)} className={style.editDrink}>
+                                <div className={style.barButtonsDiv}>
+                                    <FaPencilAlt/>
+                                    <span className={style.buttonText}>Edit</span>
+                                </div>
+                            </Button>
+
+                            <Modal show={el.showEdit} onHide={() => this.handleEditDrinkClose(el.drink.id)} centered>
+                                <Modal.Header>
+                                    <Modal.Title>Edit Drink</Modal.Title>
+                                </Modal.Header>
+
+                                <Modal.Body>
+                                    <Form onSubmit={this.handleEditDrink}>
+                                        <Form.Group controlId="name">
+                                            <Form.Label>Name</Form.Label>
+
+                                            <Form.Control 
+                                                required
+                                                type="name" 
+                                                defaultValue={el.drink.name}
+                                                placeholder="Enter name" 
+                                            />
+
+                                        </Form.Group>
+
+                                        <Form.Group controlId="description">
+                                            <Form.Label>Description</Form.Label>
+                                            <Form.Control 
+                                                required
+                                                as="textarea"
+                                                defaultValue={el.drink.description}
+                                                placeholder="Enter description" 
+                                            />
+                                        </Form.Group>
+
+                                        <Form.Group controlId="image">
+                                            <Form.Label>Image</Form.Label>
+                                            <Form.Control 
+                                                required
+                                                type="file"
+                                            />
+                                        </Form.Group>
+
+                                        {this.state.steps}
+
+                                        <Button onClick={this.addStep}>
+                                            Add Step
+                                        </Button>
+
+                                        <Button onClick={this.deleteStep}>
+                                            Delete Step
+                                        </Button>
+
+                                        <Modal.Footer>
+                                            <Button variant="secondary" onClick={() => this.handleEditDrinkClose(el.drink.id)}>
+                                                Close
+                                            </Button>
+
+                                            <Button variant="primary" type="submit">
+                                                Add Drink
+                                            </Button>
+                                        </Modal.Footer>
+                                    </Form>
+                                </Modal.Body>
+                            </Modal>
+
+                            <Button variant="dark" onClick={() => this.handleDeleteDrinkShow(el.drink.id)}>
                                 <div className={style.barButtonsDiv}>
                                     <FaTrashAlt/>
                                     <span className={style.buttonText}>Delete</span>
                                 </div>
-                            </Button> */}
+                            </Button>
 
-                            {/* <Modal show={el.showDelete} onHide={() => this.handleDeleteIngredientClose(el.equipment.id)} centered dialogClassName={style.deleteModal}>
+                            <Modal show={el.showDelete} onHide={() => this.handleDeleteDrinkClose(el.drink.id)} centered dialogClassName={style.deleteModal}>
                                 <Modal.Header className={style.deleteHeader}>
-                                    <Modal.Title>Are you sure you want to delete {el.equipment.name}?</Modal.Title>
+                                    <Modal.Title>Are you sure you want to delete {el.drink.name}?</Modal.Title>
                                 </Modal.Header>
 
                                 <Modal.Body className={style.deleteModalButtons}>
-                                    <Button variant="danger" className={style.deleteButton} onClick={() => this.handleDeleteIngredient(el.equipment.id)}>
+                                    <Button variant="danger" className={style.deleteButton} onClick={() => this.handleDeleteDrink(el.drink.id)}>
                                         Delete
                                     </Button>
-                                    <Button variant="primary" onClick={() => this.handleDeleteIngredientClose(el.equipment.id)} className={style.returnButton}>
+                                    <Button variant="primary" onClick={() => this.handleDeleteDrinkClose(el.drink.id)} className={style.returnButton}>
                                         Return
                                     </Button>
                                 </Modal.Body>
-                            </Modal> */}
+                            </Modal>
                         </Card>
                     </Col>
                 )
