@@ -17,7 +17,7 @@ import java.util.Set;
 @Entity
 public class Progress {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
 
     @ManyToMany(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)

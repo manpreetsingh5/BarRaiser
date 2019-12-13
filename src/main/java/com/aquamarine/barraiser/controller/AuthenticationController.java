@@ -28,4 +28,15 @@ public class AuthenticationController extends ApiController {
     public ResponseEntity<?> registerUser(@RequestBody UserDTO userDTO) {
         return authenticationService.registerUser(userDTO);
     }
+
+    @RequestMapping(value = "/requestPasswordReset", method = RequestMethod.POST)
+    @ResponseBody
+    public void requestPasswordReset(@RequestParam("email") String userEmail) {
+        authenticationService.requestResetPassword(userEmail);
+    }
+
+    @RequestMapping(value = "/resetPassword", method = RequestMethod.GET)
+    public void resetPassword(@RequestParam("id") int user_id, @RequestParam("token") String token) {
+
+    }
 }
