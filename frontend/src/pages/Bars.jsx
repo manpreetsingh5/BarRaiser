@@ -13,6 +13,7 @@ import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
 import Image from 'react-bootstrap/Image';
 import Table from 'react-bootstrap/Table';
+import {Tabs, Tab} from 'react-bootstrap';
 
 import { FaSearch } from 'react-icons/fa';
 import { FaPencilAlt } from 'react-icons/fa';
@@ -498,19 +499,29 @@ class Bars extends Component {
                                                 </Modal.Header>
                 
                                                 <Modal.Body>
-                                                <Table striped bordered hover size="sm">
-                                                    <thead>
-                                                        <tr>
-                                                        <th>#</th>
-                                                        <th>Drink</th>
-                                                        <th></th>
-                                                        <th></th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <DrinkList drinks={this.state.drinks} id={el.cohort.id} addDrink={this.handleAddDrink}/>
-                                                    </tbody>
-                                                    </Table>
+
+                                                <Tabs defaultActiveKey="add_public_drinks" className={style.navTabs} id="add_drinks-tabs">
+
+                                                    <Tab eventKey="add_public_drinks" title="Public Drinks">
+                                                        {/* make a similar table to below  */}
+                                                    </Tab>
+                                                    <Tab eventKey="add_your_drinks" title="Your Drinks">
+                                                        <Table striped bordered hover size="sm" className="mt-3">
+                                                            <thead>
+                                                                <tr>
+                                                                <th>#</th>
+                                                                <th>Drink</th>
+                                                                <th></th>
+                                                                <th></th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <DrinkList drinks={this.state.drinks} id={el.cohort.id} addDrink={this.handleAddDrink}/>
+                                                            </tbody>
+                                                        </Table>
+                                                    </Tab>
+                                                </Tabs>
+
                                                 </Modal.Body>
 
                                                 <Modal.Footer>

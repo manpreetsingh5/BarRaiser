@@ -30,6 +30,7 @@ class Drinks extends Component {
             showIngredient: false,
             showEquipment: false,
             drinks: [],
+            public_drinks: [],
             isLoaded: false,
             steps: [],
             stepObjects: [],
@@ -45,13 +46,49 @@ class Drinks extends Component {
     componentDidMount() {
         let token = localStorage.getItem("accessToken");
         let id = this.props.id;
-        fetch(`api/drink/viewUserDrinks`, {
+
+        fetch(`api/drink/viewAll`, {
             method: 'GET',
             headers: {
                 'Authorization': 'Bearer ' + token,
                 'Content-Type': 'application/json',
             }
-        })
+        }).then(response => {
+            if(response.status !== 200){
+                return null;
+            }
+            console.log(response);
+            return response.json().then(
+                data => {
+                    console.log(data)
+                    if(data !== null){
+                        this.setState({
+                            public_drinks: data
+                        })
+                        return data;
+                    }
+                    return null;
+                }
+            ).then(public_drinks => {
+                if(public_drinks !== null && public_drinks.length){
+                    let processed = 0;
+                    public_drinks.forEach((public_drink) => {
+                                public_drink.showView = false;
+                                processed++;
+                                if (processed === public_drinks.length) {
+                                    this.callbackPublicDrinks(public_drinks);
+                                }
+                            })
+                }
+            })
+        }).then(() => {
+            fetch(`api/drink/viewUserDrinks`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                }
+            })
             .then(response => {
                 if (response.status !== 200) {
                     return null;
@@ -82,7 +119,7 @@ class Drinks extends Component {
                         }
                     })
             })
-            .then(() => {
+        }).then(() => {
                 fetch(`api/equipment/viewAllEquipment`, {
                     method: 'GET',
                     headers: {
@@ -258,6 +295,12 @@ class Drinks extends Component {
     callback = (drinks) => {
         this.setState({
             drinks: drinks,
+        })
+    }
+
+    callbackPublicDrinks = (public_drinks) => {
+        this.setState({
+            public_drinks: public_drinks,
         })
     }
 
@@ -1025,12 +1068,16 @@ class Drinks extends Component {
         let equipmentEmpty = null;
         let isLoaded = this.state.isLoaded;
         let drinksList = []
+        let publicDrinksList = []
         let ingredientsList = []
         let equipmentList = []
         let drinks = this.state.drinks;
+        let public_drinks = this.state.public_drinks;
         let userIngredients = this.state.userIngredients;
         let userEquipment = this.state.userEquipment;
         let games = this.state.games
+
+        console.log(public_drinks.length)
 
         if (drinks.length) {
             drinks.sort((a, b) => (a.drink.name > b.drink.name) ? 1 : -1);
