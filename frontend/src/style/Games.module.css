@@ -1,0 +1,139 @@
+body{
+  margin: 20px !important;
+}
+
+.cnh_holding .bg-card{
+  background: linear-gradient(white, white) rgb(255, 215, 235) no-repeat 0 0;
+  mix-blend-mode: multiply;
+  background-size: 100% 100%;
+  animation: fill 2s forwards;
+}
+
+@keyframes fill{
+  to {
+    background-size: 100% 0;
+  }
+}
+
+.front{
+  z-index: 3;
+}
+
+.pour-row{
+  height: 150px;
+}
+
+#pour_solid{
+  width: 16px;
+  height: 0px;
+  z-index: 1;
+  background: repeating-linear-gradient(#ffffff, #ffffff 20px, #000000 20px, #000000 25px);
+  animation: progress-bar-stripes-v 0.5s linear infinite;
+  transition: 0s;
+}
+
+.filled_ingredient_row{
+  position: absolute;
+  top: 30px; 
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+}
+
+.glass_stir_row{
+  position: absolute;
+  top: 50px;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+#pour_liquid{
+  width:16px;
+  height:0px;
+  z-index: 1;
+  /* background:rgba(229,197,57,1); */
+  background: repeating-linear-gradient(
+    -55deg,
+    #f8e9db 1px,
+    #fff5ed 2px,
+    #fff5ed 11px,
+    #f8e9db 12px,
+    #f8e9db 20px
+	);
+  transition:0s;
+  animation: progress-bar-stripes-v 0.5s linear infinite;
+}
+
+@keyframes progress-bar-stripes-v {
+  from {
+    background-position: 0px 40px;
+  }
+  to {
+    background-position: 0 0;
+  }
+}
+
+.circle-btn{
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+}
+
+.bg-danger{
+  background-color: lightslategray !important;
+}
+
+.bg-info{
+  background-color: #7fffd4 !important;
+  border: 1px solid rgba(0,0,0,0.5);
+}
+
+.btn-success{
+  background-color: #5ceab3!important;
+  border-color: #53d3a0!important;
+  color: black;
+}
+
+.btn-success:hover{
+  background-color: #53d3a0!important;
+  border-color: #53d3a0!important;
+  transition: all 0.5s;
+  color: black;
+}
+
+.btn-info{
+  background-color: white !important;
+  border-color: #f5f5f5 !important;
+  color: black;
+  width: 80%;
+  border-radius: 15px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.5);
+}
+
+.btn-info:hover{
+  background-color: #5ceab3!important;
+  border-color: #53d3a0!important;
+  transition: all 0.5s;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.5);
+  color: black;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.5);
+}
+
+.btn-info.disabled, .btn-info:disabled, .btn-info.disabled:hover{
+  background-color: lightslategray !important;
+  color: white !important;
+}
+
+.btn-info:active, .btn-info:focus{
+  color: black !important;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.5);
+}
+
+.progress{
+  border: 1px solid rgba(0,0,0,0.3);
+}
+
+.test-img{
+  max-height: 100px;
+}
