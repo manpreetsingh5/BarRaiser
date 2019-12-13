@@ -608,7 +608,7 @@ class Drinks extends Component {
                 console.log(response)
             })
             .then(() => {
-                this.setState({isLoaded: false});
+                this.setState({ isLoaded: false });
                 this.handleClose();
                 this.updateView();
             })
@@ -752,7 +752,7 @@ class Drinks extends Component {
                 console.log(response)
             })
             .then(() => {
-                this.setState({isLoaded: false});
+                this.setState({ isLoaded: false });
                 this.handleEditDrinkClose();
                 this.updateView();
             })
@@ -795,7 +795,7 @@ class Drinks extends Component {
                     equipment={this.state.equipment} games={this.state.games}
                     add={this.addToStepObjects} units={this.state.units}
                     action={el.action} description={el.description}
-                    equipmentSet={el.equipmentSet} stepId={el.id}/>
+                    equipmentSet={el.equipmentSet} stepId={el.id} />
             )
         })
         this.setState({
@@ -1058,7 +1058,7 @@ class Drinks extends Component {
                                 <Modal.Body>
                                     <Form onSubmit={this.handleEditDrink}>
                                         <Form.Group controlId="id" className={style.hide}>
-                                            <Form.Control 
+                                            <Form.Control
                                                 defaultValue={el.drink.id}
                                             />
                                         </Form.Group>
@@ -1266,14 +1266,23 @@ class Drinks extends Component {
                     </Row>
 
                     <Container className="my-4">
-                        <Tabs defaultActiveKey="drinks" className={style.navTabs} id="drinks-tabs">
-                            <Tab eventKey="drinks" title="Drinks">
+                        <Tabs defaultActiveKey="public_drinks" className={style.navTabs} id="drinks-tabs">
+                            <Tab eventKey="public_drinks" title="Public Drinks">
                                 <Container>
                                     <Row className={style.contentContainer}>
                                         <div className={style.contentDiv}>
-                                            <div>
-                                                <h4>Your Drinks</h4>
+                                            {empty}
+                                            <div className={style.drinksList}>
+                                                {drinksList}
                                             </div>
+                                        </div>
+                                    </Row>
+                                </Container>
+                            </Tab>
+                            <Tab eventKey="your_drinks" title="Your Drinks">
+                                <Container>
+                                    <Row className={style.contentContainer}>
+                                        <div className={style.contentDiv}>
                                             <div>
                                                 <Button variant="primary" onClick={this.handleShow}>
                                                     Add Drinks
@@ -1346,18 +1355,14 @@ class Drinks extends Component {
                             </Tab>
 
 
-                            <Tab eventKey="ingredients" title="Ingredients">
+                            <Tab eventKey="ingredients" title="Your Ingredients">
                                 <Container>
                                     <Row className={style.contentContainer}>
                                         <div className={style.contentDiv}>
                                             <div>
-                                                <h4>Your Ingredients</h4>
-                                            </div>
-
-                                            <div>
                                                 <Button variant="primary" onClick={this.handleShowIngredient}>
                                                     Add Ingredient
-                                    </Button>
+                                                </Button>
 
                                                 <Modal show={showIngredient} onHide={this.handleCloseIngredient} centered>
                                                     <Modal.Header>
@@ -1413,18 +1418,14 @@ class Drinks extends Component {
                                 </Container>
                             </Tab>
 
-                            <Tab eventKey="equipment" title="Equipment">
+                            <Tab eventKey="equipment" title="Your Equipment">
                                 <Container>
                                     <Row className={style.contentContainer}>
                                         <div className={style.contentDiv}>
                                             <div>
-                                                <h4>Your Equipment</h4>
-                                            </div>
-
-                                            <div>
                                                 <Button variant="primary" onClick={this.handleShowEquipment}>
                                                     Add Equipment
-                                    </Button>
+                                                </Button>
 
                                                 <Modal show={showEquipment} onHide={this.handleCloseEquipment} centered>
                                                     <Modal.Header>
