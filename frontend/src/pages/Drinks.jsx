@@ -4,7 +4,10 @@ import Empty from './Empty';
 import Load from './Load';
 import style from '../style/Drinks.module.css';
 
-import Row from 'react-bootstrap/Row'
+import Tabs from 'react-bootstrap/Tabs';
+import Tab from 'react-bootstrap/Tab';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
@@ -45,211 +48,211 @@ class Drinks extends Component {
         fetch(`api/drink/viewUserDrinks`, {
             method: 'GET',
             headers: {
-                'Authorization': 'Bearer '+ token,
+                'Authorization': 'Bearer ' + token,
                 'Content-Type': 'application/json',
             }
         })
-        .then(response => {
-            if(response.status !== 200) {
-                return null;
-            }
-            return response.json()
-            .then(
-                data => {
-                    if(data !== null) {
-                        this.setState({
-                            drinks: data
-                        })
-                        return data;
-                    }
+            .then(response => {
+                if (response.status !== 200) {
                     return null;
                 }
-            )
-            .then(drinks => {
-                if(drinks !== null && drinks.length) {
-                    let processed = 0;
-                    drinks.forEach((drink) => {
-                        drink.showEdit = false
-                        drink.showDelete = false;
-                        processed++;
-                        if(processed === drinks.length) {
-                            this.callbackDrinks(drinks);
+                return response.json()
+                    .then(
+                        data => {
+                            if (data !== null) {
+                                this.setState({
+                                    drinks: data
+                                })
+                                return data;
+                            }
+                            return null;
+                        }
+                    )
+                    .then(drinks => {
+                        if (drinks !== null && drinks.length) {
+                            let processed = 0;
+                            drinks.forEach((drink) => {
+                                drink.showEdit = false
+                                drink.showDelete = false;
+                                processed++;
+                                if (processed === drinks.length) {
+                                    this.callbackDrinks(drinks);
+                                }
+                            })
                         }
                     })
-                }
             })
-        })
-        .then(() => {
-            fetch(`api/equipment/viewAllEquipment`, {
-                method: 'GET',
-                headers: {
-                    'Authorization': 'Bearer '+ token,
-                    'Content-Type': 'application/json',
-                }
-            })
-            .then(response => {
-                if(response.status !== 200) {
-                    return null;
-                }
-                return response.json().then(
-                    data => {
-                        if(data !== null) {
-                            this.setState({
-                                equipment: data
-                            })
-                        }
+            .then(() => {
+                fetch(`api/equipment/viewAllEquipment`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json',
                     }
-                )
-            })
-        })
-        .then(() => {
-            fetch(`api/equipment/viewAllIngredients`, {
-                method: 'GET',
-                headers: {
-                    'Authorization': 'Bearer '+ token,
-                    'Content-Type': 'application/json',
-                }
-            })
-            .then(response => {
-                if(response.status !== 200) {
-                    return null;
-                }
-                return response.json().then(
-                    data => {
-                        if(data !== null) {
-                            this.setState({
-                                ingredients: data
-                            })
+                })
+                    .then(response => {
+                        if (response.status !== 200) {
+                            return null;
                         }
+                        return response.json().then(
+                            data => {
+                                if (data !== null) {
+                                    this.setState({
+                                        equipment: data
+                                    })
+                                }
+                            }
+                        )
+                    })
+            })
+            .then(() => {
+                fetch(`api/equipment/viewAllIngredients`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json',
                     }
-                )
-            })
-        })
-        .then(() => {
-            fetch(`api/actions/getActions`, {
-                method: 'GET',
-                headers: {
-                    'Authorization': 'Bearer '+ token,
-                    'Content-Type': 'application/json',
-                }
-            })
-            .then(response => {
-                if(response.status !== 200) {
-                    return null;
-                }
-                return response.json().then(
-                    data => {
-                        if(data !== null) {
-                            this.setState({
-                                games: data,
-                            })
+                })
+                    .then(response => {
+                        if (response.status !== 200) {
+                            return null;
                         }
+                        return response.json().then(
+                            data => {
+                                if (data !== null) {
+                                    this.setState({
+                                        ingredients: data
+                                    })
+                                }
+                            }
+                        )
+                    })
+            })
+            .then(() => {
+                fetch(`api/actions/getActions`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json',
                     }
-                )
-            })
-        })
-        .then(() => {
-            fetch(`api/equipment/viewUnits`, {
-                method: 'GET',
-                headers: {
-                    'Authorization': 'Bearer '+ token,
-                    'Content-Type': 'application/json',
-                }
-            })
-            .then(response => {
-                if(response.status !== 200) {
-                    return null;
-                }
-                return response.json().then(
-                    data => {
-                        if(data !== null) {
-                            this.setState({
-                                units: data,
-                            })
+                })
+                    .then(response => {
+                        if (response.status !== 200) {
+                            return null;
                         }
+                        return response.json().then(
+                            data => {
+                                if (data !== null) {
+                                    this.setState({
+                                        games: data,
+                                    })
+                                }
+                            }
+                        )
+                    })
+            })
+            .then(() => {
+                fetch(`api/equipment/viewUnits`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json',
                     }
-                )
-            })
-        })
-        .then(() => {
-            fetch(`api/equipment/viewUserEquipment`, {
-                method: 'GET',
-                headers: {
-                    'Authorization': 'Bearer '+ token,
-                    'Content-Type': 'application/json',
-                }
-            })
-            .then(response => {
-                if(response.status !== 200) {
-                    return null;
-                }
-                return response.json().then(
-                    data => {
-                        if(data !== null) {
-                            this.setState({
-                                userEquipment: data
-                            })
-                            return data
+                })
+                    .then(response => {
+                        if (response.status !== 200) {
+                            return null;
                         }
-                        return null
-                    }
-                )
+                        return response.json().then(
+                            data => {
+                                if (data !== null) {
+                                    this.setState({
+                                        units: data,
+                                    })
+                                }
+                            }
+                        )
+                    })
             })
-            .then(equipment => {
-                if(equipment !== null && equipment.length) {
-                    let processed = 0;
-                    equipment.forEach((equipment) => {
-                        equipment.showDelete = false;
-                        processed++;
-                        if(processed === equipment.length) {
-                            this.callbackEquipment(equipment);
+            .then(() => {
+                fetch(`api/equipment/viewUserEquipment`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json',
+                    }
+                })
+                    .then(response => {
+                        if (response.status !== 200) {
+                            return null;
+                        }
+                        return response.json().then(
+                            data => {
+                                if (data !== null) {
+                                    this.setState({
+                                        userEquipment: data
+                                    })
+                                    return data
+                                }
+                                return null
+                            }
+                        )
+                    })
+                    .then(equipment => {
+                        if (equipment !== null && equipment.length) {
+                            let processed = 0;
+                            equipment.forEach((equipment) => {
+                                equipment.showDelete = false;
+                                processed++;
+                                if (processed === equipment.length) {
+                                    this.callbackEquipment(equipment);
+                                }
+                            })
                         }
                     })
-                }
             })
-        })
-        .then(() => {
-            fetch(`api/equipment/viewUserIngredients`, {
-                method: 'GET',
-                headers: {
-                    'Authorization': 'Bearer '+ token,
-                    'Content-Type': 'application/json',
-                }
-            })
-            .then(response => {
-                if(response.status !== 200) {
-                    return null;
-                }
-                return response.json().then(
-                    data => {
-                        if(data !== null) {
-                            this.setState({
-                                userIngredients: data
-                            })
-                            return data
-                        }
-                        return null
+            .then(() => {
+                fetch(`api/equipment/viewUserIngredients`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json',
                     }
-                )
-            })
-            .then(ingredients => {
-                if(ingredients !== null && ingredients.length) {
-                    let processed = 0;
-                    ingredients.forEach((ingredient) => {
-                        ingredient.showDelete = false;
-                        processed++;
-                        if(processed === ingredients.length) {
-                            this.callbackIngredients(ingredients);
+                })
+                    .then(response => {
+                        if (response.status !== 200) {
+                            return null;
+                        }
+                        return response.json().then(
+                            data => {
+                                if (data !== null) {
+                                    this.setState({
+                                        userIngredients: data
+                                    })
+                                    return data
+                                }
+                                return null
+                            }
+                        )
+                    })
+                    .then(ingredients => {
+                        if (ingredients !== null && ingredients.length) {
+                            let processed = 0;
+                            ingredients.forEach((ingredient) => {
+                                ingredient.showDelete = false;
+                                processed++;
+                                if (processed === ingredients.length) {
+                                    this.callbackIngredients(ingredients);
+                                }
+                            })
                         }
                     })
-                }
             })
-        })
-        .then(() => {
-            this.setState({
-                isLoaded: true,
+            .then(() => {
+                this.setState({
+                    isLoaded: true,
+                })
             })
-        })
     }
 
     callback = (drinks) => {
@@ -282,210 +285,210 @@ class Drinks extends Component {
         fetch(`api/drink/viewUserDrinks`, {
             method: 'GET',
             headers: {
-                'Authorization': 'Bearer '+ token,
+                'Authorization': 'Bearer ' + token,
                 'Content-Type': 'application/json',
             }
         })
-        .then(response => {
-            if(response.status !== 200) {
-                return null;
-            }
-            return response.json()
-            .then( data => {
-                    if(data !== null) {
-                        this.setState({
-                            drinks: data
-                        })
-                        return data;
-                    }
+            .then(response => {
+                if (response.status !== 200) {
                     return null;
                 }
-            )
-            .then(drinks => {
-                if(drinks !== null && drinks.length) {
-                    let processed = 0;
-                    drinks.forEach((drink) => {
-                        drink.showEdit = false
-                        drink.showDelete = false;
-                        processed++;
-                        if(processed === drinks.length) {
-                            this.callbackDrinks(drinks);
+                return response.json()
+                    .then(data => {
+                        if (data !== null) {
+                            this.setState({
+                                drinks: data
+                            })
+                            return data;
+                        }
+                        return null;
+                    }
+                    )
+                    .then(drinks => {
+                        if (drinks !== null && drinks.length) {
+                            let processed = 0;
+                            drinks.forEach((drink) => {
+                                drink.showEdit = false
+                                drink.showDelete = false;
+                                processed++;
+                                if (processed === drinks.length) {
+                                    this.callbackDrinks(drinks);
+                                }
+                            })
                         }
                     })
-                }
             })
-        })
-        .then(() => {
-            fetch(`api/equipment/viewAllEquipment`, {
-                method: 'GET',
-                headers: {
-                    'Authorization': 'Bearer '+ token,
-                    'Content-Type': 'application/json',
-                }
-            })
-            .then(response => {
-                if(response.status !== 200) {
-                    return null;
-                }
-                return response.json().then(
-                    data => {
-                        if(data !== null) {
-                            this.setState({
-                                equipment: data
-                            })
-                        }
+            .then(() => {
+                fetch(`api/equipment/viewAllEquipment`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json',
                     }
-                )
-            })
-        })
-        .then(() => {
-            fetch(`api/equipment/viewAllIngredients`, {
-                method: 'GET',
-                headers: {
-                    'Authorization': 'Bearer '+ token,
-                    'Content-Type': 'application/json',
-                }
-            })
-            .then(response => {
-                if(response.status !== 200) {
-                    return null;
-                }
-                return response.json().then(
-                    data => {
-                        if(data !== null) {
-                            this.setState({
-                                ingredients: data
-                            })
+                })
+                    .then(response => {
+                        if (response.status !== 200) {
+                            return null;
                         }
+                        return response.json().then(
+                            data => {
+                                if (data !== null) {
+                                    this.setState({
+                                        equipment: data
+                                    })
+                                }
+                            }
+                        )
+                    })
+            })
+            .then(() => {
+                fetch(`api/equipment/viewAllIngredients`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json',
                     }
-                )
-            })
-        })
-        .then(() => {
-            fetch(`api/actions/getActions`, {
-                method: 'GET',
-                headers: {
-                    'Authorization': 'Bearer '+ token,
-                    'Content-Type': 'application/json',
-                }
-            })
-            .then(response => {
-                if(response.status !== 200) {
-                    return null;
-                }
-                return response.json().then(
-                    data => {
-                        if(data !== null) {
-                            this.setState({
-                                games: data,
-                            })
+                })
+                    .then(response => {
+                        if (response.status !== 200) {
+                            return null;
                         }
+                        return response.json().then(
+                            data => {
+                                if (data !== null) {
+                                    this.setState({
+                                        ingredients: data
+                                    })
+                                }
+                            }
+                        )
+                    })
+            })
+            .then(() => {
+                fetch(`api/actions/getActions`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json',
                     }
-                )
-            })
-        })
-        .then(() => {
-            fetch(`api/equipment/viewUnits`, {
-                method: 'GET',
-                headers: {
-                    'Authorization': 'Bearer '+ token,
-                    'Content-Type': 'application/json',
-                }
-            })
-            .then(response => {
-                if(response.status !== 200) {
-                    return null;
-                }
-                return response.json().then(
-                    data => {
-                        if(data !== null) {
-                            this.setState({
-                                units: data,
-                            })
+                })
+                    .then(response => {
+                        if (response.status !== 200) {
+                            return null;
                         }
+                        return response.json().then(
+                            data => {
+                                if (data !== null) {
+                                    this.setState({
+                                        games: data,
+                                    })
+                                }
+                            }
+                        )
+                    })
+            })
+            .then(() => {
+                fetch(`api/equipment/viewUnits`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json',
                     }
-                )
-            })
-        })
-        .then(() => {
-            fetch(`api/equipment/viewUserEquipment`, {
-                method: 'GET',
-                headers: {
-                    'Authorization': 'Bearer '+ token,
-                    'Content-Type': 'application/json',
-                }
-            })
-            .then(response => {
-                if(response.status !== 200) {
-                    return null;
-                }
-                return response.json().then(
-                    data => {
-                        if(data !== null) {
-                            this.setState({
-                                userEquipment: data
-                            })
-                            return data
+                })
+                    .then(response => {
+                        if (response.status !== 200) {
+                            return null;
                         }
-                        return null
-                    }
-                )
+                        return response.json().then(
+                            data => {
+                                if (data !== null) {
+                                    this.setState({
+                                        units: data,
+                                    })
+                                }
+                            }
+                        )
+                    })
             })
-            .then(equipment => {
-                if(equipment !== null && equipment.length) {
-                    let processed = 0;
-                    equipment.forEach((equipment) => {
-                        equipment.showDelete = false;
-                        processed++;
-                        if(processed === equipment.length) {
-                            this.callbackEquipment(equipment);
+            .then(() => {
+                fetch(`api/equipment/viewUserEquipment`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json',
+                    }
+                })
+                    .then(response => {
+                        if (response.status !== 200) {
+                            return null;
+                        }
+                        return response.json().then(
+                            data => {
+                                if (data !== null) {
+                                    this.setState({
+                                        userEquipment: data
+                                    })
+                                    return data
+                                }
+                                return null
+                            }
+                        )
+                    })
+                    .then(equipment => {
+                        if (equipment !== null && equipment.length) {
+                            let processed = 0;
+                            equipment.forEach((equipment) => {
+                                equipment.showDelete = false;
+                                processed++;
+                                if (processed === equipment.length) {
+                                    this.callbackEquipment(equipment);
+                                }
+                            })
                         }
                     })
-                }
             })
-        })
-        .then(() => {
-            fetch(`api/equipment/viewUserIngredients`, {
-                method: 'GET',
-                headers: {
-                    'Authorization': 'Bearer '+ token,
-                    'Content-Type': 'application/json',
-                }
-            })
-            .then(response => {
-                if(response.status !== 200) {
-                    return null;
-                }
-                return response.json().then(
-                    data => {
-                        if(data !== null) {
-                            this.setState({
-                                userIngredients: data
-                            })
-                            return data
-                        }
-                        return null
+            .then(() => {
+                fetch(`api/equipment/viewUserIngredients`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': 'Bearer ' + token,
+                        'Content-Type': 'application/json',
                     }
-                )
-            })
-            .then(ingredients => {
-                if(ingredients !== null && ingredients.length) {
-                    let processed = 0;
-                    ingredients.forEach((ingredient) => {
-                        ingredient.showDelete = false;
-                        processed++;
-                        if(processed === ingredients.length) {
-                            this.callbackIngredients(ingredients);
+                })
+                    .then(response => {
+                        if (response.status !== 200) {
+                            return null;
+                        }
+                        return response.json().then(
+                            data => {
+                                if (data !== null) {
+                                    this.setState({
+                                        userIngredients: data
+                                    })
+                                    return data
+                                }
+                                return null
+                            }
+                        )
+                    })
+                    .then(ingredients => {
+                        if (ingredients !== null && ingredients.length) {
+                            let processed = 0;
+                            ingredients.forEach((ingredient) => {
+                                ingredient.showDelete = false;
+                                processed++;
+                                if (processed === ingredients.length) {
+                                    this.callbackIngredients(ingredients);
+                                }
+                            })
                         }
                     })
-                }
             })
-        })
-        .then(() => {
-            this.setState({
-                isLoaded: true,
+            .then(() => {
+                this.setState({
+                    isLoaded: true,
+                })
             })
-        })
     }
 
     handleSubmit = (event) => {
@@ -496,18 +499,18 @@ class Drinks extends Component {
 
         let steps = []
         stepcards.forEach((el, index) => {
-            if(form[`ingredient${index}`].options[form[`ingredient${index}`].selectedIndex].id == -1
+            if (form[`ingredient${index}`].options[form[`ingredient${index}`].selectedIndex].id == -1
                 && form[`equipment${index}`].options[form[`equipment${index}`].selectedIndex].id == -1) {
-                    steps.push({
-                        step_number: index,
-                        description: form[`stepDescription${index}`].value,
-                        action: form[`action${index}`].options[form[`action${index}`].selectedIndex].text,
-                        image_path: "",
-                        equipmentSet: [],
-                    })
+                steps.push({
+                    step_number: index,
+                    description: form[`stepDescription${index}`].value,
+                    action: form[`action${index}`].options[form[`action${index}`].selectedIndex].text,
+                    image_path: "",
+                    equipmentSet: [],
+                })
             }
-            else if(form[`ingredient${index}`].options[form[`ingredient${index}`].selectedIndex].id == -1
-            && form[`equipment${index}`].options[form[`equipment${index}`].selectedIndex].id != -1) {
+            else if (form[`ingredient${index}`].options[form[`ingredient${index}`].selectedIndex].id == -1
+                && form[`equipment${index}`].options[form[`equipment${index}`].selectedIndex].id != -1) {
                 steps.push({
                     step_number: index,
                     description: form[`stepDescription${index}`].value,
@@ -527,8 +530,8 @@ class Drinks extends Component {
                     ],
                 })
             }
-            else if(form[`ingredient${index}`].options[form[`ingredient${index}`].selectedIndex].id != -1
-            && form[`equipment${index}`].options[form[`equipment${index}`].selectedIndex].id == -1) {
+            else if (form[`ingredient${index}`].options[form[`ingredient${index}`].selectedIndex].id != -1
+                && form[`equipment${index}`].options[form[`equipment${index}`].selectedIndex].id == -1) {
                 steps.push({
                     step_number: index,
                     description: form[`stepDescription${index}`].value,
@@ -598,17 +601,17 @@ class Drinks extends Component {
             method: 'POST',
             body: data,
             headers: {
-                'Authorization': 'Bearer '+ token,
+                'Authorization': 'Bearer ' + token,
             }
         })
-        .then(response => {
-            console.log(response)
-        })
-        .then(() => {
-            // this.setState({isLoaded: false});
-            // this.handleClose();
-            // this.updateView();
-        })
+            .then(response => {
+                console.log(response)
+            })
+            .then(() => {
+                // this.setState({isLoaded: false});
+                // this.handleClose();
+                // this.updateView();
+            })
 
         step = 0;
 
@@ -624,22 +627,22 @@ class Drinks extends Component {
         fetch(`api/drink/deleteDrink?drinkID=${id}`, {
             method: 'DELETE',
             headers: {
-                'Authorization': 'Bearer '+ token,
+                'Authorization': 'Bearer ' + token,
             }
         })
-        .then(response => {
-            console.log(response)
-        })
-        .then(() => {
-            this.setState({isLoaded: false});
-            this.updateView();
-            this.handleDeleteClose(id);
-        })
+            .then(response => {
+                console.log(response)
+            })
+            .then(() => {
+                this.setState({ isLoaded: false });
+                this.updateView();
+                this.handleDeleteClose(id);
+            })
     }
 
-    handleShow = () => {this.setState({show: true})}
+    handleShow = () => { this.setState({ show: true }) }
 
-    handleClose = () => {this.setState({show: false})}
+    handleClose = () => { this.setState({ show: false }) }
 
     handleEditDrinkShow = (id, drink) => {
         let steps = drink.steps;
@@ -648,70 +651,70 @@ class Drinks extends Component {
         // console.log(steps);
         steps.forEach((el, index) => {
             stepList.push(
-                <StepCards key={el.step_number} id={el.step_number} ingredients={this.state.ingredients} 
-                equipment={this.state.equipment} games={this.state.games} 
-                add={this.addToStepObjects} units={this.state.units}
-                action={el.action} description={el.description}
-                equipmentSet={el.equipmentSet}/>
+                <StepCards key={el.step_number} id={el.step_number} ingredients={this.state.ingredients}
+                    equipment={this.state.equipment} games={this.state.games}
+                    add={this.addToStepObjects} units={this.state.units}
+                    action={el.action} description={el.description}
+                    equipmentSet={el.equipmentSet} />
             )
         })
         this.setState({
-            drinks: this.state.drinks.map(el => (el.drink.id === id ? {...el, showEdit: true} : el)),
+            drinks: this.state.drinks.map(el => (el.drink.id === id ? { ...el, showEdit: true } : el)),
             steps: stepList,
         });
     }
 
     handleEditDrinkClose = (id) => {
         this.setState({
-            drinks: this.state.drinks.map(el => (el.drink.id === id ? {...el, showEdit: false} : el))
+            drinks: this.state.drinks.map(el => (el.drink.id === id ? { ...el, showEdit: false } : el))
         });
     }
 
     handleDeleteDrinkShow = (id) => {
         this.setState({
-            drinks: this.state.drinks.map(el => (el.drink.id === id ? {...el, showDelete: true} : el))
+            drinks: this.state.drinks.map(el => (el.drink.id === id ? { ...el, showDelete: true } : el))
         });
     }
 
     handleDeleteDrinkClose = (id) => {
         this.setState({
-            drinks: this.state.drinks.map(el => (el.drink.id === id ? {...el, showDelete: false} : el))
+            drinks: this.state.drinks.map(el => (el.drink.id === id ? { ...el, showDelete: false } : el))
         });
     }
 
     handleDeleteIngredientShow = (id) => {
         this.setState({
-            userIngredients: this.state.userIngredients.map(el => (el.equipment.id === id ? {...el, showDelete: true} : el))
+            userIngredients: this.state.userIngredients.map(el => (el.equipment.id === id ? { ...el, showDelete: true } : el))
         });
     }
 
     handleDeleteIngredientClose = (id) => {
         this.setState({
-            userIngredients: this.state.userIngredients.map(el => (el.equipment.id === id ? {...el, showDelete: false} : el))
+            userIngredients: this.state.userIngredients.map(el => (el.equipment.id === id ? { ...el, showDelete: false } : el))
         });
     }
 
     handleDeleteIngredientShow = (id) => {
         this.setState({
-            userIngredients: this.state.userIngredients.map(el => (el.equipment.id === id ? {...el, showDelete: true} : el))
+            userIngredients: this.state.userIngredients.map(el => (el.equipment.id === id ? { ...el, showDelete: true } : el))
         });
     }
 
     handleDeleteIngredientClose = (id) => {
         this.setState({
-            userIngredients: this.state.userIngredients.map(el => (el.equipment.id === id ? {...el, showDelete: false} : el))
+            userIngredients: this.state.userIngredients.map(el => (el.equipment.id === id ? { ...el, showDelete: false } : el))
         });
     }
 
     handleDeleteEquipmentShow = (id) => {
         this.setState({
-            userEquipment: this.state.userEquipment.map(el => (el.equipment.id === id ? {...el, showDelete: true} : el))
+            userEquipment: this.state.userEquipment.map(el => (el.equipment.id === id ? { ...el, showDelete: true } : el))
         });
     }
 
     handleDeleteEquipmentClose = (id) => {
         this.setState({
-            userEquipment: this.state.userEquipment.map(el => (el.equipment.id === id ? {...el, showDelete: false} : el))
+            userEquipment: this.state.userEquipment.map(el => (el.equipment.id === id ? { ...el, showDelete: false } : el))
         });
     }
 
@@ -720,15 +723,15 @@ class Drinks extends Component {
         fetch(`api/equipment/deleteEquipment?equipment_id=${id}`, {
             method: 'DELETE',
             headers: {
-                'Authorization': 'Bearer '+ token,
+                'Authorization': 'Bearer ' + token,
             }
         })
-        .then(response => {})
-        .then(() => {
-            this.setState({isLoaded: false});
-            this.updateView();
-            this.handleDeleteIngredientClose(id);
-        })
+            .then(response => { })
+            .then(() => {
+                this.setState({ isLoaded: false });
+                this.updateView();
+                this.handleDeleteIngredientClose(id);
+            })
     }
 
     handleDeleteEquipment = (id) => {
@@ -736,15 +739,15 @@ class Drinks extends Component {
         fetch(`api/equipment/deleteEquipment?equipment_id=${id}`, {
             method: 'DELETE',
             headers: {
-                'Authorization': 'Bearer '+ token,
+                'Authorization': 'Bearer ' + token,
             }
         })
-        .then(response => {})
-        .then(() => {
-            this.setState({isLoaded: false});
-            this.updateView();
-            this.handleDeleteEquipmentClose(id);
-        })
+            .then(response => { })
+            .then(() => {
+                this.setState({ isLoaded: false });
+                this.updateView();
+                this.handleDeleteEquipmentClose(id);
+            })
     }
 
     handleSubmitIngredient = (event) => {
@@ -753,7 +756,7 @@ class Drinks extends Component {
         let file = form.elements.image.files[0];
         let typeval;
 
-        if(form.elements.type[0].checked === true) {
+        if (form.elements.type[0].checked === true) {
             typeval = true
         }
         else {
@@ -780,22 +783,22 @@ class Drinks extends Component {
             method: 'POST',
             body: data,
             headers: {
-                'Authorization': 'Bearer '+ token,
+                'Authorization': 'Bearer ' + token,
             }
         })
-        .then(response => {})
-        .then(() => {
-            this.setState({isLoaded: false});
-            this.updateView();
-            this.handleCloseIngredient();
-        })
+            .then(response => { })
+            .then(() => {
+                this.setState({ isLoaded: false });
+                this.updateView();
+                this.handleCloseIngredient();
+            })
 
         event.preventDefault();
     }
 
-    handleShowIngredient = () => {this.setState({showIngredient: true})}
+    handleShowIngredient = () => { this.setState({ showIngredient: true }) }
 
-    handleCloseIngredient = () => {this.setState({showIngredient: false})}
+    handleCloseIngredient = () => { this.setState({ showIngredient: false }) }
 
     handleSubmitEquipment = (event) => {
         let token = localStorage.getItem("accessToken");
@@ -803,7 +806,7 @@ class Drinks extends Component {
         let file = form.elements.image.files[0];
         let typeval;
 
-        if(form.elements.type[0].checked === true) {
+        if (form.elements.type[0].checked === true) {
             typeval = true
         }
         else {
@@ -830,34 +833,34 @@ class Drinks extends Component {
             method: 'POST',
             body: data,
             headers: {
-                'Authorization': 'Bearer '+ token,
+                'Authorization': 'Bearer ' + token,
             }
         })
-        .then(response => {})
-        .then(() => {
-            this.setState({isLoaded: false});
-            this.updateView();
-            this.handleCloseEquipment();
-        })
+            .then(response => { })
+            .then(() => {
+                this.setState({ isLoaded: false });
+                this.updateView();
+                this.handleCloseEquipment();
+            })
 
         event.preventDefault();
     }
 
-    handleShowEquipment = () => {this.setState({showEquipment: true})}
+    handleShowEquipment = () => { this.setState({ showEquipment: true }) }
 
-    handleCloseEquipment = () => {this.setState({showEquipment: false})}
+    handleCloseEquipment = () => { this.setState({ showEquipment: false }) }
 
     addStep = () => {
         this.setState({
             steps: [
                 ...this.state.steps,
-                <StepCards key={step} id={step++} ingredients={this.state.ingredients} equipment={this.state.equipment} games={this.state.games} add={this.addToStepObjects} units={this.state.units}/>
+                <StepCards key={step} id={step++} ingredients={this.state.ingredients} equipment={this.state.equipment} games={this.state.games} add={this.addToStepObjects} units={this.state.units} />
             ]
         });
     }
 
     deleteStep = () => {
-        if(this.state.steps.length > 0) {
+        if (this.state.steps.length > 0) {
             let arr = [...this.state.steps];
             arr.pop();
             step--;
@@ -871,7 +874,7 @@ class Drinks extends Component {
         console.log("lol")
     }
 
-    handleChange = () => {}
+    handleChange = () => { }
 
     render() {
         let show = this.state.show;
@@ -889,7 +892,7 @@ class Drinks extends Component {
         let userEquipment = this.state.userEquipment;
         let games = this.state.games
 
-        if(drinks.length) {
+        if (drinks.length) {
             drinks.sort((a, b) => (a.drink.name > b.drink.name) ? 1 : -1);
             drinks.forEach(el =>
                 drinksList.push(
@@ -902,7 +905,7 @@ class Drinks extends Component {
 
                             <Button variant="dark" onClick={() => this.handleEditDrinkShow(el.drink.id, el.drink)} className={style.editDrink}>
                                 <div className={style.barButtonsDiv}>
-                                    <FaPencilAlt/>
+                                    <FaPencilAlt />
                                     <span className={style.buttonText}>Edit</span>
                                 </div>
                             </Button>
@@ -917,28 +920,28 @@ class Drinks extends Component {
                                         <Form.Group controlId="name">
                                             <Form.Label>Name</Form.Label>
 
-                                            <Form.Control 
+                                            <Form.Control
                                                 required
-                                                type="name" 
+                                                type="name"
                                                 defaultValue={el.drink.name}
-                                                placeholder="Enter name" 
+                                                placeholder="Enter name"
                                             />
 
                                         </Form.Group>
 
                                         <Form.Group controlId="description">
                                             <Form.Label>Description</Form.Label>
-                                            <Form.Control 
+                                            <Form.Control
                                                 required
                                                 as="textarea"
                                                 defaultValue={el.drink.description}
-                                                placeholder="Enter description" 
+                                                placeholder="Enter description"
                                             />
                                         </Form.Group>
 
                                         <Form.Group controlId="image">
                                             <Form.Label>Image</Form.Label>
-                                            <Form.Control 
+                                            <Form.Control
                                                 required
                                                 type="file"
                                             />
@@ -969,7 +972,7 @@ class Drinks extends Component {
 
                             <Button variant="dark" onClick={() => this.handleDeleteDrinkShow(el.drink.id)}>
                                 <div className={style.barButtonsDiv}>
-                                    <FaTrashAlt/>
+                                    <FaTrashAlt />
                                     <span className={style.buttonText}>Delete</span>
                                 </div>
                             </Button>
@@ -994,9 +997,9 @@ class Drinks extends Component {
             )
         }
 
-        if(userIngredients.length) {
+        if (userIngredients.length) {
             userIngredients.sort((a, b) => (a.equipment.name > b.equipment.name) ? 1 : -1)
-            userIngredients.forEach(el => 
+            userIngredients.forEach(el =>
                 ingredientsList.push(
                     <Col key={el.equipment.id} sm={2}>
                         <Card className={style.card}>
@@ -1006,7 +1009,7 @@ class Drinks extends Component {
                             </div>
                             <Button variant="dark" onClick={() => this.handleDeleteIngredientShow(el.equipment.id)}>
                                 <div className={style.barButtonsDiv}>
-                                    <FaTrashAlt/>
+                                    <FaTrashAlt />
                                     <span className={style.buttonText}>Delete</span>
                                 </div>
                             </Button>
@@ -1031,19 +1034,19 @@ class Drinks extends Component {
             )
         }
 
-        if(userEquipment.length) {
+        if (userEquipment.length) {
             userEquipment.sort((a, b) => (a.equipment.name > b.equipment.name) ? 1 : -1)
-            userEquipment.forEach(el => 
+            userEquipment.forEach(el =>
                 equipmentList.push(
                     <Col key={el.equipment.id} sm={2}>
                         <Card className={style.card}>
-                        <Image src={`data:image/png;base64,${el.file}`} fluid />
+                            <Image src={`data:image/png;base64,${el.file}`} fluid />
                             <div className={style.cardContentDiv}>
                                 <h5>{el.equipment.name[0].toUpperCase() + el.equipment.name.slice(1)}</h5>
                             </div>
                             <Button variant="dark" onClick={() => this.handleDeleteEquipmentShow(el.equipment.id)}>
                                 <div className={style.barButtonsDiv}>
-                                    <FaTrashAlt/>
+                                    <FaTrashAlt />
                                     <span className={style.buttonText}>Delete</span>
                                 </div>
                             </Button>
@@ -1068,34 +1071,34 @@ class Drinks extends Component {
             )
         }
 
-        if(!drinksList.length) {
+        if (!drinksList.length) {
             empty = (
                 <div className={style.emptyDiv}>
-                    <Empty/>
+                    <Empty />
                     <h5>No Data</h5>
                 </div>
             )
         }
 
-        if(!ingredientsList.length) {
+        if (!ingredientsList.length) {
             ingredientsEmpty = (
                 <div className={style.emptyDiv}>
-                    <Empty/>
+                    <Empty />
                     <h5>No Data</h5>
                 </div>
             )
         }
 
-        if(!equipmentList.length) {
+        if (!equipmentList.length) {
             equipmentEmpty = (
                 <div className={style.emptyDiv}>
-                    <Empty/>
+                    <Empty />
                     <h5>No Data</h5>
                 </div>
             )
         }
 
-        if(!isLoaded) {
+        if (!isLoaded) {
             return (
                 <Fragment>
                     <Row className={style.titleContainer}>
@@ -1103,7 +1106,7 @@ class Drinks extends Component {
                             <h3>Drinks</h3>
                         </div>
                     </Row>
-                        <Load/>
+                    <Load />
                 </Fragment>
             )
         }
@@ -1111,211 +1114,228 @@ class Drinks extends Component {
             return (
                 <Fragment>
                     <Row className={style.titleContainer}>
-                            <div className={style.titleDiv}>
-                                <h3>Drinks</h3>
-                            </div>
-                        </Row>
-        
-                        <Row className={style.contentContainer}>
-                            <div className={style.contentDiv}>
-                                <div>
-                                    <h4>Your Drinks</h4>
-                                </div>
-        
-                                <div>
-                                    <Button variant="primary" onClick={this.handleShow}>
-                                        Add Drinks
-                                    </Button>
-        
-                                    <Modal show={show} onHide={this.handleClose} centered dialogClassName={style.modal}>
-                                        <Modal.Header>
-                                            <Modal.Title>Add Drink</Modal.Title>
-                                        </Modal.Header>
-        
-                                        <Modal.Body>
-                                            <Form onSubmit={this.handleSubmit}>
-                                                <Form.Group controlId="name">
-                                                    <Form.Label>Name</Form.Label>
-        
-                                                    <Form.Control 
-                                                        required
-                                                        type="name" 
-                                                        placeholder="Enter name" 
-                                                    />
-        
-                                                </Form.Group>
-        
-                                                <Form.Group controlId="description">
-                                                    <Form.Label>Description</Form.Label>
-                                                    <Form.Control 
-                                                        required
-                                                        as="textarea"
-                                                        placeholder="Enter description" 
-                                                    />
-                                                </Form.Group>
-        
-                                                <Form.Group controlId="image">
-                                                    <Form.Label>Image</Form.Label>
-                                                    <Form.Control 
-                                                        required
-                                                        type="file"
-                                                    />
-                                                </Form.Group>
-    
-                                                {this.state.steps}
-    
-                                                <Button onClick={this.addStep}>
-                                                    Add Step
+                        <div className={style.titleDiv}>
+                            <h3>Drinks</h3>
+                        </div>
+                    </Row>
+
+                    <Container className="my-4">
+                        <Tabs defaultActiveKey="drinks" className={style.navTabs} id="drinks-tabs">
+                            <Tab eventKey="drinks" title="Drinks">
+                                <Container>
+                                    <Row className={style.contentContainer}>
+                                        <div className={style.contentDiv}>
+                                            <div>
+                                                <h4>Your Drinks</h4>
+                                            </div>
+                                            <div>
+                                                <Button variant="primary" onClick={this.handleShow}>
+                                                    Add Drinks
+                                            </Button>
+                                                <Modal show={show} onHide={this.handleClose} centered dialogClassName={style.modal}>
+                                                    <Modal.Header>
+                                                        <Modal.Title>Add Drink</Modal.Title>
+                                                    </Modal.Header>
+
+                                                    <Modal.Body>
+                                                        <Form onSubmit={this.handleSubmit}>
+                                                            <Form.Group controlId="name">
+                                                                <Form.Label>Name</Form.Label>
+
+                                                                <Form.Control
+                                                                    required
+                                                                    type="name"
+                                                                    placeholder="Enter name"
+                                                                />
+
+                                                            </Form.Group>
+
+                                                            <Form.Group controlId="description">
+                                                                <Form.Label>Description</Form.Label>
+                                                                <Form.Control
+                                                                    required
+                                                                    as="textarea"
+                                                                    placeholder="Enter description"
+                                                                />
+                                                            </Form.Group>
+
+                                                            <Form.Group controlId="image">
+                                                                <Form.Label>Image</Form.Label>
+                                                                <Form.Control
+                                                                    required
+                                                                    type="file"
+                                                                />
+                                                            </Form.Group>
+
+                                                            {this.state.steps}
+
+                                                            <Button onClick={this.addStep}>
+                                                                Add Step
                                                 </Button>
 
-                                                <Button onClick={this.deleteStep}>
-                                                    Delete Step
+                                                            <Button onClick={this.deleteStep}>
+                                                                Delete Step
                                                 </Button>
-        
-                                                <Modal.Footer>
-                                                    <Button variant="secondary" onClick={this.handleClose}>
-                                                        Close
-                                                    </Button>
-        
-                                                    <Button variant="primary" type="submit">
-                                                        Add Drink
-                                                    </Button>
-                                                </Modal.Footer>
-                                            </Form>
-                                        </Modal.Body>
-                                    </Modal>
-                                </div>
-                                {empty}
-                                <div className={style.drinksList}>
-                                    {drinksList}
-                                </div>
-                            </div>
-                        </Row>
 
-                        <Row className={style.contentContainer}>
-                            <div className={style.contentDiv}>
-                                <div>
-                                    <h4>Your Ingredients</h4>
-                                </div>
-        
-                                <div>
-                                    <Button variant="primary" onClick={this.handleShowIngredient}>
-                                        Add Ingredient
+                                                            <Modal.Footer>
+                                                                <Button variant="secondary" onClick={this.handleClose}>
+                                                                    Close
+                                                    </Button>
+
+                                                                <Button variant="primary" type="submit">
+                                                                    Add Drink
+                                                    </Button>
+                                                            </Modal.Footer>
+                                                        </Form>
+                                                    </Modal.Body>
+                                                </Modal>
+                                            </div>
+                                            {empty}
+                                            <div className={style.drinksList}>
+                                                {drinksList}
+                                            </div>
+                                        </div>
+                                    </Row>
+                                </Container>
+                            </Tab>
+
+
+                            <Tab eventKey="ingredients" title="Ingredients">
+                                <Container>
+                                    <Row className={style.contentContainer}>
+                                        <div className={style.contentDiv}>
+                                            <div>
+                                                <h4>Your Ingredients</h4>
+                                            </div>
+
+                                            <div>
+                                                <Button variant="primary" onClick={this.handleShowIngredient}>
+                                                    Add Ingredient
                                     </Button>
-        
-                                    <Modal show={showIngredient} onHide={this.handleCloseIngredient} centered>
-                                        <Modal.Header>
-                                            <Modal.Title>Add Ingredient</Modal.Title>
-                                        </Modal.Header>
-        
-                                        <Modal.Body>
-                                            <Form onSubmit={this.handleSubmitIngredient}>
-                                                <Form.Group controlId="name">
-                                                    <Form.Label>Name</Form.Label>
-        
-                                                    <Form.Control 
-                                                        required
-                                                        type="name" 
-                                                        placeholder="Enter name" 
-                                                    />
-        
-                                                </Form.Group>
-        
-                                                <Form.Group controlId="image">
-                                                    <Form.Label>Image</Form.Label>
-                                                    <Form.Control 
-                                                        required
-                                                        type="file"
-                                                    />
-                                                </Form.Group>
 
-                                                <Form.Group controlId="type">
-                                                    <Form.Check id="true" type="radio" onChange={this.handleChange} name="type" label="Public" inline checked/>
-                                                    <Form.Check id="false" type="radio" name="type" onChange={this.handleChange} label="Private" inline />
-                                                </Form.Group>
-        
-                                                <Modal.Footer>
-                                                    <Button variant="secondary" onClick={this.handleCloseIngredient}>
-                                                        Close
-                                                    </Button>
-        
-                                                    <Button variant="primary" type="submit">
-                                                        Add Ingredient
-                                                    </Button>
-                                                </Modal.Footer>
-                                            </Form>
-                                        </Modal.Body>
-                                    </Modal>
-                                </div>
-                                {ingredientsEmpty}
-                                <Row className={style.ingredientsList}>
-                                    {ingredientsList}
-                                </Row>
-                                
-                            </div>
-                        </Row>
+                                                <Modal show={showIngredient} onHide={this.handleCloseIngredient} centered>
+                                                    <Modal.Header>
+                                                        <Modal.Title>Add Ingredient</Modal.Title>
+                                                    </Modal.Header>
 
-                        <Row className={style.contentContainer}>
-                            <div className={style.contentDiv}>
-                                <div>
-                                    <h4>Your Equipment</h4>
-                                </div>
-        
-                                <div>
-                                    <Button variant="primary" onClick={this.handleShowEquipment}>
-                                        Add Equipment
+                                                    <Modal.Body>
+                                                        <Form onSubmit={this.handleSubmitIngredient}>
+                                                            <Form.Group controlId="name">
+                                                                <Form.Label>Name</Form.Label>
+
+                                                                <Form.Control
+                                                                    required
+                                                                    type="name"
+                                                                    placeholder="Enter name"
+                                                                />
+
+                                                            </Form.Group>
+
+                                                            <Form.Group controlId="image">
+                                                                <Form.Label>Image</Form.Label>
+                                                                <Form.Control
+                                                                    required
+                                                                    type="file"
+                                                                />
+                                                            </Form.Group>
+
+                                                            <Form.Group controlId="type">
+                                                                <Form.Check id="true" type="radio" onChange={this.handleChange} name="type" label="Public" inline checked />
+                                                                <Form.Check id="false" type="radio" name="type" onChange={this.handleChange} label="Private" inline />
+                                                            </Form.Group>
+
+                                                            <Modal.Footer>
+                                                                <Button variant="secondary" onClick={this.handleCloseIngredient}>
+                                                                    Close
+                                                    </Button>
+
+                                                                <Button variant="primary" type="submit">
+                                                                    Add Ingredient
+                                                    </Button>
+                                                            </Modal.Footer>
+                                                        </Form>
+                                                    </Modal.Body>
+                                                </Modal>
+                                            </div>
+                                            {ingredientsEmpty}
+                                            <Row className={style.ingredientsList}>
+                                                {ingredientsList}
+                                            </Row>
+
+                                        </div>
+                                    </Row>
+                                </Container>
+                            </Tab>
+
+                            <Tab eventKey="equipment" title="Equipment">
+                                <Container>
+                                    <Row className={style.contentContainer}>
+                                        <div className={style.contentDiv}>
+                                            <div>
+                                                <h4>Your Equipment</h4>
+                                            </div>
+
+                                            <div>
+                                                <Button variant="primary" onClick={this.handleShowEquipment}>
+                                                    Add Equipment
                                     </Button>
-        
-                                    <Modal show={showEquipment} onHide={this.handleCloseEquipment} centered>
-                                        <Modal.Header>
-                                            <Modal.Title>Add Equipment</Modal.Title>
-                                        </Modal.Header>
-        
-                                        <Modal.Body>
-                                            <Form onSubmit={this.handleSubmitEquipment}>
-                                                <Form.Group controlId="name">
-                                                    <Form.Label>Name</Form.Label>
-        
-                                                    <Form.Control 
-                                                        required
-                                                        type="name" 
-                                                        placeholder="Enter name" 
-                                                    />
-        
-                                                </Form.Group>
-        
-                                                <Form.Group controlId="image">
-                                                    <Form.Label>Image</Form.Label>
-                                                    <Form.Control 
-                                                        required
-                                                        type="file"
-                                                    />
-                                                </Form.Group>
 
-                                                <Form.Group controlId="type">
-                                                    <Form.Check id="true" type="radio" onChange={this.handleChange} name="type" label="Public" inline checked/>
-                                                    <Form.Check id="false" type="radio" name="type" onChange={this.handleChange} label="Private" inline />
-                                                </Form.Group>
-        
-                                                <Modal.Footer>
-                                                    <Button variant="secondary" onClick={this.handleCloseEquipment}>
-                                                        Close
+                                                <Modal show={showEquipment} onHide={this.handleCloseEquipment} centered>
+                                                    <Modal.Header>
+                                                        <Modal.Title>Add Equipment</Modal.Title>
+                                                    </Modal.Header>
+
+                                                    <Modal.Body>
+                                                        <Form onSubmit={this.handleSubmitEquipment}>
+                                                            <Form.Group controlId="name">
+                                                                <Form.Label>Name</Form.Label>
+
+                                                                <Form.Control
+                                                                    required
+                                                                    type="name"
+                                                                    placeholder="Enter name"
+                                                                />
+
+                                                            </Form.Group>
+
+                                                            <Form.Group controlId="image">
+                                                                <Form.Label>Image</Form.Label>
+                                                                <Form.Control
+                                                                    required
+                                                                    type="file"
+                                                                />
+                                                            </Form.Group>
+
+                                                            <Form.Group controlId="type">
+                                                                <Form.Check id="true" type="radio" onChange={this.handleChange} name="type" label="Public" inline checked />
+                                                                <Form.Check id="false" type="radio" name="type" onChange={this.handleChange} label="Private" inline />
+                                                            </Form.Group>
+
+                                                            <Modal.Footer>
+                                                                <Button variant="secondary" onClick={this.handleCloseEquipment}>
+                                                                    Close
                                                     </Button>
-        
-                                                    <Button variant="primary" type="submit">
-                                                        Add Equipment
+
+                                                                <Button variant="primary" type="submit">
+                                                                    Add Equipment
                                                     </Button>
-                                                </Modal.Footer>
-                                            </Form>
-                                        </Modal.Body>
-                                    </Modal>
-                                </div>
-                                {equipmentEmpty}
-                                <Row className={style.equipmentList}>
-                                    {equipmentList}
-                                </Row>
-                            </div>
-                        </Row>
+                                                            </Modal.Footer>
+                                                        </Form>
+                                                    </Modal.Body>
+                                                </Modal>
+                                            </div>
+                                            {equipmentEmpty}
+                                            <Row className={style.equipmentList}>
+                                                {equipmentList}
+                                            </Row>
+                                        </div>
+                                    </Row>
+                                </Container>
+                            </Tab>
+
+                        </Tabs>
+                    </Container>
+
                 </Fragment>
             );
         }
