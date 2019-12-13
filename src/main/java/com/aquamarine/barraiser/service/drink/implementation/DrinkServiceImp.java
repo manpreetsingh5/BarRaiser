@@ -163,7 +163,7 @@ public class DrinkServiceImp implements DrinkService {
         Set<Map<String, Object>> res = new HashSet<>();
 
         for (Drink drink: drinks){
-            if (drink.isPublic() || drink.getCreatedBy().equals(SecurityContextHolder.getContext().getAuthentication().getName())){
+            if (drink.isPublic()){
                 res.add(findDrinkById(drink.getId()));
             }
         }

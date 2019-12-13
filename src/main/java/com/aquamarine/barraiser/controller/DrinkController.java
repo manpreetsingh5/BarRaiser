@@ -51,7 +51,7 @@ public class DrinkController {
         return new ResponseEntity<>("Drink not deleted successfully", HttpStatus.BAD_REQUEST);
     }
 
-    // Will only return all public drinks and drinks user owns
+    // Will only return all public drinks only (modified 12/13)
     @RequestMapping(value = "/viewAll", method = RequestMethod.GET)
     @PreAuthorize("hasAuthority('BARTENDER')")
     public @ResponseBody Set<Map<String, Object>> viewAllDrinks() throws IOException {
