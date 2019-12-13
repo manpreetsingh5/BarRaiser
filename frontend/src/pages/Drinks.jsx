@@ -608,9 +608,9 @@ class Drinks extends Component {
                 console.log(response)
             })
             .then(() => {
-                // this.setState({isLoaded: false});
-                // this.handleClose();
-                // this.updateView();
+                this.setState({isLoaded: false});
+                this.handleClose();
+                this.updateView();
             })
 
         step = 0;
@@ -618,8 +618,132 @@ class Drinks extends Component {
         event.preventDefault();
     }
 
-    handleEditDrink = (event) => {
-        console.log("hello")
+    handleEditDrink = (event, id) => {
+        let token = localStorage.getItem("accessToken");
+        let form = event.target;
+        let file = form.elements.image.files[0];
+        let stepcards = this.state.steps;
+
+        let steps = []
+        stepcards.forEach((el, index) => {
+            if (form[`ingredient${index}`].options[form[`ingredient${index}`].selectedIndex].id == -1
+                && form[`equipment${index}`].options[form[`equipment${index}`].selectedIndex].id == -1) {
+                steps.push({
+                    step_number: index,
+                    description: form[`stepDescription${index}`].value,
+                    action: form[`action${index}`].options[form[`action${index}`].selectedIndex].text,
+                    image_path: "",
+                    equipmentSet: [],
+                })
+            }
+            else if (form[`ingredient${index}`].options[form[`ingredient${index}`].selectedIndex].id == -1
+                && form[`equipment${index}`].options[form[`equipment${index}`].selectedIndex].id != -1) {
+                steps.push({
+                    step_number: index,
+                    description: form[`stepDescription${index}`].value,
+                    action: form[`action${index}`].options[form[`action${index}`].selectedIndex].text,
+                    image_path: "",
+                    equipmentSet: [
+                        {
+                            equipment: {
+                                id: form[`ingredient${index}`].options[form[`ingredient${index}`].selectedIndex].id,
+                                name: form[`ingredient${index}`].options[form[`ingredient${index}`].selectedIndex].text,
+                                image_path: "",
+                                type: "INGREDIENT",
+                            },
+                            quantity: form[`amount${index}`].value,
+                            unit: form[`unit${index}`].options[form[`unit${index}`].selectedIndex].text
+                        },
+                    ],
+                })
+            }
+            else if (form[`ingredient${index}`].options[form[`ingredient${index}`].selectedIndex].id != -1
+                && form[`equipment${index}`].options[form[`equipment${index}`].selectedIndex].id == -1) {
+                steps.push({
+                    step_number: index,
+                    description: form[`stepDescription${index}`].value,
+                    action: form[`action${index}`].options[form[`action${index}`].selectedIndex].text,
+                    image_path: "",
+                    equipmentSet: [
+                        {
+                            equipment: {
+                                id: form[`equipment${index}`].options[form[`equipment${index}`].selectedIndex].id,
+                                name: form[`equipment${index}`].options[form[`equipment${index}`].selectedIndex].text,
+                                image_path: "",
+                                type: "EQUIPMENT",
+                            },
+                            quantity: form[`amount${index}`].value,
+                            unit: form[`unit${index}`].options[form[`unit${index}`].selectedIndex].text
+                        },
+                    ],
+                })
+            }
+            else {
+                steps.push({
+                    step_number: index,
+                    description: form[`stepDescription${index}`].value,
+                    action: form[`action${index}`].options[form[`action${index}`].selectedIndex].text,
+                    image_path: "",
+                    equipmentSet: [
+                        {
+                            equipment: {
+                                id: form[`ingredient${index}`].options[form[`ingredient${index}`].selectedIndex].id,
+                                name: form[`ingredient${index}`].options[form[`ingredient${index}`].selectedIndex].text,
+                                image_path: "",
+                                type: "INGREDIENT",
+                            },
+                            quantity: form[`amount${index}`].value,
+                            unit: form[`unit${index}`].options[form[`unit${index}`].selectedIndex].text
+                        },
+                        {
+                            equipment: {
+                                id: form[`equipment${index}`].options[form[`equipment${index}`].selectedIndex].id,
+                                name: form[`equipment${index}`].options[form[`equipment${index}`].selectedIndex].text,
+                                image_path: "",
+                                type: "EQUIPMENT",
+                            },
+                            quantity: form[`amount${index}`].value,
+                            unit: form[`unit${index}`].options[form[`unit${index}`].selectedIndex].text
+                        }
+                    ],
+                })
+            }
+        })
+
+        const drink = {
+            id: form.id.value,
+            name: form.name.value,
+            description: form.description.value,
+            steps: steps,
+        }
+
+        const blob = new Blob([JSON.stringify(drink)], {
+            type: 'application/json'
+        });
+
+        let data = new FormData();
+        data.append('file', file);
+        data.append('drink', blob);
+
+        fetch('api/drink/editDrink', {
+            method: 'POST',
+            body: data,
+            headers: {
+                'Authorization': 'Bearer ' + token,
+            }
+        })
+            .then(response => {
+                console.log(response)
+            })
+            .then(() => {
+                this.setState({isLoaded: false});
+                this.handleEditDrinkClose();
+                this.updateView();
+            })
+
+        step = 0;
+
+        event.preventDefault();
     }
 
     handleDeleteDrink = (id) => {
@@ -640,9 +764,9 @@ class Drinks extends Component {
             })
     }
 
-    handleShow = () => { this.setState({ show: true }) }
+    handleShow = () => { this.setState({ show: true, steps: [] }) }
 
-    handleClose = () => { this.setState({ show: false }) }
+    handleClose = () => { this.setState({ show: false, steps: [] }) }
 
     handleEditDrinkShow = (id, drink) => {
         let steps = drink.steps;
@@ -917,6 +1041,12 @@ class Drinks extends Component {
 
                                 <Modal.Body>
                                     <Form onSubmit={this.handleEditDrink}>
+                                        <Form.Group controlId="id" className={style.hide}>
+                                            <Form.Control 
+                                                defaultValue={el.drink.id}
+                                            />
+                                        </Form.Group>
+
                                         <Form.Group controlId="name">
                                             <Form.Label>Name</Form.Label>
 
@@ -963,7 +1093,7 @@ class Drinks extends Component {
                                             </Button>
 
                                             <Button variant="primary" type="submit">
-                                                Add Drink
+                                                Edit Drink
                                             </Button>
                                         </Modal.Footer>
                                     </Form>
