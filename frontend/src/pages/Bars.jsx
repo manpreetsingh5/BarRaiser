@@ -223,6 +223,18 @@ class Bars extends Component {
         });
     }
 
+    handleViewDrinksShow = (id) => {
+        this.setState({
+            bars: this.state.bars.map(el => (el.cohort.id === id ? {...el, showViewDrinks: true} : el))
+        });
+    }
+
+    handleViewDrinksClose = (id) => {
+        this.setState({
+            bars: this.state.bars.map(el => (el.cohort.id === id ? {...el, showViewDrinks: false} : el))
+        });
+    }
+
     handleViewTraineesShow = (id, bar) => {
         let token = localStorage.getItem("accessToken");
         fetch(`api/cohort/getTraineesInCohort?cohort_id=${id}`, {

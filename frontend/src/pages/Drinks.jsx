@@ -618,11 +618,13 @@ class Drinks extends Component {
         event.preventDefault();
     }
 
-    handleEditDrink = (event, id) => {
+    handleEditDrink = (event) => {
         let token = localStorage.getItem("accessToken");
         let form = event.target;
         let file = form.elements.image.files[0];
         let stepcards = this.state.steps;
+
+        console.log(form.id.value)
 
         let steps = []
         stepcards.forEach((el, index) => {
@@ -725,23 +727,25 @@ class Drinks extends Component {
         data.append('file', file);
         data.append('drink', blob);
 
-        fetch('api/drink/editDrink', {
-            method: 'POST',
-            body: data,
-            headers: {
-                'Authorization': 'Bearer ' + token,
-            }
-        })
-            .then(response => {
-                console.log(response)
-            })
-            .then(() => {
-                this.setState({isLoaded: false});
-                this.handleEditDrinkClose();
-                this.updateView();
-            })
+        console.log(drink)
 
-        step = 0;
+        // fetch('api/drink/editDrink', {
+        //     method: 'POST',
+        //     body: data,
+        //     headers: {
+        //         'Authorization': 'Bearer ' + token,
+        //     }
+        // })
+        //     .then(response => {
+        //         console.log(response)
+        //     })
+        //     .then(() => {
+        //         this.setState({isLoaded: false});
+        //         this.handleEditDrinkClose();
+        //         this.updateView();
+        //     })
+
+        // step = 0;
 
         event.preventDefault();
     }
