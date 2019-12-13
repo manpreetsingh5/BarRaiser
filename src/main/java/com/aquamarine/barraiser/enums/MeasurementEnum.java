@@ -5,5 +5,12 @@ public enum MeasurementEnum {
     FLUID_OUNCES,
     MILLILITER,
     MILLIGRAMS,
-    GRAMS
+    GRAMS,
+    PART,
+    DASH,
+    TEASPOON,
+    TABLESPOON,
+    CUP,
+    PINT,
+
 }
