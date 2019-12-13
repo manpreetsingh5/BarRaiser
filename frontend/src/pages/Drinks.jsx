@@ -540,6 +540,14 @@ class Drinks extends Component {
         let form = event.target;
         let file = form.elements.image.files[0];
         let stepcards = this.state.steps;
+        let typeval;
+
+        if (form.elements.type[0].checked === true) {
+            typeval = true
+        }
+        else {
+            typeval = false
+        }
 
         let steps = []
         stepcards.forEach((el, index) => {
@@ -630,6 +638,7 @@ class Drinks extends Component {
         const drink = {
             name: form.name.value,
             description: form.description.value,
+            isPublic: typeval,
             steps: steps,
         }
 
@@ -850,13 +859,13 @@ class Drinks extends Component {
 
     handleViewDrinkClose = (id) => {
         this.setState({
-            drinks: this.state.drinks.map(el => (el.drink.id === id ? { ...el, showView: false } : el))
+            public_drinks: this.state.public_drinks.map(el => (el.drink.id === id ? { ...el, showView: false } : el))
         });
     }
 
     handleViewDrinkShow = (id) => {
         this.setState({
-            drinks: this.state.drinks.map(el => (el.drink.id === id ? { ...el, showView: true } : el))
+            public_drinks: this.state.public_drinks.map(el => (el.drink.id === id ? { ...el, showView: true } : el))
         });
     }
 
@@ -1070,6 +1079,13 @@ class Drinks extends Component {
         console.log("lol")
     }
 
+    showDrinkSteps = (steps) => {
+        let steps_display = [];
+
+        steps.forEach(element => steps_display.push(<li>{element.description}</li>) );
+        return steps_display;
+    }
+
     handleChange = () => { }
 
     render() {
@@ -1092,7 +1108,7 @@ class Drinks extends Component {
         let games = this.state.games
 
         if (public_drinks.length){
-            public_drinks.sort((a, b) => (a.public_drink.name > b.public_drink.name) ? 1 : -1);
+            public_drinks.sort((a, b) => (a.drink.name > b.drink.name) ? 1 : -1);
             public_drinks.forEach(el =>{
                 console.log(el);
                 publicDrinksList.push(
@@ -1109,6 +1125,18 @@ class Drinks extends Component {
                                     <span className={style.buttonText}>View</span>
                                 </div>
                             </Button>
+
+                            <Modal show={el.showView} onHide={() => this.handleViewDrinkClose(el.drink.id)} centered>
+                                <Modal.Body>
+                                    <p><strong>Name: </strong>{el.drink.name}</p>
+                                    <p><strong>Author: </strong>{el.drink.createdBy}</p>
+                                    <p><strong>Description: </strong>{el.drink.description}</p>
+                                    <p><strong>Steps:</strong></p>
+                                    <ol>
+                                        {this.showDrinkSteps(el.drink.steps)}
+                                    </ol>
+                                </Modal.Body>
+                            </Modal>
 
                         </Card>
                     </Col>
@@ -1414,6 +1442,11 @@ class Drinks extends Component {
                                                                     required
                                                                     type="file"
                                                                 />
+                                                            </Form.Group>
+
+                                                            <Form.Group controlId="type">
+                                                                <Form.Check id="true" type="radio" onChange={this.handleChange} name="type" label="Public" inline checked />
+                                                                <Form.Check id="false" type="radio" name="type" onChange={this.handleChange} label="Private" inline />
                                                             </Form.Group>
 
                                                             {this.state.steps}

@@ -12,6 +12,7 @@ import Card from 'react-bootstrap/Card';
 import Image from 'react-bootstrap/Image';
 import Table from 'react-bootstrap/Table';
 
+import { FaWineBottle } from 'react-icons/fa';
 
 class Drinks extends Component {
     constructor(props) {
@@ -110,18 +111,30 @@ class Drinks extends Component {
         let drinksList = []
         let isLoaded = this.state.isLoaded
         let drinks = this.state.drinks;
+        console.log(drinks)
 
-        drinks.forEach((el, index) => {
-            drinksList.push(
-                <Col key={el[0].drink.id} sm={3}>
-                    <Card className={style.card}>
-                        <Image src={`data:image/png;base64,${el[0].file}`} fluid />
-                        <div className={style.cardContentDiv}>
-                            <h5>{el[0].drink.name[0].toUpperCase() + el[0].drink.name.slice(1)}</h5>
-                        </div>
-                    </Card>
-                </Col>
-            )
+        drinks.forEach((el) => {
+            el.forEach((drink) => {
+                drinksList.push(
+                    <Col key={drink.drink.id} sm={3}>
+                        <Card className={style.card}>
+                            <Image src={`data:image/png;base64,${drink.file}`} fluid />
+                            <div className={style.cardContentDiv}>
+                                <h5>{drink.drink.name[0].toUpperCase() + drink.drink.name.slice(1)}</h5>
+                                <p>{el.bar.cohort.name}</p>
+                            </div>
+    
+                            <Button variant="dark" onClick={() => this.props.play(drink.drink.id, drink.drink)} className={style.editDrink}>
+                                <div className={style.barButtonsDiv}>
+                                    <FaWineBottle />
+                                    <span className={style.buttonText}>Start</span>
+                                </div>
+                            </Button>
+                        </Card>
+                    </Col>
+                )
+            }) 
+            
         })
 
         if(!drinksList.length) {
