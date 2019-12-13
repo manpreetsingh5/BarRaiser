@@ -18,6 +18,7 @@ public interface EquipmentService {
     Set<Map<String, Object>> viewIngredientsByUser(String email) throws IOException;
     Set<Map<String, Object>> viewAllEquipment() throws IOException;
     Set<Map<String, Object>> viewAllIngredients() throws IOException;
+    byte[] getEquipmentPicture(String image_path) throws IOException;
 
 }
 

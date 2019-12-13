@@ -4,7 +4,9 @@ import com.aquamarine.barraiser.dto.model.EquipmentDTO;
 import com.aquamarine.barraiser.enums.MeasurementEnum;
 import com.aquamarine.barraiser.service.equipment.interfaces.EquipmentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -54,15 +56,24 @@ public class EquipmentController {
 
     @RequestMapping(value = "/viewAllEquipment", method = RequestMethod.GET)
     @PreAuthorize("hasAuthority('BARTENDER')")
-    public @ResponseBody Set<Map<String, Object>> viewAllEquipment() throws IOException {
-        return equipmentService.viewAllEquipment();
+    public @ResponseBody ResponseEntity<?> viewAllEquipment() throws IOException {
+        try {
+            return new ResponseEntity<>(equipmentService.viewAllEquipment(), HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>("Error viewing all equipment.", HttpStatus.BAD_REQUEST);
+        }
     }
 
     @RequestMapping(value = "/viewAllIngredients", method = RequestMethod.GET)
     @PreAuthorize("hasAuthority('BARTENDER')")
-    public @ResponseBody Set<Map<String, Object>> viewAllIngredients() throws IOException {
-        System.out.println(SecurityContextHolder.getContext().getAuthentication().getName());
-        return equipmentService.viewAllIngredients();
+    public @ResponseBody ResponseEntity<?> viewAllIngredients() throws IOException {
+        try {
+            return new ResponseEntity<>(equipmentService.viewAllIngredients(), HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>("Error viewing all ingredients.", HttpStatus.BAD_REQUEST);
+        }
     }
 
     @RequestMapping(value = "/viewUserEquipment", method = RequestMethod.GET)
@@ -88,8 +99,24 @@ public class EquipmentController {
 
     @RequestMapping(value = "/viewUnits", method = RequestMethod.GET)
     @PreAuthorize("hasAuthority('BARTENDER')")
-    public @ResponseBody MeasurementEnum[] getUnits() {
-        return MeasurementEnum.values();
+    public @ResponseBody ResponseEntity<MeasurementEnum[]> getUnits() {
+        return new ResponseEntity<>( MeasurementEnum.values(), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/viewPicture", method = RequestMethod.GET)
+    @PreAuthorize("hasAnyAuthority('BARTENDER', 'TRAINEE')")
+    public @ResponseBody ResponseEntity<?> getEquipmentPicture(@RequestParam String image_path) throws IOException {
+        try {
+            byte[] imageBytes = equipmentService.getEquipmentPicture(image_path);
+            HttpHeaders httpHeaders = new HttpHeaders();
+            httpHeaders.setContentType(MediaType.IMAGE_PNG);
+            httpHeaders.setContentLength(imageBytes.length);
+
+            return new ResponseEntity<>(equipmentService.getEquipmentPicture(image_path), httpHeaders, HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>("Error viewing equipment image.", HttpStatus.BAD_REQUEST);
+        }
     }
 
 }

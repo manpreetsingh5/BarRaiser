@@ -20,7 +20,7 @@ public class Progress {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToMany(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     @JoinTable(name = "progress_to_cohorts",
             joinColumns = @JoinColumn(name = "progress_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "cohort_id", referencedColumnName = "id"))
@@ -39,5 +39,5 @@ public class Progress {
     private Set<User> users = new HashSet<>();
 
     @Column(nullable = false)
-    private int status;
+    private boolean status;
 }

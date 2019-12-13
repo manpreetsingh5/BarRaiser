@@ -4,6 +4,7 @@ import com.aquamarine.barraiser.dto.mapper.EquipmentDTOMapper;
 import com.aquamarine.barraiser.dto.model.EquipmentDTO;
 import com.aquamarine.barraiser.enums.EquipmentEnum;
 import com.aquamarine.barraiser.enums.MeasurementEnum;
+import com.aquamarine.barraiser.model.Cohort;
 import com.aquamarine.barraiser.model.Equipment;
 import com.aquamarine.barraiser.model.User;
 import com.aquamarine.barraiser.repository.EquipmentRepository;
@@ -13,6 +14,10 @@ import com.aquamarine.barraiser.service.equipment.interfaces.EquipmentService;
 import com.aquamarine.barraiser.service.images.interfaces.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -188,6 +193,17 @@ public class EquipmentServiceImpl implements EquipmentService {
         return res;
     }
 
+    @Override
+    public byte[] getEquipmentPicture(String image_path) throws IOException {
+        InputStream in = imageService.downloadFileFromS3bucket(image_path).getObjectContent();
+        BufferedImage imageFromAWS = ImageIO.read(in);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(imageFromAWS, "png", baos );
+        byte[] imageBytes = baos.toByteArray();
+        in.close();
+
+        return imageBytes;
+    }
 
 
 
