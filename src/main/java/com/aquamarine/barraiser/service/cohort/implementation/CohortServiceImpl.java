@@ -53,7 +53,7 @@ public class CohortServiceImpl implements CohortService {
 
 
     @Override
-    public int createCohort(CohortDTO cohortdto, MultipartFile multipartFile) throws IOException {
+    public boolean createCohort(CohortDTO cohortdto, MultipartFile multipartFile) throws IOException {
         String fileName = cohortdto.getName();
         File file = imageService.convertMultiPartToFile(multipartFile, fileName);
         imageService.uploadFileToS3bucket(sub_folder+fileName, file);
@@ -65,40 +65,23 @@ public class CohortServiceImpl implements CohortService {
                 .setImage_path(sub_folder+fileName);
 
 
-        cohortRepository.save(cohort);
+        return cohort == cohortRepository.save(cohort);
 
-        return cohort.getId();
     }
 
     @Override
-    public void deleteCohort(int cohort_id) {
+    public boolean deleteCohort(int cohort_id) {
         if (cohortRepository.findById(cohort_id).isPresent()) {
             Cohort cohort = cohortRepository.findById(cohort_id).get();
             imageService.deleteFileFromS3bucket(cohort.getImage_path());
             cohortRepository.delete(cohort);
+            return true;
         }
+        return false;
     }
 
     @Override
-    public ResponseEntity<byte[]> getCohortPicture(int cohort_id) throws IOException {
-        Cohort cohort = cohortRepository.findById(cohort_id).get();
-        InputStream in = imageService.downloadFileFromS3bucket(cohort.getImage_path()).getObjectContent();
-        BufferedImage imageFromAWS = ImageIO.read(in);
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ImageIO.write(imageFromAWS, "png", baos );
-        byte[] imageBytes = baos.toByteArray();
-        in.close();
-
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.IMAGE_PNG);
-        httpHeaders.setContentLength(imageBytes.length);
-        httpHeaders.setContentDispositionFormData("attachment", cohort.getDescription());
-
-        return new ResponseEntity<>(imageBytes, httpHeaders, HttpStatus.OK);
-    }
-
-    @Override
-    public void editCohort(CohortDTO cohortDTO, MultipartFile multipartFile) throws IOException {
+    public boolean editCohort(CohortDTO cohortDTO, MultipartFile multipartFile) throws IOException {
         int cohort_id = cohortDTO.getId();
         System.out.println("Here" + cohort_id);
         if (cohortRepository.findById(cohort_id).isPresent()) {
@@ -115,12 +98,13 @@ public class CohortServiceImpl implements CohortService {
             filePath = cohort.getImage_path();
             imageService.uploadFileToS3bucket(filePath, file);
 
-            cohortRepository.save(cohort);
+            return cohort == cohortRepository.save(cohort);
         }
+        return false;
     }
 
     @Override
-    public void addUserToCohort(int cohort_id, String traineeEmail) {
+    public boolean addUserToCohort(int cohort_id, String traineeEmail) {
         if (cohortRepository.findById(cohort_id).isPresent()) {
             Cohort cohort = cohortRepository.findById(cohort_id).get();
 
@@ -128,8 +112,9 @@ public class CohortServiceImpl implements CohortService {
             users.add(userRepository.findByEmail(traineeEmail).get());
 
             cohort.setUser(users);
-            cohortRepository.save(cohort);
+            return cohort == cohortRepository.save(cohort);
         }
+        return false;
     }
 
     @Override
@@ -148,7 +133,7 @@ public class CohortServiceImpl implements CohortService {
     }
 
     @Override
-    public UserDTO deleteStudentFromCohort(int cohort_id, int user_id) {
+    public boolean deleteStudentFromCohort(int cohort_id, int user_id) {
         if (cohortRepository.findById(cohort_id).isPresent()) {
             Cohort cohort = cohortRepository.findById(cohort_id).get();
 
@@ -158,16 +143,13 @@ public class CohortServiceImpl implements CohortService {
             users.remove(user);
 
             cohort.setUser(users);
-            cohortRepository.save(cohort);
-            return UserDTOMapper.toUserDTO(user);
+            return cohort == cohortRepository.save(cohort);
         }
-        else {
-            return null;
-        }
+        return false;
     }
 
     @Override
-    public void addDrinkToCohort(int cohort_id, int drink_id) {
+    public boolean addDrinkToCohort(int cohort_id, int drink_id) {
         if (cohortRepository.findById(cohort_id).isPresent()) {
             if (drinkRepository.findById(drink_id).isPresent()) {
                 Cohort cohort = cohortRepository.findById(cohort_id).get();
@@ -175,24 +157,24 @@ public class CohortServiceImpl implements CohortService {
                 drinks.add(drinkRepository.findById(drink_id).get());
 
                 cohort.setDrinks(drinks);
-                cohortRepository.save(cohort);
+                return cohort == cohortRepository.save(cohort);
             }
         }
+        return false;
     }
 
     @Override
-    public void deleteDrinkFromCohort(int cohort_id, int drink_id) {
+    public boolean deleteDrinkFromCohort(int cohort_id, int drink_id) {
         if (cohortRepository.findById(cohort_id).isPresent()) {
             if (drinkRepository.findById(drink_id).isPresent()) {
                 Cohort cohort = cohortRepository.findById(cohort_id).get();
                 Set<Drink> drinks = cohort.getDrinks();
-                if (drinks.contains(drinkRepository.findById(drink_id).get())) {
-                    drinks.remove(drinkRepository.findById(drink_id).get());
-                }
+                drinks.remove(drinkRepository.findById(drink_id).get());
                 cohort.setDrinks(drinks);
-                cohortRepository.save(cohort);
+                return cohort == cohortRepository.save(cohort);
             }
         }
+        return false;
     }
 
     @Override
@@ -246,9 +228,4 @@ public class CohortServiceImpl implements CohortService {
         return res;
 
     }
-
-
-
-
-
 }
