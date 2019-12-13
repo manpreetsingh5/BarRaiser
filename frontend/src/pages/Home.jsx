@@ -45,22 +45,22 @@ class Home extends Component {
                                     <p>BarRaiser provides a variety of fun, interactive, simulations to ensure your students learn how to make the best drinks
                                     in town! They include: </p>
                                     <ol>
-                                        <li><em>Pouring liquids:</em> In this simulation, your trainee can simulate pouring the most exquisite whiskys time and time again to perfect
+                                        <li><em><b>Pouring liquids:</b></em> In this simulation, your trainee can simulate pouring the most exquisite whiskys time and time again to perfect
                                             their skills. In this simulation, a bartender <em>must</em> upload an ingredient and an equipment, and BarRaiser will
                                             do the rest.</li>
-                                        <li><em>Pouring solids:</em> Similar to pouring a liquid, your trainee can simulate pouring ingredients such as salt. In this simulation
+                                        <li><em><b>Pouring solids:</b></em> Similar to pouring a liquid, your trainee can simulate pouring ingredients such as salt. In this simulation
                                             the bartender must again upload an ingredient and an equipment for the trainee to simulate.</li>
-                                        <li><em>Shaking:</em> In this simulation, a trainee can simulate shaking a martini, just like James Bond would want! However, the bartender must
+                                        <li><em><b>Shaking:</b></em> In this simulation, a trainee can simulate shaking a martini, just like James Bond would want! However, the bartender must
                                         be sure to upload the equipment so the trainee can simulate shaking.</li>
-                                        <li><em>Straining:</em> In this simulation, a trainee can simulate the proper technique of straining any cocktail they please. The bartender must
+                                        <li><em><b>Straining:</b></em> In this simulation, a trainee can simulate the proper technique of straining any cocktail they please. The bartender must
                                             upload an equipment and an ingredient to strain, and BarRaiser will ensure they become experts! </li>
-                                        <li><em>Fill Ingredient:</em> In this simulation, a trainee can simulate filling their cocktails with the finest ingredients. Once the instructor
+                                        <li><em><b>Fill Ingredient:</b></em> In this simulation, a trainee can simulate filling their cocktails with the finest ingredients. Once the instructor
                                         uploads an ingredient and the appropriate equipment, the trainee can simulate adding an ingredient to the equipment of your choice. </li>
-                                        <li><em>Stirring:</em> In this simulation, a trainee can simulate stirring a cocktail. The instructor must be sure to upload the appropriate
+                                        <li><em><b>Stirring:</b></em> In this simulation, a trainee can simulate stirring a cocktail. The instructor must be sure to upload the appropriate
                                         equipment for this simulation to work. </li>
-                                        <li><em>Rolling:</em> In this simulation, a trainee can simulate rolling. The instructor must be sure to upload the appropriate equipment
+                                        <li><em><b>Rolling:</b></em> In this simulation, a trainee can simulate rolling. The instructor must be sure to upload the appropriate equipment
                                         for this simulation to work.</li>
-                                        <li><em>Matching:</em> In this simulation, a trainee can simulate matching two ingredients or equipments to sharpen their memorization skills.
+                                        <li><em><b>Matching:</b></em> In this simulation, a trainee can simulate matching two ingredients or equipments to sharpen their memorization skills.
                                             The instructor must be sure to upload the appropriate equipment or ingredient for this simulation to work.</li>
                                     </ol>
 
