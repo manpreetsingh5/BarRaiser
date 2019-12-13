@@ -1,7 +1,4 @@
-*{
-    overflow-x: hidden;
-}
-
 body {
     font-family: 'Futura', sans-serif !important;
+    overflow-x: hidden;
 }
