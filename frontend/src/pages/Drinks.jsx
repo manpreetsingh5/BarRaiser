@@ -540,6 +540,14 @@ class Drinks extends Component {
         let form = event.target;
         let file = form.elements.image.files[0];
         let stepcards = this.state.steps;
+        let typeval;
+
+        if (form.elements.type[0].checked === true) {
+            typeval = true
+        }
+        else {
+            typeval = false
+        }
 
         let steps = []
         stepcards.forEach((el, index) => {
@@ -630,6 +638,7 @@ class Drinks extends Component {
         const drink = {
             name: form.name.value,
             description: form.description.value,
+            isPublic: typeval,
             steps: steps,
         }
 
@@ -1092,7 +1101,7 @@ class Drinks extends Component {
         let games = this.state.games
 
         if (public_drinks.length){
-            public_drinks.sort((a, b) => (a.public_drink.name > b.public_drink.name) ? 1 : -1);
+            public_drinks.sort((a, b) => (a.drink.name > b.drink.name) ? 1 : -1);
             public_drinks.forEach(el =>{
                 console.log(el);
                 publicDrinksList.push(
@@ -1414,6 +1423,11 @@ class Drinks extends Component {
                                                                     required
                                                                     type="file"
                                                                 />
+                                                            </Form.Group>
+
+                                                            <Form.Group controlId="type">
+                                                                <Form.Check id="true" type="radio" onChange={this.handleChange} name="type" label="Public" inline checked />
+                                                                <Form.Check id="false" type="radio" name="type" onChange={this.handleChange} label="Private" inline />
                                                             </Form.Group>
 
                                                             {this.state.steps}

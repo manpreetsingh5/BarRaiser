@@ -5,10 +5,10 @@ import React from 'react';
 // import './App.css';
 import { Button, Container, Row, ProgressBar, Col, Modal } from 'react-bootstrap';
 import posed from 'react-pose';
-import spoon_src from './img/spoon.png';
-import strainer_src from './img/strainer.png';
-import circle_src from './img/circle.png';
-import blender_src from './img/blender.png';
+import spoon_src from '../img/spoon.png';
+import strainer_src from '../img/strainer.png';
+import circle_src from '../img/circle.png';
+import blender_src from '../img/blender.png';
 
 const Bottle = posed.img({
   standing: { rotate: '0deg' },
