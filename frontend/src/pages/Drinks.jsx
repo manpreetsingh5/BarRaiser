@@ -18,6 +18,7 @@ import Table from 'react-bootstrap/Table';
 
 import { FaPencilAlt } from 'react-icons/fa';
 import { FaTrashAlt } from 'react-icons/fa';
+import { FaSearch} from 'react-icons/fa';
 
 let step = 0
 
@@ -847,6 +848,18 @@ class Drinks extends Component {
         });
     }
 
+    handleViewDrinkClose = (id) => {
+        this.setState({
+            drinks: this.state.drinks.map(el => (el.drink.id === id ? { ...el, showView: false } : el))
+        });
+    }
+
+    handleViewDrinkShow = (id) => {
+        this.setState({
+            drinks: this.state.drinks.map(el => (el.drink.id === id ? { ...el, showView: true } : el))
+        });
+    }
+
     handleEditDrinkClose = (id) => {
         this.setState({
             drinks: this.state.drinks.map(el => (el.drink.id === id ? { ...el, showEdit: false } : el))
@@ -1064,6 +1077,7 @@ class Drinks extends Component {
         let showIngredient = this.state.showIngredient;
         let showEquipment = this.state.showEquipment;
         let empty = null;
+        let public_empty = null;
         let ingredientsEmpty = null;
         let equipmentEmpty = null;
         let isLoaded = this.state.isLoaded;
@@ -1077,7 +1091,30 @@ class Drinks extends Component {
         let userEquipment = this.state.userEquipment;
         let games = this.state.games
 
-        console.log(public_drinks.length)
+        if (public_drinks.length){
+            public_drinks.sort((a, b) => (a.public_drink.name > b.public_drink.name) ? 1 : -1);
+            public_drinks.forEach(el =>{
+                console.log(el);
+                publicDrinksList.push(
+                    <Col key={el.drink.id} sm={3}>
+                        <Card className={style.card}>
+                            <Image src={`data:image/png;base64,${el.file}`} fluid />
+                            <div className={style.cardContentDiv}>
+                                <h5>{el.drink.name[0].toUpperCase() + el.drink.name.slice(1)}</h5>
+                            </div>
+
+                            <Button variant="dark" onClick={() => this.handleViewDrinkShow(el.drink.id, el.drink)} className={style.editDrink}>
+                                <div className={style.barButtonsDiv}>
+                                    <FaSearch />
+                                    <span className={style.buttonText}>View</span>
+                                </div>
+                            </Button>
+
+                        </Card>
+                    </Col>
+                )}
+            )
+        }
         // make changes here - so its view modal -- looking up steps
 
         if (drinks.length) {
@@ -1265,6 +1302,15 @@ class Drinks extends Component {
             )
         }
 
+        if (!publicDrinksList.length) {
+            public_empty = (
+                <div className={style.emptyDiv}>
+                    <Empty />
+                    <h5>No Data</h5>
+                </div>
+            )
+        }
+
         if (!drinksList.length) {
             empty = (
                 <div className={style.emptyDiv}>
@@ -1319,9 +1365,9 @@ class Drinks extends Component {
                                 <Container>
                                     <Row className={style.contentContainer}>
                                         <div className={style.contentDiv}>
-                                            {empty}
+                                            {public_empty}
                                             <div className={style.drinksList}>
-                                                {drinksList}
+                                                {publicDrinksList}
                                             </div>
                                         </div>
                                     </Row>
