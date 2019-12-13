@@ -377,6 +377,24 @@ class Bars extends Component {
         event.preventDefault();
     }
 
+    handleDeleteTrainee = (cohort_id, user_id) => {
+        let token = localStorage.getItem("accessToken");
+
+        fetch(`api/cohort/deleteTrainee?cohort_id=${cohort_id}&user_id=${user_id}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer '+ token,
+            }
+        })
+        .then(response => {
+            console.log(response)
+            if(response.status === 200){
+                this.setState({isLoaded: false});
+                this.updateView();
+            }
+        })
+    }
+
     handleDelete = (id) => {
         let token = localStorage.getItem("accessToken");
         fetch(`api/cohort/deleteCohort?cohort_id=${id}`, {
@@ -510,10 +528,11 @@ class Bars extends Component {
                                                         <th>First Name</th>
                                                         <th>Last Name</th>
                                                         <th>Email</th>
+                                                        <th>Remove Trainee</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <TraineeList trainees={el.trainees}/>
+                                                        <TraineeList deleteTrainee={this.handleDeleteTrainee} trainees={el.trainees} cohort_id={el.cohort.id}/>
                                                     </tbody>
                                                     </Table>
                                                 </Modal.Body>
