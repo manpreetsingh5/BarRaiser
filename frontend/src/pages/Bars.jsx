@@ -30,7 +30,8 @@ class Bars extends Component {
             show: false,
             bars: [],
             drinks: [],
-            isLoaded: false
+            isLoaded: false,
+            adding_trainee_response: '',
         };
     }
 
@@ -207,7 +208,8 @@ class Bars extends Component {
 
     handleAddTraineeClose = (id) => {
         this.setState({
-            bars: this.state.bars.map(el => (el.cohort.id === id ? {...el, showAddTrainee: false} : el))
+            bars: this.state.bars.map(el => (el.cohort.id === id ? {...el, showAddTrainee: false} : el)),
+            adding_trainee_response: "",
         });
     }
 
@@ -349,6 +351,8 @@ class Bars extends Component {
         let form = event.target;
         let email = form.elements.email.value;
         let id = form.elements.id.value;
+
+        let trainee_response = "";
         console.log(email, id);
         fetch(`api/cohort/addTrainee?cohort_id=${id}&traineeEmail=${email}`, {
             method: 'GET',
@@ -358,9 +362,17 @@ class Bars extends Component {
         })
         .then(response => {
             console.log(response)
+            if(response.status === 200){
+                trainee_response = "Successfully added " + email
+            }else{
+                trainee_response = "Could not add " + email
+            }
         })
         .then(() => {
             this.handleAddTraineeClose(id);
+            this.setState({
+                adding_trainee_response: trainee_response,
+            })
         })
         event.preventDefault();
     }
@@ -536,6 +548,8 @@ class Bars extends Component {
                                                                 placeholder="Enter email" 
                                                             />
                                                         </Form.Group>
+                                                        
+                                                        <p>{this.state.adding_trainee_response}</p>
 
                                                         <Form.Group controlId="id" className={style.hide}>
                                                             <Form.Control 
