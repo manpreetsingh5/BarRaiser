@@ -16,13 +16,15 @@ class StepCards extends Component {
     constructor(props) {
         super(props);
 
+        console.log(this.props.equipmentSet);
+
         this.props.games.sort((a, b) => (a.action.name > b.action.name) ? 1 : -1)
         this.props.ingredients.sort((a, b) => (a.equipment.name > b.equipment.name) ? 1 : -1)
         this.props.equipment.sort((a, b) => (a.equipment.name > b.equipment.name) ? 1 : -1)
         this.props.units.sort((a, b) => (a > b) ? 1 : -1)
 
         if(this.props.action != null && this.props.description != null && this.props.equipmentSet != null) {
-            console.log("hello")
+            // console.log("hello")
             let actions = [];
             this.props.games.forEach((el) => {
                 actions.push(el.action.name);
@@ -172,7 +174,7 @@ class StepCards extends Component {
         let equipmentPic = this.state.equipmentPic;
         let image, ingredientImage, equipmentImage;
         let unitList = []
-        console.log(this.state.selectedUnit)
+        // console.log(this.state.selectedUnit)
 
         if(actionPic) {
             image = (
@@ -238,12 +240,39 @@ class StepCards extends Component {
         })
 
         if(this.props.action != null && this.props.description != null && this.props.equipmentSet != null) {
-            // console.log(this.state.selectedUnit)
+            let ingredientSetId = null;
+            let equipmentSetId = null;
+            this.props.equipmentSet.forEach((el, index) => {
+                if(el.equipment.type === "INGREDIENT") {
+                    ingredientSetId = el.id;
+                }
+                else if(el.equipment.type === "EQUIPMENT") {
+                    equipmentSetId = el.id;
+                }
+            })
 
             return (
                 <Fragment>
                     <Card className={style.card}>
                         <Card.Body>
+                            <Form.Group controlId={`stepId${this.props.id}`} className={style.hide}>
+                                <Form.Control 
+                                    defaultValue={this.props.stepId}
+                                />
+                            </Form.Group>
+
+                            <Form.Group controlId={`ingredientSetId${this.props.id}`} className={style.hide}>
+                                <Form.Control 
+                                    defaultValue={ingredientSetId}
+                                />
+                            </Form.Group>
+
+                            <Form.Group controlId={`equipmentSetId${this.props.id}`} className={style.hide}>
+                                <Form.Control 
+                                    defaultValue={equipmentSetId}
+                                />
+                            </Form.Group>
+
                             <Form.Group controlId={`stepDescription${this.props.id}`}>
                                 <Form.Label>Step Description</Form.Label>
                                 <Form.Control 
