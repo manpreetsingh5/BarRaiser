@@ -1,11 +1,11 @@
 import React, { Fragment, Component } from 'react';
 import style from '../style/Home.module.css';
 
-import Row from 'react-bootstrap/Row'
-import { Container, Card, Col } from 'react-bootstrap';
+import Row from 'react-bootstrap/Row';
+import {Col, Card} from 'react-bootstrap';
 import beer_src from '../img/beer-home.png';
 
-class Home extends Component {
+class TraineeHome extends Component {
     render() {
         return (
             <Fragment>
@@ -27,19 +27,17 @@ class Home extends Component {
                                         </Col>
                                     </Row>
                                     <hr></hr>
-                                    <p>Select <strong>Drinks</strong> to upload your own drink, ingredient, or equipment. </p>
+                                    <p>Select <strong>Drinks</strong> to view drinks. </p>
                                     <ol>
-                                        <li>Upload <em>any</em> ingredient or equipment using <em>any</em> jpg or png.</li>
-                                        <li>Customize your drink's title, description, and display image.</li>
-                                        <li>Select from our fun yet effective training games to help teach your trainees how to properly make your drink!</li>
+                                        <li>View and learn how to make publicly available drinks.</li>
+                                        <li>View and complete your assigned drinks.</li>
+                                        <li>Learn by playing our fun yet effective games!</li>
                                     </ol>
                                     <hr></hr>
-                                    <p>Select <strong>Bars</strong> to create or edit your own bar.</p>
+                                    <p>Select <strong>Bars</strong> to view your bar details.</p>
                                     <ol>
-                                        <li>Customize your bar's title, description, and display image.</li>
-                                        <li>Add trainees directly to your bar using their email address</li>
-                                        <li>Assign your drink to your trainees.</li>
-                                        <li>Keep track of your trainees' drink completion.</li>
+                                        <li>View your bar's title, description, and display image.</li>
+                                        <li>View the owner of your respective bars.</li>
                                     </ol>
                                 </Card.Text>
                             </Card.Body>
@@ -47,8 +45,8 @@ class Home extends Component {
                     </Col>
                 </Row>
             </Fragment>
-                );
-            }
-        }
-        
-        export default Home;
+        );
+    }
+}
+
+export default TraineeHome;

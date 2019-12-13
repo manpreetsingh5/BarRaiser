@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom";
 import Home from './Home';
 import Drinks from './Drinks';
 import Bars from './Bars';
-// import Help from './Help';
+import TraineeHome from'./TraineeHome';
 import Load from './Load';
 import TraineeBars from './TraineeBars';
 import TraineeDrinks from './TraineeDrinks';
@@ -140,8 +140,8 @@ class Dashboard extends Component {
                             </div>
                         </Col>
                         <Col sm={9} className={style.contentCol}>
-                            {pane === "home" && <Home/>}
-                            {/* {pane === "drinks" && <Drinks/>} */}
+                            {pane === "home" && this.state.status === "BARTENDER" && <Home id={this.state.id}/>}
+                            {pane === "home" && this.state.status === "TRAINEE" && <TraineeHome id={this.state.id}/>}
                             {pane === "bars" && this.state.status === "BARTENDER" && <Bars id={this.state.id}/>}
                             {pane === "bars" && this.state.status === "TRAINEE" && <TraineeBars id={this.state.id}/>}
                             {pane === "drinks" && this.state.status === "BARTENDER" && <Drinks id={this.state.id}/>}
