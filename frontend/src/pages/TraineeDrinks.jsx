@@ -86,6 +86,11 @@ class Drinks extends Component {
                     
                 })
             }
+            else {
+                this.setState({
+                    isLoaded: true,
+                })
+            }
         })
     }
 

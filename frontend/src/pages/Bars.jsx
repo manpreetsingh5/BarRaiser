@@ -167,6 +167,7 @@ class Bars extends Component {
                         bar.showAddTrainee = false;
                         bar.showAddDrink = false;
                         bar.showViewTrainees = false;
+                        bar.showViewDrinks = false;
                         processed++;
                         if(processed === bars.length) {
                             this.callback(bars);

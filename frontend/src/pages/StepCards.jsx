@@ -19,13 +19,104 @@ class StepCards extends Component {
         this.props.games.sort((a, b) => (a.action.name > b.action.name) ? 1 : -1)
         this.props.ingredients.sort((a, b) => (a.equipment.name > b.equipment.name) ? 1 : -1)
         this.props.equipment.sort((a, b) => (a.equipment.name > b.equipment.name) ? 1 : -1)
+        this.props.units.sort((a, b) => (a > b) ? 1 : -1)
 
-        this.state = {
-            actionPic: this.props.games[0].file,
-            ingredientPic: null,
-            equipmentPic: null,
-            selectedAction: this.props.games[0].action.name,
-        };
+        if(this.props.action != null && this.props.description != null && this.props.equipmentSet != null) {
+            console.log("hello")
+            let actions = [];
+            this.props.games.forEach((el) => {
+                actions.push(el.action.name);
+            })
+
+            let ingredients = [];
+            this.props.ingredients.forEach((el) => {
+                ingredients.push(el.equipment.name);
+            })
+
+            let equipments = [];
+            this.props.equipment.forEach((el) => {
+                equipments.push(el.equipment.name);
+            })
+
+            let ingredient = null;
+            let equipment = null;
+            this.props.equipmentSet.forEach((el, index) => {
+                if(el.equipment.type === "INGREDIENT") {
+                    ingredient = el;
+                }
+                else if(el.equipment.type === "EQUIPMENT") {
+                    equipment = el;
+                }
+            })
+
+            let actionIndex = actions.indexOf(this.props.action);
+            let action = this.props.games[actionIndex];
+
+            let ingredientIndex = ingredients.indexOf(ingredient.equipment.name);
+            let equipmentIndex = equipments.indexOf(equipment.equipment.name);
+
+            let ingredientFile = this.props.ingredients[ingredientIndex];
+            let equipmentFile = this.props.equipment[equipmentIndex];
+
+            // console.log(ingredient);
+
+            if(ingredient != null && equipment == null) {
+                let unit = ingredient.unit;
+                let unitIndex = this.props.units.indexOf(unit)
+                this.state = {
+                    actionPic: action.file,
+                    ingredientPic: ingredientFile.file,
+                    equipmentPic: null,
+                    selectedAction: actionIndex,
+                    selectedIngredient: ingredientIndex,
+                    selectedEquipment: 0,
+                    selectedUnit: unitIndex,
+                    quantity: ingredient.quantity,
+                };
+            }
+            else if(ingredient == null && equipment != null) {
+                let unit = equipment.unit;
+                let unitIndex = this.props.units.indexOf(unit)
+                // console.log(unitIndex)
+                this.state = {
+                    actionPic: action.file,
+                    ingredientPic: null,
+                    equipmentPic: equipmentFile.file,
+                    selectedAction: actionIndex,
+                    selectedIngredient: 0,
+                    selectedEquipment: equipmentIndex,
+                    selectedUnit: unitIndex,
+                    quantity: equipment.quantity,
+                };
+            }
+            else {
+                let unit = ingredient.unit;
+                let unitIndex = this.props.units.indexOf(unit)
+                // console.log(unitIndex)
+                this.state = {
+                    actionPic: action.file,
+                    ingredientPic: ingredientFile.file,
+                    equipmentPic: equipmentFile.file,
+                    selectedAction: actionIndex,
+                    selectedIngredient: ingredientIndex,
+                    selectedEquipment: equipmentIndex,
+                    selectedUnit: unitIndex,
+                    quantity: ingredient.quantity,
+                };
+            }
+        }
+        else {
+            this.state = {
+                actionPic: this.props.games[0].file,
+                ingredientPic: null,
+                equipmentPic: null,
+                selectedAction: 0,
+                selectedIngredient: 0,
+                selectedEquipment: 0,
+                selectedUnit: 0,
+                quantity: null,
+            };
+        }
     }
 
     handleSelectIngredient = (event) => {
@@ -81,6 +172,7 @@ class StepCards extends Component {
         let equipmentPic = this.state.equipmentPic;
         let image, ingredientImage, equipmentImage;
         let unitList = []
+        console.log(this.state.selectedUnit)
 
         if(actionPic) {
             image = (
@@ -129,7 +221,7 @@ class StepCards extends Component {
 
         units.forEach((el, index) => {
             unitList.push(
-                <option key={`${el}${index}`}>{el}</option>
+                <option key={`${el}${index}`} value={index}>{el}</option>
             )
         })
 
@@ -146,20 +238,8 @@ class StepCards extends Component {
         })
 
         if(this.props.action != null && this.props.description != null && this.props.equipmentSet != null) {
-            let ingredient = null;
-            let equipment = null;
-            this.props.equipmentSet.forEach((el, index) => {
-                if(el.equipment.type === "INGREDIENT") {
-                    ingredient = el;
-                }
-                else if(el.equipment.type === "EQUIPMENT") {
-                    equipment = el;
-                }
-            })
-            if(ingredient === null) ingredient = "None"
-            console.log(this.props.action)
-            console.log(ingredient)
-            console.log(equipment)
+            // console.log(this.state.selectedUnit)
+
             return (
                 <Fragment>
                     <Card className={style.card}>
@@ -179,7 +259,7 @@ class StepCards extends Component {
                                 <Form.Control 
                                     as="select" 
                                     onChange={this.handleSelectAction}
-                                    defaultValue={this.props.action}
+                                    defaultValue={this.state.selectedAction}
                                 >
                                 {actionList}
                                 </Form.Control>
@@ -191,7 +271,7 @@ class StepCards extends Component {
                                 <Form.Control 
                                     as="select" 
                                     onChange={this.handleSelectIngredient}
-                                    defaultValue={ingredient}
+                                    defaultValue={this.state.selectedIngredient}
                                 >
                                 {ingredientList}
                                 </Form.Control>
@@ -203,7 +283,7 @@ class StepCards extends Component {
                                 <Form.Control 
                                     as="select" 
                                     onChange={this.handleSelectEquipment}
-                                    defaultValue={equipment}
+                                    defaultValue={this.state.selectedEquipment}
                                 >
                                 {equipmentList}
                                 </Form.Control>
@@ -215,13 +295,16 @@ class StepCards extends Component {
     
                                 <Form.Control 
                                     required
-                                    type="amount" 
-                                    placeholder="Enter amount" 
+                                    type="number"
+                                    min="1"
+                                    max="10" 
+                                    placeholder="Enter amount"
+                                    defaultValue={this.state.quantity}
                                 />
                             </Form.Group>
                             <Form.Group controlId={`unit${this.props.id}`}>
                                 <Form.Label>Unit</Form.Label>
-                                <Form.Control as="select">
+                                <Form.Control as="select" defaultValue={this.state.selectedUnit}>
                                 {unitList}
                                 </Form.Control>
                             </Form.Group>
@@ -273,7 +356,9 @@ class StepCards extends Component {
 
                             <Form.Control 
                                 required
-                                type="amount" 
+                                type="number"
+                                min="1"
+                                max="10" 
                                 placeholder="Enter amount" 
                             />
                         </Form.Group>
