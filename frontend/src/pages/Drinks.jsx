@@ -859,13 +859,13 @@ class Drinks extends Component {
 
     handleViewDrinkClose = (id) => {
         this.setState({
-            drinks: this.state.drinks.map(el => (el.drink.id === id ? { ...el, showView: false } : el))
+            public_drinks: this.state.public_drinks.map(el => (el.drink.id === id ? { ...el, showView: false } : el))
         });
     }
 
     handleViewDrinkShow = (id) => {
         this.setState({
-            drinks: this.state.drinks.map(el => (el.drink.id === id ? { ...el, showView: true } : el))
+            public_drinks: this.state.public_drinks.map(el => (el.drink.id === id ? { ...el, showView: true } : el))
         });
     }
 
@@ -1079,6 +1079,13 @@ class Drinks extends Component {
         console.log("lol")
     }
 
+    showDrinkSteps = (steps) => {
+        let steps_display = [];
+
+        steps.forEach(element => steps_display.push(<li>{element.description}</li>) );
+        return steps_display;
+    }
+
     handleChange = () => { }
 
     render() {
@@ -1118,6 +1125,18 @@ class Drinks extends Component {
                                     <span className={style.buttonText}>View</span>
                                 </div>
                             </Button>
+
+                            <Modal show={el.showView} onHide={() => this.handleViewDrinkClose(el.drink.id)} centered>
+                                <Modal.Body>
+                                    <p><strong>Name: </strong>{el.drink.name}</p>
+                                    <p><strong>Author: </strong>{el.drink.createdBy}</p>
+                                    <p><strong>Description: </strong>{el.drink.description}</p>
+                                    <p><strong>Steps:</strong></p>
+                                    <ol>
+                                        {this.showDrinkSteps(el.drink.steps)}
+                                    </ol>
+                                </Modal.Body>
+                            </Modal>
 
                         </Card>
                     </Col>

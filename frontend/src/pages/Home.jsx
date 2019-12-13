@@ -31,7 +31,7 @@ class Home extends Component {
                                     <ol>
                                         <li>Upload <em>any</em> ingredient or equipment using <em>any</em> jpg or png.</li>
                                         <li>Customize your drink's title, description, and display image.</li>
-                                        <li>Select from our fun yet effective training games to help teach your trainees how to properly make your drink!</li>
+                                        <li>Select from our fun yet effective training simulations to help teach your trainees how to properly make your drink!</li>
                                     </ol>
                                     <hr></hr>
                                     <p>Select <strong>Bars</strong> to create or edit your own bar.</p>
@@ -41,6 +41,29 @@ class Home extends Component {
                                         <li>Assign your drink to your trainees.</li>
                                         <li>Keep track of your trainees' drink completion.</li>
                                     </ol>
+                                    <hr></hr>
+                                    <p>BarRaiser provides a variety of fun, interactive, simulations to ensure your students learn how to make the best drinks
+                                    in town! They include: </p>
+                                    <ol>
+                                        <li><em><b>Pouring liquids:</b></em> In this simulation, your trainee can simulate pouring the most exquisite whiskys time and time again to perfect
+                                            their skills. In this simulation, a bartender <em>must</em> upload an ingredient and an equipment, and BarRaiser will
+                                            do the rest.</li>
+                                        <li><em><b>Pouring solids:</b></em> Similar to pouring a liquid, your trainee can simulate pouring ingredients such as salt. In this simulation
+                                            the bartender must again upload an ingredient and an equipment for the trainee to simulate.</li>
+                                        <li><em><b>Shaking:</b></em> In this simulation, a trainee can simulate shaking a martini, just like James Bond would want! However, the bartender must
+                                        be sure to upload the equipment so the trainee can simulate shaking.</li>
+                                        <li><em><b>Straining:</b></em> In this simulation, a trainee can simulate the proper technique of straining any cocktail they please. The bartender must
+                                            upload an equipment and an ingredient to strain, and BarRaiser will ensure they become experts! </li>
+                                        <li><em><b>Fill Ingredient:</b></em> In this simulation, a trainee can simulate filling their cocktails with the finest ingredients. Once the instructor
+                                        uploads an ingredient and the appropriate equipment, the trainee can simulate adding an ingredient to the equipment of your choice. </li>
+                                        <li><em><b>Stirring:</b></em> In this simulation, a trainee can simulate stirring a cocktail. The instructor must be sure to upload the appropriate
+                                        equipment for this simulation to work. </li>
+                                        <li><em><b>Rolling:</b></em> In this simulation, a trainee can simulate rolling. The instructor must be sure to upload the appropriate equipment
+                                        for this simulation to work.</li>
+                                        <li><em><b>Matching:</b></em> In this simulation, a trainee can simulate matching two ingredients or equipments to sharpen their memorization skills.
+                                            The instructor must be sure to upload the appropriate equipment or ingredient for this simulation to work.</li>
+                                    </ol>
+
                                 </Card.Text>
                             </Card.Body>
                         </Card>
