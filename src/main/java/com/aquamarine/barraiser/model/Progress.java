@@ -20,14 +20,23 @@ public class Progress {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
 
-    @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
-    private Cohort cohort;
+    @ManyToMany(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+    @JoinTable(name = "progress_to_cohorts",
+            joinColumns = @JoinColumn(name = "progress_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "cohort_id", referencedColumnName = "id"))
+    private Set<Cohort> cohorts = new HashSet<>();
 
-    @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
-    private Drink drink;
+    @ManyToMany(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+    @JoinTable(name = "progress_to_drinks",
+            joinColumns = @JoinColumn(name = "progress_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "drink_id", referencedColumnName = "id"))
+    private Set<Drink> drinks = new HashSet<>();
 
-    @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
-    private User user;
+    @ManyToMany(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+    @JoinTable(name = "progress_to_users",
+            joinColumns = @JoinColumn(name = "progress_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
+    private Set<User> users = new HashSet<>();
 
     @Column(nullable = false)
     private boolean status;

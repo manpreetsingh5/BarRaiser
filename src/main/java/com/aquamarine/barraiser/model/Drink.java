@@ -44,5 +44,8 @@ public class Drink extends Auditable<String>{
     @JsonIgnore
     private Set<Cohort> cohort = new HashSet<>();
 
+    @ManyToMany(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Set<Progress> progress = new HashSet<>();
 
 }

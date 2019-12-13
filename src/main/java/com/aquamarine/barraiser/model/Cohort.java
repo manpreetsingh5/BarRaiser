@@ -1,5 +1,6 @@
 package com.aquamarine.barraiser.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.experimental.Accessors;
 
@@ -42,4 +43,8 @@ public class Cohort extends Auditable<String> {
             joinColumns = @JoinColumn(name = "cohort_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "drink_id", referencedColumnName = "id"))
     private Set<Drink> drinks = new HashSet<>();
+
+    @ManyToMany(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Set<Progress> progress = new HashSet<>();
 }
