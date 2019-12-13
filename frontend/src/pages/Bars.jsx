@@ -463,7 +463,7 @@ class Bars extends Component {
                 bars.forEach(el => 
                     barsList.push(
                         <Row key={el.cohort.id}>
-                            <Col sm={10}>
+                            <Col sm={10} className="mx-auto">
                             <Card className={style.card}>
                                 <Card.Body>
                                     <Row className={style.barRow}>
@@ -741,11 +741,7 @@ class Bars extends Component {
     
                     <Row className={style.contentContainer}>
                         <div className={style.contentDiv}>
-                            <div>
-                                <h4>Your Bars</h4>
-                            </div>
-    
-                            <div>
+                            <div className="text-center">
                                 <Button variant="primary" onClick={this.handleShow}>
                                     Add Bar
                                 </Button>

@@ -1078,6 +1078,7 @@ class Drinks extends Component {
         let games = this.state.games
 
         console.log(public_drinks.length)
+        // make changes here - so its view modal -- looking up steps
 
         if (drinks.length) {
             drinks.sort((a, b) => (a.drink.name > b.drink.name) ? 1 : -1);
@@ -1330,7 +1331,7 @@ class Drinks extends Component {
                                 <Container>
                                     <Row className={style.contentContainer}>
                                         <div className={style.contentDiv}>
-                                            <div>
+                                            <div className="text-center">
                                                 <Button variant="primary" onClick={this.handleShow}>
                                                     Add Drinks
                                             </Button>
@@ -1371,9 +1372,9 @@ class Drinks extends Component {
 
                                                             {this.state.steps}
 
-                                                            <Button onClick={this.addStep}>
+                                                            <Button className="mr-3" onClick={this.addStep}>
                                                                 Add Step
-                                                </Button>
+                                                            </Button>
 
                                                             <Button onClick={this.deleteStep}>
                                                                 Delete Step
@@ -1406,7 +1407,7 @@ class Drinks extends Component {
                                 <Container>
                                     <Row className={style.contentContainer}>
                                         <div className={style.contentDiv}>
-                                            <div>
+                                            <div className="text-center">
                                                 <Button variant="primary" onClick={this.handleShowIngredient}>
                                                     Add Ingredient
                                                 </Button>
@@ -1469,7 +1470,7 @@ class Drinks extends Component {
                                 <Container>
                                     <Row className={style.contentContainer}>
                                         <div className={style.contentDiv}>
-                                            <div>
+                                            <div className="text-center">
                                                 <Button variant="primary" onClick={this.handleShowEquipment}>
                                                     Add Equipment
                                                 </Button>
