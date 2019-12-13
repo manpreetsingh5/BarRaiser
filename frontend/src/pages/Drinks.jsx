@@ -618,17 +618,22 @@ class Drinks extends Component {
         event.preventDefault();
     }
 
-    handleEditDrink = (event, id) => {
+    handleEditDrink = (event) => {
         let token = localStorage.getItem("accessToken");
         let form = event.target;
         let file = form.elements.image.files[0];
         let stepcards = this.state.steps;
 
+        // console.log(form.id.value)
+
         let steps = []
         stepcards.forEach((el, index) => {
+            // console.log(form[`stepId${index}`].value)
+            console.log(form[`equipmentSetId${index}`].value)
             if (form[`ingredient${index}`].options[form[`ingredient${index}`].selectedIndex].id == -1
                 && form[`equipment${index}`].options[form[`equipment${index}`].selectedIndex].id == -1) {
                 steps.push({
+                    id: form[`stepId${index}`].value,
                     step_number: index,
                     description: form[`stepDescription${index}`].value,
                     action: form[`action${index}`].options[form[`action${index}`].selectedIndex].text,
@@ -639,12 +644,14 @@ class Drinks extends Component {
             else if (form[`ingredient${index}`].options[form[`ingredient${index}`].selectedIndex].id == -1
                 && form[`equipment${index}`].options[form[`equipment${index}`].selectedIndex].id != -1) {
                 steps.push({
+                    id: form[`stepId${index}`].value,
                     step_number: index,
                     description: form[`stepDescription${index}`].value,
                     action: form[`action${index}`].options[form[`action${index}`].selectedIndex].text,
                     image_path: "",
                     equipmentSet: [
                         {
+                            id: form[`ingredientSetId${index}`].value,
                             equipment: {
                                 id: form[`ingredient${index}`].options[form[`ingredient${index}`].selectedIndex].id,
                                 name: form[`ingredient${index}`].options[form[`ingredient${index}`].selectedIndex].text,
@@ -660,12 +667,14 @@ class Drinks extends Component {
             else if (form[`ingredient${index}`].options[form[`ingredient${index}`].selectedIndex].id != -1
                 && form[`equipment${index}`].options[form[`equipment${index}`].selectedIndex].id == -1) {
                 steps.push({
+                    id: form[`stepId${index}`].value,
                     step_number: index,
                     description: form[`stepDescription${index}`].value,
                     action: form[`action${index}`].options[form[`action${index}`].selectedIndex].text,
                     image_path: "",
                     equipmentSet: [
                         {
+                            id: form[`equipmentSetId${index}`].value,
                             equipment: {
                                 id: form[`equipment${index}`].options[form[`equipment${index}`].selectedIndex].id,
                                 name: form[`equipment${index}`].options[form[`equipment${index}`].selectedIndex].text,
@@ -679,13 +688,17 @@ class Drinks extends Component {
                 })
             }
             else {
+                // console.log(form[`ingredient${index}`].options[form[`ingredient${index}`].selectedIndex].id,
+                // form[`equipment${index}`].options[form[`equipment${index}`].selectedIndex].id)
                 steps.push({
+                    id: form[`stepId${index}`].value,
                     step_number: index,
                     description: form[`stepDescription${index}`].value,
                     action: form[`action${index}`].options[form[`action${index}`].selectedIndex].text,
                     image_path: "",
                     equipmentSet: [
                         {
+                            id: form[`ingredientSetId${index}`].value,
                             equipment: {
                                 id: form[`ingredient${index}`].options[form[`ingredient${index}`].selectedIndex].id,
                                 name: form[`ingredient${index}`].options[form[`ingredient${index}`].selectedIndex].text,
@@ -696,6 +709,7 @@ class Drinks extends Component {
                             unit: form[`unit${index}`].options[form[`unit${index}`].selectedIndex].text
                         },
                         {
+                            id: form[`equipmentSetId${index}`].value,
                             equipment: {
                                 id: form[`equipment${index}`].options[form[`equipment${index}`].selectedIndex].id,
                                 name: form[`equipment${index}`].options[form[`equipment${index}`].selectedIndex].text,
@@ -724,6 +738,8 @@ class Drinks extends Component {
         let data = new FormData();
         data.append('file', file);
         data.append('drink', blob);
+
+        console.log(drink)
 
         fetch('api/drink/editDrink', {
             method: 'POST',
@@ -779,7 +795,7 @@ class Drinks extends Component {
                     equipment={this.state.equipment} games={this.state.games}
                     add={this.addToStepObjects} units={this.state.units}
                     action={el.action} description={el.description}
-                    equipmentSet={el.equipmentSet} />
+                    equipmentSet={el.equipmentSet} stepId={el.id}/>
             )
         })
         this.setState({
