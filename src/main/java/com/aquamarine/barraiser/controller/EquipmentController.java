@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -107,12 +108,9 @@ public class EquipmentController {
     @PreAuthorize("hasAnyAuthority('BARTENDER', 'TRAINEE')")
     public @ResponseBody ResponseEntity<?> getEquipmentPicture(@RequestParam String image_path) throws IOException {
         try {
-            byte[] imageBytes = equipmentService.getEquipmentPicture(image_path);
-            HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.setContentType(MediaType.IMAGE_PNG);
-            httpHeaders.setContentLength(imageBytes.length);
+            HashMap<String, Object> ret = equipmentService.getEquipmentPicture(image_path);
 
-            return new ResponseEntity<>(imageBytes, httpHeaders, HttpStatus.OK);
+            return new ResponseEntity<>(ret, HttpStatus.OK);
         }
         catch (Exception e) {
             return new ResponseEntity<>("Error viewing equipment image.", HttpStatus.BAD_REQUEST);
