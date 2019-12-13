@@ -96,6 +96,56 @@ public class DrinkServiceImp implements DrinkService {
     }
 
     @Override
+    public boolean editDrink(DrinkDTO drinkDTO, MultipartFile multipartFile) throws IOException {
+        Optional<Drink> drinkOptional = drinkRepository.findById(drinkDTO.getId());
+        Drink drink;
+        if (drinkOptional.isPresent()){
+            drink = drinkOptional.get();
+
+            drink.setName(drinkDTO.getName());
+            drink.setImage_path(drinkDTO.getImage_path());
+            drink.setPublic(drinkDTO.isPublic());
+            drink.setDescription(drinkDTO.getDescription());
+
+            File file = imageService.convertMultiPartToFile(multipartFile, drink.getName());
+            imageService.deleteFileFromS3bucket(sub_folder+drink.getName());
+            drink.setImage_path(sub_folder+drink.getName());
+            String filePath = drink.getImage_path();
+            imageService.uploadFileToS3bucket(filePath, file);
+
+            HashSet<Step> steps = new HashSet<>();
+
+            for (StepDTO stepdto: drinkDTO.getSteps()) {
+                Step step = stepRepository.findById(stepdto.getId()).get();
+                step.setDescription(stepdto.getDescription())
+                        .setDrink(stepdto.getDrink())
+                        .setAction(stepdto.getAction())
+                        .setStep_number(stepdto.getStep_number());
+
+                steps.add(step);
+                HashSet<StepEquipment> stepEquipments = new HashSet<>();
+                for (StepEquipmentDTO stepEquipmentDTO: stepdto.getEquipmentSet()) {
+                    StepEquipment stepEquipment = stepEquipmentRepository.findById(stepEquipmentDTO.getId()).get();
+                    stepEquipment.setEquipment(stepEquipmentDTO.getEquipment())
+                            .setStep(stepEquipmentDTO.getStep())
+                            .setQuantity(stepEquipmentDTO.getQuantity())
+                            .setUnit(stepEquipmentDTO.getUnit());
+                    stepEquipments.add(stepEquipment);
+                    stepEquipmentRepository.save(stepEquipment);
+                }
+                step.setEquipmentSet(stepEquipments);
+                stepRepository.save(step);
+
+            }
+            drink.setSteps(steps);
+
+            return drinkRepository.save(drink) == drink;
+        }
+
+        return false;
+    }
+
+    @Override
     public boolean deleteDrink(int id) {
         if (drinkRepository.findById(id).isPresent()) {
             Drink drink = drinkRepository.findById(id).get();
@@ -154,31 +204,6 @@ public class DrinkServiceImp implements DrinkService {
         return ret;
     }
 
-    @Override
-    public boolean editDrink(DrinkDTO drinkDTO, MultipartFile multipartFile) throws IOException {
-        Optional<Drink> drinkOptional = drinkRepository.findById(drinkDTO.getId());
-        Drink drink;
-        if (drinkOptional.isPresent()){
-            drink = drinkOptional.get();
 
-            drink.setName(drinkDTO.getName());
-            drink.setImage_path(drinkDTO.getImage_path());
-            drink.setPublic(drinkDTO.isPublic());
-            drink.setDescription(drinkDTO.getDescription());
-
-            String filePath = drink.getImage_path();
-            File file = imageService.convertMultiPartToFile(multipartFile, drink.getName());
-            imageService.deleteFileFromS3bucket(filePath);
-            drink.setImage_path(sub_folder+drink.getName());
-            filePath = drink.getImage_path();
-            imageService.uploadFileToS3bucket(filePath, file);
-
-
-            drinkRepository.save(drink);
-            return true;
-        }
-
-        return false;
-    }
 
 }
