@@ -112,7 +112,7 @@ public class EquipmentController {
             httpHeaders.setContentType(MediaType.IMAGE_PNG);
             httpHeaders.setContentLength(imageBytes.length);
 
-            return new ResponseEntity<>(equipmentService.getEquipmentPicture(image_path), httpHeaders, HttpStatus.OK);
+            return new ResponseEntity<>(imageBytes, httpHeaders, HttpStatus.OK);
         }
         catch (Exception e) {
             return new ResponseEntity<>("Error viewing equipment image.", HttpStatus.BAD_REQUEST);
