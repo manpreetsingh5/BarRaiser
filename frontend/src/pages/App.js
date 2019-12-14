@@ -5,8 +5,6 @@ import Register from './Register';
 import Dashboard from './Dashboard';
 import Error from './Error';
 import style from '../style/App.module.css';
-import ResetPassword from './ResetPassword';
-
 
 class App extends Component {
     constructor(props) {
@@ -78,13 +76,6 @@ class App extends Component {
                                 <Redirect to="/dashboard" />
                             ) : (
                                 <Register />
-                            )
-                        )}/>
-                        <Route path="/resetpassword" exact render={() => (
-                            this.state.isAuthed ? (
-                                <Redirect to="/dashboard" />
-                            ) : (
-                                <ResetPassword />
                             )
                         )}/>
                         <Route path="/dashboard" exact render={() => (

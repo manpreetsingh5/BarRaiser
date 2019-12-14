@@ -31,6 +31,8 @@ class Dashboard extends Component {
             pane: "home",
             id: -1,
             drink: null,
+            drinkId: -1,
+            cohortId: -1,
             firstName: "",
             lastName: "",
             status: "",
@@ -83,8 +85,12 @@ class Dashboard extends Component {
         this.props.history.push("/");
     }
 
-    playDrink = (id, drink) => {
-        this.setState({ pane: "play", drink: drink })
+    playDrink = (id, drink, cohortId) => {
+        this.setState({ pane: "play", drink: drink, drinkId: id, cohortId: cohortId })
+    }
+
+    handleComplete = () => {
+        this.setState({ pane: "drinks" })
     }
 
     render() {
@@ -147,7 +153,7 @@ class Dashboard extends Component {
                             {pane === "bars" && this.state.status === "TRAINEE" && <TraineeBars id={this.state.id}/>}
                             {pane === "drinks" && this.state.status === "BARTENDER" && <Drinks id={this.state.id}/>}
                             {pane === "drinks" && this.state.status === "TRAINEE" && <TraineeDrinks id={this.state.id} play={this.playDrink}/>}
-                            {pane === "play" && this.state.status === "TRAINEE" && <Play id={this.state.id} drink={this.state.drink}/>}
+                            {pane === "play" && this.state.status === "TRAINEE" && <Play id={this.state.id} handleComplete={this.handleComplete} drink={this.state.drink} drinkId={this.state.drinkId} cohortId={this.state.cohortId}/>}
                         </Col>
                     </Row>
                 </Fragment>
