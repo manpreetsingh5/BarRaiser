@@ -172,7 +172,9 @@ class Drinks extends Component {
                                 <div>
                                     <h4>Your Assigned Drinks</h4>
                                 </div>
-                                {drinksList}
+                                <Row>
+                                    {drinksList}
+                                </Row>
                                 {empty}
                             </div>
                         </Row>
