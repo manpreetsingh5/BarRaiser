@@ -126,16 +126,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public boolean resetPassword(int user_id, String oldPassword, String newPassword) {
+    public boolean resetPassword(int user_id,String newPassword) {
         Optional<User> userOptional = userRepository.findById(user_id);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
-            if (passwordEncoder.matches(oldPassword, user.getPassword())) {
-                System.out.println(newPassword);
-                user.setPassword(passwordEncoder.encode(newPassword));
-                userRepository.save(user);
-                return true;
-            }
+            user.setPassword(passwordEncoder.encode(newPassword));
+            userRepository.save(user);
+            return true;
+
         }
 
         return false;
