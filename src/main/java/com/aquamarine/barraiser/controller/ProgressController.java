@@ -61,10 +61,10 @@ public class ProgressController {
 
     @RequestMapping(path="/getProgressByDrink", method= RequestMethod.POST)
     @PreAuthorize("hasAuthority('BARTENDER')")
-    public ResponseEntity<?> getProgress(@RequestParam int drink_id){
-        Set<ProgressDTO> ret = progressService.getProgressByDrink(drink_id);
-        if (ret != null) {
-            return new ResponseEntity<>(ret, HttpStatus.OK);
+    public ResponseEntity<?> getProgress(@RequestParam int drink_id, @RequestParam int user_id){
+        ProgressDTO progressDTO = progressService.getProgressByDrink(drink_id, user_id);
+        if (progressDTO != null) {
+            return new ResponseEntity<>(progressDTO, HttpStatus.OK);
         }
         return new ResponseEntity<>("Progress not added successfully", HttpStatus.BAD_REQUEST);
     }
