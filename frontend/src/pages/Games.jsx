@@ -2,7 +2,7 @@ import Repeatable from 'react-repeatable';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 import React from 'react';
-// import './App.css';
+import styles from '../style/Games.module.css';
 import { Button, Container, Row, ProgressBar, Col, Modal } from 'react-bootstrap';
 import posed from 'react-pose';
 import spoon_src from '../img/spoon.png';
@@ -132,7 +132,7 @@ export class PourLiquidGame extends React.Component {
           </Modal.Header>
           <Modal.Body>Congratulations! You've successfully completed this step.</Modal.Body>
           <Modal.Footer>
-            <Button variant="success" onClick={() => console.log("Continue to next step...")}>
+            <Button variant="success" onClick={this.setup}>
               Continue
             </Button>
           </Modal.Footer>
@@ -146,7 +146,7 @@ export class PourLiquidGame extends React.Component {
           </Modal.Header>
           <Modal.Body>Unfortunately, you've failed this step.</Modal.Body>
           <Modal.Footer>
-            <Button variant="success" onClick={() => console.log("Reload the page...")}>
+            <Button variant="success" onClick={this.refresh}>
               Try Again
             </Button>
           </Modal.Footer>
@@ -155,7 +155,25 @@ export class PourLiquidGame extends React.Component {
     }
   }
 
+  setup = () => {
+    this.refresh();
+    this.props.next();
+    }
+
+  refresh = () => {
+    this.setState({
+      progress: 0,
+      target: this.props.target,
+      pressed: false,
+      completed: false,
+      success: false,
+      hint: false,
+      show_modal: false,
+    });
+    }
+
   render() {
+    //   console.log(this.props.ingredient_src)
     return (
       <Container>
         <Row className="mt-5">
@@ -171,17 +189,17 @@ export class PourLiquidGame extends React.Component {
             <Col sm={8}>
               <Row>
                 <Col sm={3} className="mx-auto">
-                  <Bottle className="front img-fluid test" id="pour_liquid_top" src={this.props.ingredient_src} alt={'ingredient'} pose={this.state.pressed ? 'pouring' : 'standing'} />
+                  <Bottle className={`${styles.front} img-fluid test`} id="pour_liquid_top" src={`data:image/png;base64,${this.props.ingredient_src}`} alt={'ingredient'} pose={this.state.pressed ? 'pouring' : 'standing'} />
                 </Col>
               </Row>
-              <Row className="pour-row">
+              <Row className={styles.pourRow}>
                 <Col sm={3} className="mx-auto">
-                  <PourLiquid id="pour_liquid" className="mx-auto" pose={this.state.pressed ? 'pouring' : 'standing'} />
+                  <PourLiquid className={`mx-auto ${styles.pour_liquid}`} pose={this.state.pressed ? 'pouring' : 'standing'} />
                 </Col>
               </Row>
               <Row>
                 <Col sm={3} className="mx-auto">
-                  <img className="img-fluid" id="pour_liquid_bottom" src={this.props.equipment_src} alt={'equipment'} />
+                  <img className="img-fluid" id="pour_liquid_bottom" src={`data:image/png;base64,${this.props.equipment_src}`} alt={'equipment'} />
                 </Col>
               </Row>
             </Col>
@@ -283,7 +301,7 @@ export class StrainGame extends React.Component {
           </Modal.Header>
           <Modal.Body>Congratulations! You've successfully completed this step.</Modal.Body>
           <Modal.Footer>
-            <Button variant="success" onClick={() => console.log("Continue to next step...")}>
+            <Button variant="success" onClick={this.setup}>
               Continue
             </Button>
           </Modal.Footer>
@@ -297,7 +315,7 @@ export class StrainGame extends React.Component {
           </Modal.Header>
           <Modal.Body>Unfortunately, you've failed this step.</Modal.Body>
           <Modal.Footer>
-            <Button variant="success" onClick={() => console.log("Reload the page...")}>
+            <Button variant="success" onClick={this.refresh}>
               Try Again
             </Button>
           </Modal.Footer>
@@ -305,6 +323,23 @@ export class StrainGame extends React.Component {
       );
     }
   }
+
+  setup = () => {
+      this.refresh();
+      this.props.next();
+  }
+
+  refresh = () => {
+    this.setState({
+      progress: 0,
+      target: this.props.target,
+      pressed: false,
+      completed: false,
+      success: false,
+      hint: false,
+      show_modal: false,
+    });
+    }
 
   render() {
     return (
@@ -322,12 +357,12 @@ export class StrainGame extends React.Component {
             <Col sm={8}>
               <Row>
                 <Col sm={3} className="mx-auto">
-                  <Bottle className="front img-fluid test" src={this.props.ingredient_src} alt={'ingredient'} pose={this.state.pressed ? 'pouring' : 'standing'} />
+                  <Bottle className={`${styles.front} img-fluid test`} src={`data:image/png;base64,${this.props.ingredient_src}`} alt={'ingredient'} pose={this.state.pressed ? 'pouring' : 'standing'} />
                 </Col>
               </Row>
-              <Row className="pour-row">
+              <Row className={styles.pourRow}>
                 <Col sm={3} className="mx-auto">
-                  <StrainLiquid id="pour_liquid" className="mx-auto" pose={this.state.pressed ? 'pouring' : 'standing'} />
+                  <StrainLiquid className={`mx-auto ${styles.pour_liquid}`} pose={this.state.pressed ? 'pouring' : 'standing'} />
                 </Col>
               </Row>
               <Row>
@@ -337,7 +372,7 @@ export class StrainGame extends React.Component {
               </Row>
               <Row>
                 <Col sm={3} className="mx-auto">
-                  <img className="img-fluid" src={this.props.equipment_src} alt={'equipment'} />
+                  <img className="img-fluid" src={`data:image/png;base64,${this.props.equipment_src}`} alt={'equipment'} />
                 </Col>
               </Row>
             </Col>
@@ -439,7 +474,7 @@ export class PourSolidGame extends React.Component {
           </Modal.Header>
           <Modal.Body>Congratulations! You've successfully completed this step.</Modal.Body>
           <Modal.Footer>
-            <Button variant="success" onClick={() => console.log("Continue to next step...")}>
+            <Button variant="success" onClick={this.setup}>
               Continue
             </Button>
           </Modal.Footer>
@@ -453,7 +488,7 @@ export class PourSolidGame extends React.Component {
           </Modal.Header>
           <Modal.Body>Unfortunately, you've failed this step.</Modal.Body>
           <Modal.Footer>
-            <Button variant="success" onClick={() => console.log("Reload the page...")}>
+            <Button variant="success" onClick={this.refresh}>
               Try Again
             </Button>
           </Modal.Footer>
@@ -472,6 +507,22 @@ export class PourSolidGame extends React.Component {
     }
   }
 
+  setup = () => {
+    this.refresh();
+    this.props.next();
+    }
+
+  refresh = () => {
+    this.setState({
+      progress: 0,
+      target: this.props.target,
+      pressed: false,
+      completed: false,
+      success: false,
+      hint: false,
+      show_modal: false,
+    });
+    }
 
   render() {
     return (
@@ -489,17 +540,17 @@ export class PourSolidGame extends React.Component {
             <Col sm={8}>
               <Row>
                 <Col sm={3} className="mx-auto">
-                  <Bottle className="front img-fluid test" src={this.props.ingredient_src} alt={'ingredient'} pose={this.state.pressed ? 'pouring' : 'standing'} />
+                  <Bottle className={`${styles.front} img-fluid test`} src={`data:image/png;base64,${this.props.ingredient_src}`} alt={'ingredient'} pose={this.state.pressed ? 'pouring' : 'standing'} />
                 </Col>
               </Row>
-              <Row className="pour-row">
+              <Row className={styles.pourRow}>
                 <Col sm={3} className="mx-auto">
-                  <PourSolid id="pour_solid" className="mx-auto" pose={this.state.pressed ? 'pouring' : 'standing'} />
+                  <PourSolid className={`mx-auto ${styles.pour_solid}`} pose={this.state.pressed ? 'pouring' : 'standing'} />
                 </Col>
               </Row>
               <Row>
                 <Col sm={3} className="mx-auto">
-                  <img className="img-fluid" src={this.props.equipment_src} alt={'equipment'} />
+                  <img className="img-fluid" src={`data:image/png;base64,${this.props.equipment_src}`} alt={'equipment'} />
                 </Col>
               </Row>
             </Col>
@@ -602,7 +653,7 @@ export class ShakeGame extends React.Component {
           </Modal.Header>
           <Modal.Body>Congratulations! You've successfully completed this step.</Modal.Body>
           <Modal.Footer>
-            <Button variant="success" onClick={() => console.log("Continue to next step...")}>
+            <Button variant="success" onClick={this.setup}>
               Continue
             </Button>
           </Modal.Footer>
@@ -616,7 +667,7 @@ export class ShakeGame extends React.Component {
           </Modal.Header>
           <Modal.Body>Unfortunately, you've failed this step.</Modal.Body>
           <Modal.Footer>
-            <Button variant="success" onClick={() => console.log("Reload the page...")}>
+            <Button variant="success" onClick={this.refresh}>
               Try Again
             </Button>
           </Modal.Footer>
@@ -624,6 +675,23 @@ export class ShakeGame extends React.Component {
       );
     }
   }
+
+  setup = () => {
+    this.refresh();
+    this.props.next();
+    }
+
+  refresh = () => {
+    this.setState({
+      progress: 0,
+      target: (this.props.target * 10),
+      pressed: false,
+      completed: false,
+      success: false,
+      hint: false,
+      show_modal: false,
+    });
+    }
 
   render() {
     return (
@@ -641,7 +709,7 @@ export class ShakeGame extends React.Component {
             <Col sm={8}>
               <Row>
                 <Col sm={3} className="mx-auto">
-                  <Shaker className="img-fluid" src={this.props.equipment_src} alt={'equipment'} pose={this.state.pressed ? 'up' : 'down'} />
+                  <Shaker className="img-fluid" src={`data:image/png;base64,${this.props.equipment_src}`} alt={'equipment'} pose={this.state.pressed ? 'up' : 'down'} />
                 </Col>
               </Row>
             </Col>
@@ -743,7 +811,7 @@ export class FillGame extends React.Component {
           </Modal.Header>
           <Modal.Body>Congratulations! You've successfully completed this step.</Modal.Body>
           <Modal.Footer>
-            <Button variant="success" onClick={() => console.log("Continue to next step...")}>
+            <Button variant="success" onClick={this.setup}>
               Continue
             </Button>
           </Modal.Footer>
@@ -757,7 +825,7 @@ export class FillGame extends React.Component {
           </Modal.Header>
           <Modal.Body>Unfortunately, you've failed this step.</Modal.Body>
           <Modal.Footer>
-            <Button variant="success" onClick={() => console.log("Reload the page...")}>
+            <Button variant="success" onClick={this.refresh}>
               Try Again
             </Button>
           </Modal.Footer>
@@ -765,6 +833,23 @@ export class FillGame extends React.Component {
       );
     }
   }
+
+  setup = () => {
+    this.refresh();
+    this.props.next();
+    }
+
+    refresh = () => {
+        this.setState({
+        progress: 0,
+        target: (this.props.target * 10),
+        pressed: false,
+        completed: false,
+        success: false,
+        hint: false,
+        show_modal: false,
+        });
+    }
 
   render() {
     return (
@@ -782,19 +867,19 @@ export class FillGame extends React.Component {
             <Col sm={8}>
               <Row>
                 <Col sm={2} className="mx-auto">
-                  <Ingredient className="front img-fluid" src={this.props.ingredient_src} alt={'ingredient'} pose={this.state.pressed ? 'down' : 'up'} />
+                  <Ingredient className={`${styles.front} img-fluid test`} src={`data:image/png;base64,${this.props.ingredient_src}`} alt={'ingredient'} pose={this.state.pressed ? 'down' : 'up'} />
                 </Col>
               </Row>
               <Row>
                 <Col sm={6} className="mx-auto">
                   <Row>
                     <Col sm={10} className="mx-auto">
-                      <img className="img-fluid" src={this.props.equipment_src} alt={'equipment'} />
+                      <img className="img-fluid" src={`data:image/png;base64,${this.props.equipment_src}`} alt={'equipment'} />
                     </Col>
                   </Row>
-                  <Row className="filled_ingredient_row">
+                  <Row className={styles.filled_ingredient_row}>
                     <Col sm={4} className="mx-auto">
-                      <FilledIngredient className="img-fluid" src={this.props.ingredient_src} alt={'ingredient'} pose={this.state.progress > 0 ? 'visible' : 'hidden'} />
+                      <FilledIngredient className="img-fluid" src={`data:image/png;base64,${this.props.ingredient_src}`} alt={'ingredient'} pose={this.state.progress > 0 ? 'visible' : 'hidden'} />
                     </Col>
                   </Row>
                 </Col>
@@ -896,7 +981,7 @@ export class StirGame extends React.Component {
           </Modal.Header>
           <Modal.Body>Congratulations! You've successfully completed this step.</Modal.Body>
           <Modal.Footer>
-            <Button variant="success" onClick={() => console.log("Continue to next step...")}>
+            <Button variant="success" onClick={this.setup}>
               Continue
             </Button>
           </Modal.Footer>
@@ -910,7 +995,7 @@ export class StirGame extends React.Component {
           </Modal.Header>
           <Modal.Body>Unfortunately, you've failed this step.</Modal.Body>
           <Modal.Footer>
-            <Button variant="success" onClick={() => console.log("Reload the page...")}>
+            <Button variant="success" onClick={this.refresh}>
               Try Again
             </Button>
           </Modal.Footer>
@@ -918,6 +1003,23 @@ export class StirGame extends React.Component {
       );
     }
   }
+
+  setup = () => {
+    this.refresh();
+    this.props.next();
+    }
+
+  refresh = () => {
+    this.setState({
+      progress: 0,
+      target: this.props.target,
+      pressed: false,
+      completed: false,
+      success: false,
+      hint: false,
+      show_modal: false,
+    });
+    }
 
   render() {
     return (
@@ -934,13 +1036,13 @@ export class StirGame extends React.Component {
           <Row className="mt-5">
             <Col sm={8}>
               <Row>
-                <Col sm={3} className="mx-auto front">
-                  <Spoon className="front img-fluid test" src={spoon_src} alt={'spoon'} pose={this.state.progress % 2 === 0 ? 'left' : 'right'} />
+                <Col sm={3} className={`mx-auto ${styles.front}`}>
+                  <Spoon className={`${styles.front} img-fluid test`} src={spoon_src} alt={'spoon'} pose={this.state.progress % 2 === 0 ? 'left' : 'right'} />
                 </Col>
               </Row>
-              <Row className="glass_stir_row">
+              <Row className={styles.glass_stir_row}>
                 <Col sm={4} className="mx-auto">
-                  <img className="img-fluid" src={this.props.equipment_src} alt={'equipment'} />
+                  <img className="img-fluid" src={`data:image/png;base64,${this.props.equipment_src}`} alt={'equipment'} />
                 </Col>
               </Row>
             </Col>
@@ -1042,7 +1144,7 @@ export class RollGame extends React.Component {
           </Modal.Header>
           <Modal.Body>Congratulations! You've successfully completed this step.</Modal.Body>
           <Modal.Footer>
-            <Button variant="success" onClick={() => console.log("Continue to next step...")}>
+            <Button variant="success" onClick={this.setup}>
               Continue
             </Button>
           </Modal.Footer>
@@ -1056,7 +1158,7 @@ export class RollGame extends React.Component {
           </Modal.Header>
           <Modal.Body>Unfortunately, you've failed this step.</Modal.Body>
           <Modal.Footer>
-            <Button variant="success" onClick={() => console.log("Reload the page...")}>
+            <Button variant="success" onClick={this.refresh}>
               Try Again
             </Button>
           </Modal.Footer>
@@ -1064,6 +1166,23 @@ export class RollGame extends React.Component {
       );
     }
   }
+
+  setup = () => {
+    this.refresh();
+    this.props.next();
+    }
+
+  refresh = () => {
+    this.setState({
+      progress: 0,
+      target: this.props.target,
+      pressed: false,
+      completed: false,
+      success: false,
+      hint: false,
+      show_modal: false,
+    });
+    }
 
   render() {
     return (
@@ -1080,13 +1199,13 @@ export class RollGame extends React.Component {
           <Row className="mt-5">
             <Col sm={8}>
               <Row>
-                <Col sm={3} className="mx-auto front">
-                  <Spoon className="front img-fluid test" src={circle_src} alt={'side bottle'} pose={this.state.progress % 2 === 0 ? 'left' : 'right'} />
+                <Col sm={3} className={`mx-auto ${styles.front}`}>
+                  <Spoon className={`${styles.front} img-fluid test`} src={circle_src} alt={'side bottle'} pose={this.state.progress % 2 === 0 ? 'left' : 'right'} />
                 </Col>
               </Row>
-              <Row className="glass_stir_row">
+              <Row className={styles.glass_stir_row}>
                 <Col sm={4} className="mx-auto">
-                  <img className="img-fluid" src={this.props.equipment_src} alt={'equipment'} />
+                  <img className="img-fluid" src={`data:image/png;base64,${this.props.equipment_src}`} alt={'equipment'} />
                 </Col>
               </Row>
             </Col>
@@ -1188,7 +1307,7 @@ export class BlendGame extends React.Component {
           </Modal.Header>
           <Modal.Body>Congratulations! You've successfully completed this step.</Modal.Body>
           <Modal.Footer>
-            <Button variant="success" onClick={() => console.log("Continue to next step...")}>
+            <Button variant="success" onClick={this.setup}>
               Continue
             </Button>
           </Modal.Footer>
@@ -1202,7 +1321,7 @@ export class BlendGame extends React.Component {
           </Modal.Header>
           <Modal.Body>Unfortunately, you've failed this step.</Modal.Body>
           <Modal.Footer>
-            <Button variant="success" onClick={() => console.log("Reload the page...")}>
+            <Button variant="success" onClick={this.refresh}>
               Try Again
             </Button>
           </Modal.Footer>
@@ -1210,6 +1329,23 @@ export class BlendGame extends React.Component {
       );
     }
   }
+ 
+  setup = () => {
+    this.refresh();
+    this.props.next();
+    }
+
+  refresh = () => {
+    this.setState({
+      progress: 0,
+      target: this.props.target,
+      pressed: false,
+      completed: false,
+      success: false,
+      hint: false,
+      show_modal: false,
+    });
+    }
 
   render() {
     return (
@@ -1226,8 +1362,8 @@ export class BlendGame extends React.Component {
           <Row className="mt-5">
             <Col sm={8}>
               <Row>
-                <Col sm={4} className="mx-auto front">
-                  <Blender className="front img-fluid test" src={blender_src} alt={'blender'} pose={ this.state.progress % 3 === 0 ? 'one' : (this.state.progress % 3 === 1 ? 'two' : 'three') } />
+                <Col sm={4} className={`mx-auto ${styles.front}`}>
+                  <Blender className={`${styles.front} img-fluid test`} src={blender_src} alt={'blender'} pose={ this.state.progress % 3 === 0 ? 'one' : (this.state.progress % 3 === 1 ? 'two' : 'three') } />
                 </Col>
               </Row>
             </Col>
@@ -1324,7 +1460,7 @@ export class MatchingGame extends React.Component {
           </Modal.Header>
           <Modal.Body>Congratulations! You've successfully completed this step.</Modal.Body>
           <Modal.Footer>
-            <Button variant="success" onClick={() => console.log("Continue to next step...")}>
+            <Button variant="success" onClick={this.setup}>
               Continue
             </Button>
           </Modal.Footer>
@@ -1338,7 +1474,7 @@ export class MatchingGame extends React.Component {
           </Modal.Header>
           <Modal.Body>Unfortunately, you've failed this step.</Modal.Body>
           <Modal.Footer>
-            <Button variant="success" onClick={() => console.log("Reload the page...")}>
+            <Button variant="success" onClick={this.refresh}>
               Try Again
             </Button>
           </Modal.Footer>
@@ -1346,6 +1482,22 @@ export class MatchingGame extends React.Component {
       );
     }
   }
+
+  setup = () => {
+    this.refresh();
+    this.props.next();
+    }
+
+  refresh = () => {
+    this.setState({
+    ingredients: this.props.ingredients,
+    index: Math.floor(Math.random() * this.props.length),
+      completed: false,
+      success: false,
+      hint: false,
+      show_modal: false,
+    });
+    }
 
   render() {
     return (

@@ -44,7 +44,7 @@ public class ProgressServiceImpl implements ProgressService {
                     .setCohort(cohort)
                     .setDrink(drink)
                     .setUser(user)
-                    .setStatus(false);
+                    .setStatus(true);
 
             progressRepository.save(progress);
         }
@@ -61,6 +61,7 @@ public class ProgressServiceImpl implements ProgressService {
 
         if (progressOptional.isPresent()) {
             Progress progress = progressOptional.get();
+            progress.setStatus(false);
             progressRepository.save(progress);
         }
         return false;

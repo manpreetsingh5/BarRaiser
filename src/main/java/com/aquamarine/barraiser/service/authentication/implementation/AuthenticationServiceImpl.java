@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,10 +26,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.net.URI;
 import java.sql.Date;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -116,9 +114,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         Calendar cal = Calendar.getInstance();
         if (passToken.getExpiryDate().after(new Date(System.currentTimeMillis()))) {
-            User user = userRepository.findById(user_id).get();
-            Authentication auth = new UsernamePasswordAuthenticationToken(user, null, Arrays.asList(new SimpleGrantedAuthority("CHANGE_PASSWORD_PRIVILEGE")));
-            SecurityContextHolder.getContext().setAuthentication(auth);
             return true;
         }
 
@@ -126,9 +121,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public boolean resetPassword(int user_id,String newPassword) {
+    public boolean resetPassword(int user_id,String newPassword, String token) {
         Optional<User> userOptional = userRepository.findById(user_id);
-        if (userOptional.isPresent()) {
+        if (userOptional.isPresent() && validatePasswordToken(user_id, token)) {
             User user = userOptional.get();
             user.setPassword(passwordEncoder.encode(newPassword));
             userRepository.save(user);

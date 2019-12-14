@@ -21,8 +21,8 @@ public class ProgressController {
     @Autowired
     private ProgressService progressService;
 
-    @RequestMapping(path="/addProgress", method= RequestMethod.POST)
-    @PreAuthorize("hasAuthority('BARTENDER')")
+    @RequestMapping(path="/addProgress", method= RequestMethod.GET)
+    @PreAuthorize("hasAnyAuthority('BARTENDER', 'TRAINEE')")
     public ResponseEntity<?> addProgress(@RequestParam int cohort_id, @RequestParam int drink_id, @RequestParam int user_id){
         if (progressService.addProgress(cohort_id, drink_id, user_id)) {
             return new ResponseEntity<>("Progress added successfully", HttpStatus.OK);
@@ -30,7 +30,7 @@ public class ProgressController {
         return new ResponseEntity<>("Progress not added successfully", HttpStatus.BAD_REQUEST);
     }
 
-    @RequestMapping(path="/updateProgress", method= RequestMethod.POST)
+    @RequestMapping(path="/updateProgress", method= RequestMethod.GET)
     @PreAuthorize("hasAuthority('BARTENDER')")
     public ResponseEntity<?> updateProgress(@RequestParam int cohort_id, @RequestParam int drink_id, @RequestParam int user_id){
         if (progressService.updateProgress(cohort_id, drink_id, user_id)) {
@@ -39,7 +39,7 @@ public class ProgressController {
         return new ResponseEntity<>("Progress not added successfully", HttpStatus.BAD_REQUEST);
     }
 
-    @RequestMapping(path="/getProgressByUser", method= RequestMethod.POST)
+    @RequestMapping(path="/getProgressByUser", method= RequestMethod.GET)
     @PreAuthorize("hasAnyAuthority('BARTENDER', 'TRAINEE')")
     public ResponseEntity<?> getProgressByUser(@RequestParam int user_id){
         Set<ProgressDTO> ret = progressService.getProgressByUser(user_id);
@@ -49,7 +49,7 @@ public class ProgressController {
         return new ResponseEntity<>("Progress not added successfully", HttpStatus.BAD_REQUEST);
     }
 
-    @RequestMapping(path="/getProgressByCohort", method= RequestMethod.POST)
+    @RequestMapping(path="/getProgressByCohort", method= RequestMethod.GET)
     @PreAuthorize("hasAuthority('BARTENDER')")
     public ResponseEntity<?> getProgressByCohort(@RequestParam int cohort_id){
         Set<ProgressDTO> ret = progressService.getProgressByCohort(cohort_id);
@@ -59,8 +59,8 @@ public class ProgressController {
         return new ResponseEntity<>("Progress not added successfully", HttpStatus.BAD_REQUEST);
     }
 
-    @RequestMapping(path="/getProgressByDrink", method= RequestMethod.POST)
-    @PreAuthorize("hasAuthority('BARTENDER')")
+    @RequestMapping(path="/getProgressByDrink", method= RequestMethod.GET)
+    @PreAuthorize("hasAnyAuthority('BARTENDER', 'TRAINEE')")
     public ResponseEntity<?> getProgress(@RequestParam int drink_id, @RequestParam int user_id){
         ProgressDTO progressDTO = progressService.getProgressByDrink(drink_id, user_id);
         if (progressDTO != null) {

@@ -1,6 +1,6 @@
-body{
+/* body{
   margin: 20px !important;
-}
+} */
 
 .cnh_holding .bg-card{
   background: linear-gradient(white, white) rgb(255, 215, 235) no-repeat 0 0;
@@ -19,11 +19,11 @@ body{
   z-index: 3;
 }
 
-.pour-row{
+.pourRow{
   height: 150px;
 }
 
-#pour_solid{
+.pour_solid{
   width: 16px;
   height: 0px;
   z-index: 1;
@@ -48,7 +48,7 @@ body{
   z-index: 0;
 }
 
-#pour_liquid{
+.pour_liquid{
   width:16px;
   height:0px;
   z-index: 1;
