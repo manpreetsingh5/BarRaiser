@@ -77,6 +77,17 @@ public class EquipmentController {
         }
     }
 
+    @RequestMapping(value = "/viewAllIngredientsAndEquipment", method = RequestMethod.GET)
+    @PreAuthorize("hasAnyAuthority('BARTENDER', 'TRAINEE')")
+    public @ResponseBody ResponseEntity<?> viewAllIngredientsAndEquipment() throws IOException {
+        try {
+            return new ResponseEntity<>(equipmentService.viewAllIngredientsAndEquipment(), HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>("Error viewing all ingredients.", HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @RequestMapping(value = "/viewUserEquipment", method = RequestMethod.GET)
     @PreAuthorize("hasAuthority('BARTENDER')")
     public @ResponseBody Set<Map<String, Object>> viewEquipmentByUser() throws IOException {
@@ -88,6 +99,7 @@ public class EquipmentController {
     public @ResponseBody Set<Map<String, Object>> viewIngredientsByUser() throws IOException {
         return equipmentService.viewIngredientsByUser(SecurityContextHolder.getContext().getAuthentication().getName());
     }
+
 
     @RequestMapping(value = "/editEquipment", method = RequestMethod.POST)
     @PreAuthorize("hasAuthority('BARTENDER')")
