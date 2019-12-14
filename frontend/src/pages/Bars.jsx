@@ -30,6 +30,7 @@ class Bars extends Component {
         this.state = {
             show: false,
             bars: [],
+            public_drinks: [],
             drinks: [],
             isLoaded: false,
             adding_trainee_response: '',
@@ -39,6 +40,29 @@ class Bars extends Component {
     componentDidMount() {
         let token = localStorage.getItem("accessToken");
         console.log(token)
+        fetch(`api/drink/viewAll`, {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + token,
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => {
+            if(response.status !== 200) {
+                return null;
+            }
+            return response.json()
+            .then(
+                data => {
+                    if(data !== null) {
+                        this.setState({
+                            public_drinks: data
+                        })
+                    }
+                }
+            )
+        })
+
         fetch(`api/drink/viewUserDrinks`, {
             method: 'GET',
             headers: {
@@ -503,22 +527,10 @@ class Bars extends Component {
                                                 <Tabs defaultActiveKey="add_public_drinks" className={style.navTabs} id="add_drinks-tabs">
 
                                                     <Tab eventKey="add_public_drinks" title="Public Drinks">
-                                                        {/* make a similar table to below  */}
+                                                        <DrinkList drinks={this.state.public_drinks} id={el.cohort.id} addDrink={this.handleAddDrink}/>
                                                     </Tab>
                                                     <Tab eventKey="add_your_drinks" title="Your Drinks">
-                                                        <Table striped bordered hover size="sm" className="mt-3">
-                                                            <thead>
-                                                                <tr>
-                                                                <th>#</th>
-                                                                <th>Drink</th>
-                                                                <th></th>
-                                                                <th></th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                <DrinkList drinks={this.state.drinks} id={el.cohort.id} addDrink={this.handleAddDrink}/>
-                                                            </tbody>
-                                                        </Table>
+                                                        <DrinkList drinks={this.state.drinks} id={el.cohort.id} addDrink={this.handleAddDrink}/>
                                                     </Tab>
                                                 </Tabs>
 
