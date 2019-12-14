@@ -166,6 +166,21 @@ public class EquipmentServiceImpl implements EquipmentService {
     }
 
     @Override
+    public Set<Map<String, Object>> viewAllIngredientsAndEquipment() throws IOException {
+        List<Equipment> equipmentList = equipmentRepository.findAll();
+
+        Set<Map<String, Object>> res = new HashSet<>();
+
+        for (Equipment e: equipmentList){
+            if (e.isPublic()){
+                res.add(getEquipmentById(e.getId()));
+            }
+        }
+
+        return res;
+    }
+
+    @Override
     public Set<Map<String, Object>> viewEquipmentByUser(String email) throws IOException {
         Set<Map<String, Object>> res = new HashSet<>();
         Set<Equipment> drinks = equipmentRepository.findAllByCreatedByAndType(email, EquipmentEnum.EQUIPMENT);
