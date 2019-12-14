@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import lombok.experimental.Accessors;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @Accessors(chain = true)
@@ -17,11 +19,11 @@ import lombok.experimental.Accessors;
 public class ProgressDTO {
     private int id;
 
-    private CohortDTO cohort;
+    private int cohort;
 
-    private DrinkDTO drinkDTO;
+    private int drink;
 
-    private UserDTO userDTO;
+    private int user;
 
     @JsonProperty
     private boolean status;

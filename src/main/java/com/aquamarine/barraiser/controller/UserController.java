@@ -38,7 +38,7 @@ public class UserController {
 
     @RequestMapping(path="/getUser", method= RequestMethod.GET, headers = "Accept=application/json")
     public @ResponseBody UserDTO getUser(@RequestParam int player_id) {
-
+        System.out.println(player_id);
         return userService.findById(player_id);
 
     }

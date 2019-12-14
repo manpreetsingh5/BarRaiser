@@ -21,12 +21,15 @@ public class Progress {
     private Integer id;
 
     @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+    @JoinColumn(name = "cohort_id", referencedColumnName = "id", nullable = false)
     private Cohort cohort;
 
     @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+    @JoinColumn(name = "drink_id", referencedColumnName = "id", nullable = false)
     private Drink drink;
 
     @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
 
     @Column(nullable = false)
