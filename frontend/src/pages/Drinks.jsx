@@ -1394,9 +1394,9 @@ class Drinks extends Component {
                                     <Row className={style.contentContainer}>
                                         <div className={style.contentDiv}>
                                             {public_empty}
-                                            <div className={style.drinksList}>
+                                            <Row> 
                                                 {publicDrinksList}
-                                            </div>
+                                            </Row>
                                         </div>
                                     </Row>
                                 </Container>
