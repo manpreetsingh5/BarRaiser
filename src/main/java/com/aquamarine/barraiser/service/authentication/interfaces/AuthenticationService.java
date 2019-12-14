@@ -10,5 +10,5 @@ public interface AuthenticationService {
     ResponseEntity registerUser(UserDTO userDTO);
     ResponseEntity requestResetPassword(String email) throws MessagingException;
     boolean validatePasswordToken(int user_id, String token);
-    boolean resetPassword(int user_id, String newPassword);
+    boolean resetPassword(int user_id, String newPassword, String token);
 }

@@ -51,8 +51,8 @@ public class AuthenticationController extends ApiController {
     }
 
     @RequestMapping(value = "/resetPassword", method = RequestMethod.GET)
-    public ResponseEntity<?> resetPassword(@RequestParam("id") int user_id, @RequestParam String new_password) {
-        if (authenticationService.resetPassword(user_id, new_password)) {
+    public ResponseEntity<?> resetPassword(@RequestParam("id") int user_id, @RequestParam String new_password, @RequestParam String token) {
+        if (authenticationService.resetPassword(user_id, new_password, token)) {
             return new ResponseEntity<>("Password reset success!", HttpStatus.OK);
         }
         return new ResponseEntity<>("Password reset failed!", HttpStatus.BAD_REQUEST);
