@@ -60,8 +60,6 @@ class Home extends Component {
                                         equipment for this simulation to work. </li>
                                         <li><em><b>Rolling:</b></em> In this simulation, a trainee can simulate rolling. The instructor must be sure to upload the appropriate equipment
                                         for this simulation to work.</li>
-                                        <li><em><b>Matching:</b></em> In this simulation, a trainee can simulate matching two ingredients or equipments to sharpen their memorization skills.
-                                            The instructor must be sure to upload the appropriate equipment or ingredient for this simulation to work.</li>
                                     </ol>
 
                                 </Card.Text>
