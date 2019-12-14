@@ -12,11 +12,13 @@ import com.aquamarine.barraiser.repository.ProgressRepository;
 import com.aquamarine.barraiser.repository.UserRepository;
 import com.aquamarine.barraiser.service.progress.interfaces.ProgressService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+@Service
 public class ProgressServiceImpl implements ProgressService {
 
     @Autowired
@@ -40,7 +42,7 @@ public class ProgressServiceImpl implements ProgressService {
         User user = userRepository.findById(user_id).get();
 
         Optional<Progress> progressOptional = progressRepository.findByCohortsAndDrinksAndUsers(cohort, drink, user);
-        if (progressOptional.isPresent()) {
+        if (!progressOptional.isPresent()) {
             cohorts.add(cohortRepository.findById(cohort_id).get());
             drinks.add(drinkRepository.findById(drink_id).get());
             users.add(userRepository.findById(user_id).get());

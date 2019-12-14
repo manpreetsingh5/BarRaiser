@@ -20,16 +20,10 @@ public class Progress {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Integer id;
 
-    @ManyToMany(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
-    @JoinTable(name = "progress_to_cohorts",
-            joinColumns = @JoinColumn(name = "progress_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "cohort_id", referencedColumnName = "id"))
+    @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     private Set<Cohort> cohorts = new HashSet<>();
 
-    @ManyToMany(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
-    @JoinTable(name = "progress_to_drinks",
-            joinColumns = @JoinColumn(name = "progress_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "drink_id", referencedColumnName = "id"))
+    @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     private Set<Drink> drinks = new HashSet<>();
 
     @ManyToMany(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
