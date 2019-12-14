@@ -96,15 +96,15 @@ public class ProgressServiceImpl implements ProgressService {
     }
 
     @Override
-    public Set<ProgressDTO> getProgressByDrink(int drink_id) {
-        HashSet<ProgressDTO> ret = new HashSet<>();
+    public ProgressDTO getProgressByDrink(int drink_id, int user_id) {
         Optional<Drink> drinkOptional = drinkRepository.findById(drink_id);
-        if (drinkOptional.isPresent()) {
+        Optional<User> userOptional = userRepository.findById(user_id);
+        if (drinkOptional.isPresent() && userOptional.isPresent()) {
             Drink drink = drinkOptional.get();
-            for (Progress p : progressRepository.findAllByDrink(drink)) {
-                ret.add(ProgressDTOMapper.toProgressDTO(p));
-            }
-            return ret;
+            User user = userOptional.get();
+            Progress progress = progressRepository.findByDrinkAndUser(drink, user);
+            ProgressDTO progressDTO = ProgressDTOMapper.toProgressDTO(progress);
+            return progressDTO;
         }
         return null;
     }

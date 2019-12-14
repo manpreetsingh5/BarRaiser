@@ -9,6 +9,6 @@ public interface ProgressService {
     boolean updateProgress(int cohort_id, int drink_id, int user_id);
     Set<ProgressDTO> getProgressByUser(int user_id);
     Set<ProgressDTO> getProgressByCohort(int cohort_id);
-    Set<ProgressDTO> getProgressByDrink(int drink_id);
+    ProgressDTO getProgressByDrink(int drink_id, int user_id);
 
 }
