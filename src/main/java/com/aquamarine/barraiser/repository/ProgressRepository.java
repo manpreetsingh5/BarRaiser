@@ -8,8 +8,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.Set;
 
 @Repository
 public interface ProgressRepository extends JpaRepository<Progress, Integer> {
-    Optional<Progress> findByCohortsAndDrinksAndUsers(Cohort cohort, Drink drink, User user);
+    Optional<Progress> findByCohortAndDrinkAndUser(Cohort cohort, Drink drink, User user);
+    Set<Progress> findAllByCohort(Cohort cohort);
+    Set<Progress> findAllByDrink(Drink drink);
+    Set<Progress> findAllByUser(User user);
 }

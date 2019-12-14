@@ -19,11 +19,11 @@ import java.util.Set;
 public class ProgressDTO {
     private int id;
 
-    private Set<CohortDTO> cohorts;
+    private int cohort;
 
-    private Set<DrinkDTO> drinks;
+    private int drink;
 
-    private Set<UserDTO> users;
+    private int user;
 
     @JsonProperty
     private boolean status;

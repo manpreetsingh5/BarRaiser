@@ -30,15 +30,14 @@ public class ProgressController {
         return new ResponseEntity<>("Progress not added successfully", HttpStatus.BAD_REQUEST);
     }
 
-    @RequestMapping(path="/getProgressByCohort", method= RequestMethod.POST)
+    @RequestMapping(path="/getProgressByUser", method= RequestMethod.POST)
     @PreAuthorize("hasAuthority('BARTENDER')")
-    public ResponseEntity<?> getProgress(@RequestParam int cohort_id, @RequestParam int drink_id, @RequestParam int user_id){
-        Set<ProgressDTO> ret = progressService.getProgressByCohort(cohort_id);
-        return new ResponseEntity<>(ret, HttpStatus.OK);
-//        if (progressService.getProgressByCohort(cohort_id)) {
-//            return new ResponseEntity<>("Progress added successfully", HttpStatus.OK);
-//        }
-//        return new ResponseEntity<>("Progress not added successfully", HttpStatus.BAD_REQUEST);
+    public ResponseEntity<?> getProgress(@RequestParam int user_id){
+        Set<ProgressDTO> ret = progressService.getProgressByUser(user_id);
+        if (ret != null) {
+            return new ResponseEntity<>(ret, HttpStatus.OK);
+        }
+        return new ResponseEntity<>("Progress not added successfully", HttpStatus.BAD_REQUEST);
     }
 
 

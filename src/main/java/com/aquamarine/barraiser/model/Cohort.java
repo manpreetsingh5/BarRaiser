@@ -44,7 +44,7 @@ public class Cohort extends Auditable<String> {
             inverseJoinColumns = @JoinColumn(name = "drink_id", referencedColumnName = "id"))
     private Set<Drink> drinks = new HashSet<>();
 
-    @ManyToMany(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     @JsonIgnore
-    private Set<Progress> progress = new HashSet<>();
+    private Progress progress;
 }

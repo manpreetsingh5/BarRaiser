@@ -15,29 +15,27 @@ import java.util.Set;
 public class ProgressDTOMapper {
 
     public static ProgressDTO toProgressDTO(Progress progress) {
-        Set<CohortDTO> cohorts = new HashSet<>();
-        Set<DrinkDTO> drinks = new HashSet<>();
-        Set<UserDTO> users = new HashSet<>();
+//        Set<CohortDTO> cohorts = new HashSet<>();
+//        Set<DrinkDTO> drinks = new HashSet<>();
+//        Set<UserDTO> users = new HashSet<>();
+//
+//        for (Cohort c: progress.getCohorts()) {
+//            cohorts.add(CohortDTOMapper.toCohortDTO(c));
+//        }
+//
+//        for (Drink d : progress.getDrinks()) {
+//            drinks.add(DrinkDTOMapper.toDrinkDTO(d));
+//        }
+//
+//        for (User u : progress.getUsers()) {
+//            users.add(UserDTOMapper.toUserDTO(u));
+//        }
 
-        for (Cohort c: progress.getCohorts()) {
-            cohorts.add(CohortDTOMapper.toCohortDTO(c));
-        }
-
-        for (Drink d : progress.getDrinks()) {
-            drinks.add(DrinkDTOMapper.toDrinkDTO(d));
-        }
-
-        for (User u : progress.getUsers()) {
-            users.add(UserDTOMapper.toUserDTO(u));
-        }
-
-        ProgressDTO  progressDTO = new ProgressDTO()
+        return new ProgressDTO()
                 .setId(progress.getId())
-                .setCohorts(cohorts)
-                .setDrinks(drinks)
-                .setUsers(users)
+                .setCohort(progress.getCohort().getId())
+                .setDrink(progress.getDrink().getId())
+                .setUser(progress.getUser().getId())
                 .setStatus(progress.isStatus());
-
-        return progressDTO;
     }
 }
