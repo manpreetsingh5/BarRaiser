@@ -16,4 +16,5 @@ public interface ProgressRepository extends JpaRepository<Progress, Integer> {
     Set<Progress> findAllByCohort(Cohort cohort);
     Set<Progress> findAllByDrink(Drink drink);
     Set<Progress> findAllByUser(User user);
+    Progress findByDrinkAndUser(Drink drink, User user);
 }
