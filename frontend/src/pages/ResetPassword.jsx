@@ -1,6 +1,6 @@
 import React, { Fragment, Component } from 'react';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import style from '../style/Login.module.css';
+import { Link, Redirect, withRouter } from "react-router-dom";
+import style from '../style/Register.module.css';
 
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button'
@@ -9,27 +9,37 @@ import Col from 'react-bootstrap/Col'
 import Form from 'react-bootstrap/Form';
 
 
-class Login extends Component {
+class ResetPassword extends Component {
     constructor(props) {
         super(props);
     
         this.state = {
-            showSuccessMessage: false,
-            hasLoginFailed: false,
-            validCredentials: true
+            validCredentials: true,
+            accepted: false
         };
     }
 
     handleSubmit = event => {
         let form = event.target;
+        let typeval;
+
+        if(form.elements.type[0].checked === true) {
+            typeval = form.elements.type[0].id
+        }
+        else {
+            typeval = form.elements.type[1].id
+        }
         
         const acc = {
+            first_name: form.elements.firstName.value,
+            last_name: form.elements.lastName.value,
             email: form.elements.email.value,
             password: form.elements.password.value,
+            status: typeval
         }
         console.log(JSON.stringify(acc));
 
-        fetch('api/auth/signin', {
+        fetch('api/auth/signup', {
             method: 'POST',
             body: JSON.stringify(acc),
             headers: {
@@ -37,10 +47,11 @@ class Login extends Component {
             }
         })
         .then(response => {
-            if(response.status !== 200) {
+            console.log(response.status)
+            if(response.status !== 201) {
                 return null;
             }
-            return response.json();
+            return response;
         })
         .then(data => {
             if(data === null) {
@@ -49,18 +60,33 @@ class Login extends Component {
                 });
             }
             else {
-                console.log(data)
-                this.props.authorize(data);
+                this.setState({
+                    validCredentials: true,
+                    accepted: true
+                })
             }
         })
 
         event.preventDefault();
     }
 
+    handleChange = () => {}
+
     render() {
+        let accepted = this.state.accepted;
         let validCredentials = this.state.validCredentials;
+        let validMessage = "";
         let invalidMessage = "";
-        if(!validCredentials) invalidMessage = "Invalid credentials.";
+        if(this.state.accepted) validMessage = "Account successfully created! Please return to the login page to login."
+        if(!validCredentials) invalidMessage = "An account with that email has already been taken.";
+
+        if(accepted) {
+            return (
+                <Redirect
+                    to={"/login"}
+                />
+            )
+        }
 
         return (
             <Fragment>
@@ -75,13 +101,30 @@ class Login extends Component {
                                         <div className={style.titleDiv}>
                                             <h1>BarRaiser</h1>
                                             <p className={style.subtitle}>raising the bar of bartending, one click at a time</p>
+                                            <h6 className={style.valid}>{validMessage}</h6>
                                             <h6 className={style.invalid}>{invalidMessage}</h6>
                                         </div>
 
-                                        {this.state.hasLoginFailed && <div className="alert alert-warning">Invalid Credentials</div>}
-                                        {this.state.showSuccessMessage && <div>Login Sucessful</div>}
-
                                         <Form onSubmit={this.handleSubmit}>
+                                            <Form.Group controlId="firstName">
+                                                <Form.Label>First Name</Form.Label>
+
+                                                <Form.Control 
+                                                    required
+                                                    type="firstName" 
+                                                    placeholder="Enter first name" 
+                                                />
+                                            </Form.Group>
+                                            <Form.Group controlId="lastName">
+                                                <Form.Label>Last Name</Form.Label>
+
+                                                <Form.Control 
+                                                    required
+                                                    type="lastName" 
+                                                    placeholder="Enter last name" 
+                                                />
+
+                                            </Form.Group>
                                             <Form.Group controlId="email">
                                                 <Form.Label>Email address</Form.Label>
 
@@ -102,21 +145,24 @@ class Login extends Component {
                                                 />
                                             </Form.Group>
 
+                                            <Form.Group controlId="type">
+                                                <Form.Check id="TRAINEE" type="radio" onChange={this.handleChange} name="type" label="Trainee" inline checked/>
+                                                <Form.Check id="BARTENDER" type="radio" name="type" onChange={this.handleChange} label="Bartender" inline />
+                                            </Form.Group>
+                                            
+
                                             <div className={style.buttonsDiv}>
                                                 <Button 
                                                     type="submit"
                                                     className={`${style.login} ${style.btn}`}
                                                 >
-                                                    Sign in
+                                                    Register
                                                 </Button>
 
-                                                <Link to="/register">
-                                                    <p className={`${style.register} ${'my-2'}`}>Register</p>
+                                                <Link to="/login">
+                                                    <p className={style.register}>Return to login</p>
                                                 </Link>
-
-                                                <Link to="/resetpassword">
-                                                    <p className={style.register}>Forgot Password</p>
-                                                </Link>
+                                                
                                             </div>
                                         </Form>
                                     </div>
@@ -130,4 +176,4 @@ class Login extends Component {
     }
 }
 
-export default Login;
+export default withRouter(ResetPassword);
