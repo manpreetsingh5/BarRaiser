@@ -3,7 +3,6 @@ package com.aquamarine.barraiser.service.authentication.implementation;
 import com.aquamarine.barraiser.dto.model.UserDTO;
 import com.aquamarine.barraiser.model.PasswordResetToken;
 import com.aquamarine.barraiser.model.User;
-import com.aquamarine.barraiser.network.response.JWTAuthenticationResponse;
 import com.aquamarine.barraiser.repository.PasswordTokenRepository;
 import com.aquamarine.barraiser.repository.UserRepository;
 import com.aquamarine.barraiser.security.JWTTokenProvider;
@@ -13,16 +12,20 @@ import com.aquamarine.barraiser.service.user.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import java.net.URI;
+import java.sql.Date;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Optional;
 import java.util.UUID;
@@ -88,7 +91,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     @Override
-    public ResponseEntity requestResetPassword(String email) {
+    public ResponseEntity requestResetPassword(String email) throws MessagingException {
         Optional<User> userOptional = userRepository.findByEmail(email);
 
 
@@ -96,7 +99,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
             User user = userOptional.get();
             String token = UUID.randomUUID().toString();
             emailService.createPasswordResetTokenForUser(user, token);
-            SimpleMailMessage message = emailService.constructResetTokenEmail(token, user);
+            MimeMessage message = emailService.constructResetTokenEmail(token, user);
             emailService.sendEmail(message);
 
         }
@@ -106,34 +109,34 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     @Override
     public boolean validatePasswordToken(int user_id, String token) {
         PasswordResetToken passToken = passwordTokenRepository.findByToken(token);
+        System.out.println(passToken.getExpiryDate());
         if ((passToken == null) || (passToken.getUser().getId() != user_id)) {
             return false;
         }
 
         Calendar cal = Calendar.getInstance();
-        if ((passToken.getExpiryDate()
-                .getTime() - cal.getTime()
-                .getTime()) <= 0) {
-            return false;
+        if (passToken.getExpiryDate().after(new Date(System.currentTimeMillis()))) {
+            User user = userRepository.findById(user_id).get();
+            Authentication auth = new UsernamePasswordAuthenticationToken(user, null, Arrays.asList(new SimpleGrantedAuthority("CHANGE_PASSWORD_PRIVILEGE")));
+            SecurityContextHolder.getContext().setAuthentication(auth);
+            return true;
         }
 
-        User user = passToken.getUser();
-//        Authentication auth = new UsernamePasswordAuthenticationToken(
-//                user, null, Arrays.asList(
-//                new SimpleGrantedAuthority("CHANGE_PASSWORD_PRIVILEGE")));
-//        SecurityContextHolder.getContext().setAuthentication(auth);
-        return true;
+        return false;
     }
 
     @Override
-    public void resetPassword(int user_id, String token) {
-//        boolean result = validatePasswordToken(user_id, token);
-//        if (result) {
-//            model.addAttribute("message",
-//                    messages.getMessage("auth.message." + result, null, locale));
-//            return "redirect:/login?lang=" + locale.getLanguage();
-//        }
-//        return "redirect:/updatePassword.html?lang=" + locale.getLanguage();
+    public boolean resetPassword(int user_id,String newPassword) {
+        Optional<User> userOptional = userRepository.findById(user_id);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            user.setPassword(passwordEncoder.encode(newPassword));
+            userRepository.save(user);
+            return true;
+
+        }
+
+        return false;
     }
 
 

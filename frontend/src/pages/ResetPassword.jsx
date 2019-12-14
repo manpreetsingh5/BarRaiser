@@ -1,6 +1,6 @@
 import React, { Fragment, Component } from 'react';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import style from '../style/Login.module.css';
+import { Link, Redirect, withRouter } from "react-router-dom";
+import style from '../style/Register.module.css';
 
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button'
@@ -9,58 +9,52 @@ import Col from 'react-bootstrap/Col'
 import Form from 'react-bootstrap/Form';
 
 
-class Login extends Component {
+class ResetPassword extends Component {
     constructor(props) {
         super(props);
     
         this.state = {
-            showSuccessMessage: false,
-            hasLoginFailed: false,
-            validCredentials: true
+            validCredentials: true,
+            accepted: false
         };
     }
 
     handleSubmit = event => {
         let form = event.target;
-        
-        const acc = {
-            email: form.elements.email.value,
-            password: form.elements.password.value,
-        }
-        console.log(JSON.stringify(acc));
-
-        fetch('api/auth/signin', {
-            method: 'POST',
-            body: JSON.stringify(acc),
+        let email = form.elements.email.value;
+        fetch(`api/auth/requestPasswordReset?email=${email}`, {
+            method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
             }
         })
         .then(response => {
+            console.log(response)
             if(response.status !== 200) {
                 return null;
             }
-            return response.json();
+            return response;
         })
-        .then(data => {
-            if(data === null) {
-                this.setState({
-                    validCredentials: false
-                });
-            }
-            else {
-                console.log(data)
-                this.props.authorize(data);
-            }
-        })
-
         event.preventDefault();
     }
 
+    handleChange = () => {}
+
     render() {
+        let accepted = this.state.accepted;
         let validCredentials = this.state.validCredentials;
+        let validMessage = "";
         let invalidMessage = "";
-        if(!validCredentials) invalidMessage = "Invalid credentials.";
+        if(this.state.accepted) validMessage = "Account successfully created! Please return to the login page to login."
+        if(!validCredentials) invalidMessage = "An account with that email has already been taken.";
+
+        if(accepted) {
+            return (
+                <Redirect
+                    to={"/login"}
+                />
+            )
+        }
 
         return (
             <Fragment>
@@ -74,12 +68,10 @@ class Login extends Component {
                                     <div className={style.loginWrapper} >
                                         <div className={style.titleDiv}>
                                             <h1>BarRaiser</h1>
-                                            <p className={style.subtitle}>raising the bar of bartending, one click at a time</p>
+                                            <p className={style.subtitle}>Enter your email to reset your password.</p>
+                                            <h6 className={style.valid}>{validMessage}</h6>
                                             <h6 className={style.invalid}>{invalidMessage}</h6>
                                         </div>
-
-                                        {this.state.hasLoginFailed && <div className="alert alert-warning">Invalid Credentials</div>}
-                                        {this.state.showSuccessMessage && <div>Login Sucessful</div>}
 
                                         <Form onSubmit={this.handleSubmit}>
                                             <Form.Group controlId="email">
@@ -93,30 +85,18 @@ class Login extends Component {
 
                                             </Form.Group>
 
-                                            <Form.Group controlId="password">
-                                                <Form.Label>Password</Form.Label>
-                                                <Form.Control 
-                                                    required
-                                                    type="password" 
-                                                    placeholder="Enter password" 
-                                                />
-                                            </Form.Group>
-
                                             <div className={style.buttonsDiv}>
                                                 <Button 
                                                     type="submit"
                                                     className={`${style.login} ${style.btn}`}
                                                 >
-                                                    Sign in
+                                                    Send Reset Link
                                                 </Button>
 
-                                                <Link to="/register">
-                                                    <p className={`${style.register} ${'my-2'}`}>Register</p>
+                                                <Link to="/login">
+                                                    <p className={`${style.register} ${'my-2'}`}>Return to login</p>
                                                 </Link>
-
-                                                <Link to="/resetpassword">
-                                                    <p className={style.register}>Forgot Password</p>
-                                                </Link>
+                                                
                                             </div>
                                         </Form>
                                     </div>
@@ -130,4 +110,4 @@ class Login extends Component {
     }
 }
 
-export default Login;
+export default withRouter(ResetPassword);
