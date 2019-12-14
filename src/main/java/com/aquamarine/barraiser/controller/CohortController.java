@@ -29,18 +29,6 @@ public class CohortController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private ImageService imageService;
-
-    @Value("${app.awsServices.endpoint}")
-    private String endpointUrl;
-
-    @Value("${app.awsServices.bucketName}")
-    private String bucketName;
-
-    @Value("/cohorts")
-    private String folder;
-
     @RequestMapping(path="/addCohort", method= RequestMethod.POST)
     @PreAuthorize("hasAuthority('BARTENDER')")
     public ResponseEntity<?> addCohort(@RequestPart(value = "file") MultipartFile multipartFile, @RequestPart CohortDTO cohortDTO) throws IOException {

@@ -42,6 +42,10 @@ public class User {
     @JsonIgnore
     private Set<Cohort> cohort = new HashSet<>();
 
+    @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private Progress progress;
+
     public User(String email, String first_name, String last_name, String password, String status) {
         this.email = email;
         this.first_name = first_name;

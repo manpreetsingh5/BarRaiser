@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -76,6 +77,17 @@ public class EquipmentController {
         }
     }
 
+    @RequestMapping(value = "/viewAllIngredientsAndEquipment", method = RequestMethod.GET)
+    @PreAuthorize("hasAnyAuthority('BARTENDER', 'TRAINEE')")
+    public @ResponseBody ResponseEntity<?> viewAllIngredientsAndEquipment() throws IOException {
+        try {
+            return new ResponseEntity<>(equipmentService.viewAllIngredientsAndEquipment(), HttpStatus.OK);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>("Error viewing all ingredients.", HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @RequestMapping(value = "/viewUserEquipment", method = RequestMethod.GET)
     @PreAuthorize("hasAuthority('BARTENDER')")
     public @ResponseBody Set<Map<String, Object>> viewEquipmentByUser() throws IOException {
@@ -87,6 +99,7 @@ public class EquipmentController {
     public @ResponseBody Set<Map<String, Object>> viewIngredientsByUser() throws IOException {
         return equipmentService.viewIngredientsByUser(SecurityContextHolder.getContext().getAuthentication().getName());
     }
+
 
     @RequestMapping(value = "/editEquipment", method = RequestMethod.POST)
     @PreAuthorize("hasAuthority('BARTENDER')")
@@ -107,12 +120,9 @@ public class EquipmentController {
     @PreAuthorize("hasAnyAuthority('BARTENDER', 'TRAINEE')")
     public @ResponseBody ResponseEntity<?> getEquipmentPicture(@RequestParam String image_path) throws IOException {
         try {
-            byte[] imageBytes = equipmentService.getEquipmentPicture(image_path);
-            HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.setContentType(MediaType.IMAGE_PNG);
-            httpHeaders.setContentLength(imageBytes.length);
+            HashMap<String, Object> ret = equipmentService.getEquipmentPicture(image_path);
 
-            return new ResponseEntity<>(equipmentService.getEquipmentPicture(image_path), httpHeaders, HttpStatus.OK);
+            return new ResponseEntity<>(ret, HttpStatus.OK);
         }
         catch (Exception e) {
             return new ResponseEntity<>("Error viewing equipment image.", HttpStatus.BAD_REQUEST);

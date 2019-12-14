@@ -2,10 +2,10 @@ package com.aquamarine.barraiser.service.equipment.interfaces;
 
 
 import com.aquamarine.barraiser.dto.model.EquipmentDTO;
-import com.aquamarine.barraiser.enums.MeasurementEnum;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -18,7 +18,8 @@ public interface EquipmentService {
     Set<Map<String, Object>> viewIngredientsByUser(String email) throws IOException;
     Set<Map<String, Object>> viewAllEquipment() throws IOException;
     Set<Map<String, Object>> viewAllIngredients() throws IOException;
-    byte[] getEquipmentPicture(String image_path) throws IOException;
+    Set<Map<String, Object>> viewAllIngredientsAndEquipment() throws IOException;
+    HashMap<String, Object> getEquipmentPicture(String image_path) throws IOException;
 
 }
 

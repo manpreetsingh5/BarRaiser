@@ -3,8 +3,6 @@ package com.aquamarine.barraiser.service.equipment.implementation;
 import com.aquamarine.barraiser.dto.mapper.EquipmentDTOMapper;
 import com.aquamarine.barraiser.dto.model.EquipmentDTO;
 import com.aquamarine.barraiser.enums.EquipmentEnum;
-import com.aquamarine.barraiser.enums.MeasurementEnum;
-import com.aquamarine.barraiser.model.Cohort;
 import com.aquamarine.barraiser.model.Equipment;
 import com.aquamarine.barraiser.model.User;
 import com.aquamarine.barraiser.repository.EquipmentRepository;
@@ -14,10 +12,6 @@ import com.aquamarine.barraiser.service.equipment.interfaces.EquipmentService;
 import com.aquamarine.barraiser.service.images.interfaces.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -172,6 +166,21 @@ public class EquipmentServiceImpl implements EquipmentService {
     }
 
     @Override
+    public Set<Map<String, Object>> viewAllIngredientsAndEquipment() throws IOException {
+        List<Equipment> equipmentList = equipmentRepository.findAll();
+
+        Set<Map<String, Object>> res = new HashSet<>();
+
+        for (Equipment e: equipmentList){
+            if (e.isPublic()){
+                res.add(getEquipmentById(e.getId()));
+            }
+        }
+
+        return res;
+    }
+
+    @Override
     public Set<Map<String, Object>> viewEquipmentByUser(String email) throws IOException {
         Set<Map<String, Object>> res = new HashSet<>();
         Set<Equipment> drinks = equipmentRepository.findAllByCreatedByAndType(email, EquipmentEnum.EQUIPMENT);
@@ -194,7 +203,8 @@ public class EquipmentServiceImpl implements EquipmentService {
     }
 
     @Override
-    public byte[] getEquipmentPicture(String image_path) throws IOException {
+    public HashMap<String, Object> getEquipmentPicture(String image_path) throws IOException {
+        HashMap<String, Object> ret = new HashMap<>();
         InputStream in = imageService.downloadFileFromS3bucket(image_path).getObjectContent();
         BufferedImage imageFromAWS = ImageIO.read(in);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -202,7 +212,9 @@ public class EquipmentServiceImpl implements EquipmentService {
         byte[] imageBytes = baos.toByteArray();
         in.close();
 
-        return imageBytes;
+        ret.put("file", imageBytes);
+
+        return ret;
     }
 
 
