@@ -829,7 +829,7 @@ class Drinks extends Component {
             .then(() => {
                 this.setState({ isLoaded: false });
                 this.updateView();
-                this.handleDeleteClose(id);
+                this.handleDeleteDrinkClose(id);
             })
     }
 
