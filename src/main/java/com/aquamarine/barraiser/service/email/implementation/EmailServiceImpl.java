@@ -28,10 +28,10 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     public SimpleMailMessage constructResetTokenEmail(String token, User user) {
-        String url = contextPath + "/api/user/changePassword?id=" +
+        String url = contextPath + "/api/user/resetPassword?id=" +
                 user.getId() + "&token=" + token;
         String message = "Password Reset Request";
-        return constructEmail("Reset Password", message + " \r\n" + url, user);
+        return constructEmail("BarRaiser Reset Password", message + " \r\n" + url, user);
     }
 
     @Override
