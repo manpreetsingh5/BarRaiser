@@ -185,6 +185,8 @@ class Drinks extends Component {
     showDrinkSteps = (steps) => {
         let steps_display = [];
 
+        steps.sort((a, b) => (a.step_number > b.step_number) ? 1 : -1);
+
         steps.forEach(element => steps_display.push(<li>{element.description}</li>) );
         return steps_display;
     }
