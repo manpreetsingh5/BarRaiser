@@ -113,10 +113,6 @@ class Login extends Component {
                                                 <Link to="/register">
                                                     <p className={`${style.register} ${'my-2'}`}>Register</p>
                                                 </Link>
-
-                                                <Link to="/resetpassword">
-                                                    <p className={style.register}>Forgot Password</p>
-                                                </Link>
                                             </div>
                                         </Form>
                                     </div>

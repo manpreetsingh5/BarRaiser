@@ -5,7 +5,6 @@ public enum ActionsEnum {
     POURING_SOLID,
     SHAKE,
     PUT,
-    MATCH,
     ROLL,
     STIR,
     STRAIN
